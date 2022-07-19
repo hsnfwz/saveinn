@@ -1,4 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
+import IncomeTransactionsList from "../components/IncomeTransactionsList";
+import ExpenseTransactionsList from "../components/ExpenseTransactionsList";
 
 function DashboardLayout() {
 
@@ -6,7 +8,10 @@ function DashboardLayout() {
     <Container fluid>
       <Row>
         <Col>
-          Dashboard
+          <IncomeTransactionsList />
+        </Col>
+        <Col>
+          <ExpenseTransactionsList />
         </Col>
       </Row>
     </Container>
