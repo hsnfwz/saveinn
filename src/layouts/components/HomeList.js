@@ -6,11 +6,12 @@ import piggyBank from "../images/manPiggyBank.svg";
 import backgroundImage from "../images/landingBackground.png"
 //css
 import '../../App.css';
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function HomeList() {
 
     const [email, setEmail] = useState('');
+    let navigate = useNavigate();
 
     const submitHandler = (e) =>{
         
@@ -34,7 +35,7 @@ function HomeList() {
             </Nav>
             </Container>
             <Container className="d-flex justify-content-end">
-                <Button className="btn btn-secondary saveBtns px-5">Log In</Button>
+                <Button className="btn btn-secondary saveBtns px-5" onClick={() => navigate("log-in")}>Log In</Button>
             </Container>
         </Navbar>
         <Row className="d-flex align-items-center px-2" style={{ height: "60vh"}}>
