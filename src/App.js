@@ -26,7 +26,7 @@ import './App.css';
 function App() {
   return (
     <>
-      <Link to="/">Home</Link>
+      {/* <Link to="/">Home</Link>
       <br/>
       <Link to="/dashboard">Dashboard</Link>
       <br/>
@@ -61,7 +61,7 @@ function App() {
       <Link to="/budget-assistants">Budget Assistants</Link>
       <br/>
       <Link to="/budget-assistant">Budget Assistant</Link>
-      <br/>
+      <br/> */}
 
       <Routes>
         <Route path="/" element={<HomeLayout />} />
