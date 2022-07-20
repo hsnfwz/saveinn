@@ -19,6 +19,8 @@ import BudgetMembersLayout from './layouts/BudgetMembersLayout';
 import BudgetMemberLayout from './layouts/BudgetMemberLayout';
 import BudgetAssistantsLayout from './layouts/BudgetAssistantsLayout';
 import BudgetAssistantLayout from './layouts/BudgetAssistantLayout';
+import RegistrationLayout from './layouts/RegistrationLayout';
+import LogInLayout from './layouts/LogInLayout';
 
 // css
 import './App.css';
@@ -82,6 +84,8 @@ function App() {
         <Route path="budget-member" element={<BudgetMemberLayout />} />
         <Route path="budget-assistants" element={<BudgetAssistantsLayout />} />
         <Route path="budget-assistant" element={<BudgetAssistantLayout />} />
+        <Route path="registration" element={<RegistrationLayout/>}/>
+        <Route path="log-in" element={<LogInLayout/>}/>
       </Routes>
     </>
   );
