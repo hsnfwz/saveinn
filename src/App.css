@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+body, html{
+    font-family: 'Lato', sans-serif;
+}
+
+.saveBtns{
+    background-color: #63D3A9;
+    color: white;
+    font-weight: bold;
+}
+.brandLogo{
+    color: #63D3A9;
+    font-weight: bolder;
+}
