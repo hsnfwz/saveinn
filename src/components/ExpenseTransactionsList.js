@@ -118,7 +118,7 @@ function ExpenseTransactionsList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Add Expense Transaction
+                Expense Transaction
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>

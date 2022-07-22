@@ -123,7 +123,7 @@ function BudgetGoalsList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Add Budget Goal
+                Budget Goal
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>

@@ -116,7 +116,7 @@ function BudgetPlansList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Add Budget Plan
+                Budget Plan
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>

@@ -118,7 +118,7 @@ function IncomeTransactionsList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Add Income Transaction
+                Income Transaction
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
