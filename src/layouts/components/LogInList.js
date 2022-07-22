@@ -37,20 +37,25 @@ function LogInList(props){
                 </Container>
                 <Container fluid className="d-flex justify-content-end">
                     <Navbar.Text>New to Save Inn?</Navbar.Text>
-                    <Button className="btn btn-light m-2" onClick={()=>navigate("registration")}>Sign Up</Button>
+                    <Button className="btn btn-light m-2" onClick={()=>navigate("/registration", {replace : true})}>Sign Up</Button>
                 </Container>
             </Navbar>
             <Form onSubmit = {submitHandler} className="d-flex flex-column justify-content-center align-items-center d-grid gap-2 col-6 mx-auto" style={{height:"70vh"}}>
                 <Form.Label className="h4">Log In</Form.Label>
+                <br/>{
+                    errorMessage ? 
+                    <span className="invalid-feedback">{errorMessage}</span>
+                    : null
+                }
                 <Form.Group className="my-2">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <Form.Control type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="formInput"/>
                 </Form.Group>
                 <Form.Group className="my-2">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="formInput"/>
                 </Form.Group>
-                <Button className="btn btn-secondary saveBtns my-2">Log In</Button>
+                <Button className="btn btn-secondary saveBtns my-2 formInput">Log In</Button>
             </Form>
         </Container>
     )

@@ -1,11 +1,16 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col} from "react-bootstrap";
+import RegistrationList from "./components/RegistrationList";
+
+
 
 function RegistrationLayout(){
+
+
     return(
         <Container fluid>
             <Col>
                 <Row>
-                    Registration
+                    <RegistrationList/>
                 </Row>
             </Col>
         </Container>

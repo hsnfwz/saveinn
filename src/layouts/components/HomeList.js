@@ -13,10 +13,6 @@ function HomeList() {
     const [email, setEmail] = useState('');
     let navigate = useNavigate();
 
-    const submitHandler = (e) =>{
-        
-    }
-
     return (
         <Container fluid className="px-5" style={{height: "100vh", backgroundImage : `url(${backgroundImage})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundPosition:"center"}}>
         <Navbar className="p-4 mb-5">
@@ -47,9 +43,9 @@ function HomeList() {
                     <h4 className="text-muted">The budget manager platform to build a community, save together, and enjoy more worry-free years.</h4>
                 </Row>
                 <Row className="pt-2">
-                    <InputGroup onSubmit={submitHandler}>
+                    <InputGroup>
                         <Form.Control type="text" placeholder="Email address" onChange={(e)=>setEmail(e.target.value)}/>
-                        <Button className="btn btn-secondary saveBtns">
+                        <Button className="btn btn-secondary saveBtns" onClick={() => navigate("registration", {state:{ email : email}, replace: true})}>
                             Sign up for Save Inn
                         </Button>
                     </InputGroup>
