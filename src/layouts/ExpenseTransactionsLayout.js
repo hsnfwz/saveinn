@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
+import ExpenseTransactionsList from "../components/ExpenseTransactionsList";
 
 function ExpenseTransactionsLayout() {
 
@@ -6,7 +7,7 @@ function ExpenseTransactionsLayout() {
     <Container fluid>
       <Row>
         <Col>
-          Expense Transactions
+          <ExpenseTransactionsList />
         </Col>
       </Row>
     </Container>

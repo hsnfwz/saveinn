@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
+import QuestionsList from "../components/QuestionsList";
 
 function QuestionsLayout() {
 
@@ -6,7 +7,7 @@ function QuestionsLayout() {
     <Container fluid>
       <Row>
         <Col>
-          Questions
+          <QuestionsList />
         </Col>
       </Row>
     </Container>
