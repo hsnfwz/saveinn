@@ -1,16 +1,16 @@
 import { Container, Row, Col } from "react-bootstrap";
 
-function QuestionLayout() {
+function ErrorLayout() {
 
   return (
     <Container fluid>
       <Row>
         <Col>
-          Question
+          404 Not Found
         </Col>
       </Row>
     </Container>
   );
 }
 
-export default QuestionLayout;
+export default ErrorLayout;

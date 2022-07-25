@@ -1,16 +1,17 @@
 import { Container, Row, Col } from "react-bootstrap";
+import AnswersList from '../components/AnswersList';
 
-function BudgetPlanLayout() {
+function AnswersLayout() {
 
   return (
     <Container fluid>
       <Row>
         <Col>
-          Budget Plan
+          <AnswersList />
         </Col>
       </Row>
     </Container>
   );
 }
 
-export default BudgetPlanLayout;
+export default AnswersLayout;

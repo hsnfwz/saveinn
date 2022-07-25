@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
+import BudgetGoalsList from '../components/BudgetGoalsList';
 
 function BudgetGoalsLayout() {
 
@@ -6,7 +7,7 @@ function BudgetGoalsLayout() {
     <Container fluid>
       <Row>
         <Col>
-          Budget Goals
+          <BudgetGoalsList />
         </Col>
       </Row>
     </Container>
