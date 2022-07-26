@@ -68,7 +68,12 @@ function QuestionsList() {
     <Container fluid>
       <Row>
         <Col>
-          <Button onClick={() => setShowAddModal(true)}>Ask Question</Button>
+          <h1>Questions</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Button type="button" onClick={() => setShowAddModal(true)}>Ask Question</Button>
         </Col>
       </Row>
       <Row>
@@ -80,12 +85,12 @@ function QuestionsList() {
                 <p>{ projectedData.description }</p>
                 <p>{ moment(projectedData.date).format('YYYY-MM-DD') }</p>
                 <Link to={`/questions/${projectedData.id}`}>View</Link>
-                <Button onClick={() => {
+                <Button type="button" onClick={() => {
                   setTitle(projectedData.title);
                   setDescription(projectedData.description);
                   setShowEditModal(true);
                 }}>Edit</Button>
-                <Button onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -118,8 +123,8 @@ function QuestionsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={async () => await handleClose()}>Close</Button>
-              <Button onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
+              <Button type="button" onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
             </Modal.Footer>
           </Modal>
         </Col>

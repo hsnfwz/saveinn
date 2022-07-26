@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
+import UserAccountInfo from "../components/UserAccountInfo";
 
 function BudgetAssistantLayout() {
 
@@ -6,7 +7,7 @@ function BudgetAssistantLayout() {
     <Container fluid>
       <Row>
         <Col>
-          Budget Assistant
+          <UserAccountInfo />
         </Col>
       </Row>
     </Container>

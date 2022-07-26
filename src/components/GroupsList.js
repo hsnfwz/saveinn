@@ -71,7 +71,12 @@ function GroupsList() {
     <Container fluid>
       <Row>
         <Col>
-          <Button onClick={() => setShowAddModal(true)}>Add Group</Button>
+          <h1>Groups</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Button type="button" onClick={() => setShowAddModal(true)}>Add Group</Button>
         </Col>
       </Row>
       <Row>
@@ -83,7 +88,7 @@ function GroupsList() {
                 <p>{ projectedData.description }</p>
                 <p>{ projectedData.isPublic ? 'Public Group' : 'Private Group' }</p>
                 <Link to={`/groups/${projectedData.id}`}>View</Link>
-                <Button onClick={() => {
+                <Button type="button" onClick={() => {
                   setName(projectedData.name);
                   setDescription(projectedData.description);
                   setIsPublic(projectedData.isPublic);
@@ -91,7 +96,7 @@ function GroupsList() {
                 }}>
                   Edit
                 </Button>
-                <Button onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -129,8 +134,8 @@ function GroupsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={async () => await handleClose()}>Close</Button>
-              <Button onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
+              <Button type="button" onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
             </Modal.Footer>
           </Modal>
         </Col>

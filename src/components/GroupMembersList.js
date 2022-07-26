@@ -58,7 +58,12 @@ function GroupMembersList() {
     <Container fluid>
       <Row>
         <Col>
-          <Button onClick={() => setShowAddModal(true)}>Add Group Member</Button>
+          <h1>Group Members</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Button type="button" onClick={() => setShowAddModal(true)}>Add Group Member</Button>
         </Col>
       </Row>
       <Row>
@@ -68,7 +73,7 @@ function GroupMembersList() {
               <ListGroup.Item key={index}>
                 <p>{ projectedData.firstName }</p>
                 <p>{ projectedData.lastName }</p>
-                <Button onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -96,8 +101,8 @@ function GroupMembersList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={async () => await handleClose()}>Close</Button>
-              <Button onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
+              <Button type="button" onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
             </Modal.Footer>
           </Modal>
         </Col>

@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 function ErrorLayout() {
 
@@ -6,7 +7,8 @@ function ErrorLayout() {
     <Container fluid>
       <Row>
         <Col>
-          404 Not Found
+          <h1>404 Not Found</h1>
+          <Link to="/">Home</Link>
         </Col>
       </Row>
     </Container>

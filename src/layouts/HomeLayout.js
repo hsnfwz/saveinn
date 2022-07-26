@@ -26,7 +26,7 @@ function HomeLayout() {
           </Nav>
         </Container>
         <Container className="d-flex justify-content-end">
-          <Button className="btn btn-light saveBtns px-5">Log In</Button>
+          <Button type="button" className="btn btn-light saveBtns px-5">Log In</Button>
         </Container>
       </Navbar>
       <Row className="d-flex align-items-center px-2" style={{ height: "60vh"}}>
@@ -40,7 +40,7 @@ function HomeLayout() {
           <Row className="pt-2">
             <InputGroup>
               <Form.Control type="text" placeholder="Email address"/>
-              <Button className="btn btn-light saveBtns">
+              <Button type="button" className="btn btn-light saveBtns">
                 Sign up for Save Inn
               </Button>
             </InputGroup>

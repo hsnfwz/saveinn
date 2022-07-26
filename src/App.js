@@ -23,31 +23,6 @@ import './App.css';
 function App() {
   return (
     <>
-      {/* <Link to="/">Home</Link>
-      <br/>
-      <Link to="/dashboard">Dashboard</Link>
-      <br/>
-      <Link to="/questions">Questions</Link>
-      <br/>
-      <Link to="/income-transactions">Income Transactions</Link>
-      <br/>
-      <Link to="/expense-transactions">Expense Transactions</Link>
-      <br/>
-      <Link to="/budget-plans">Budget Plans</Link>
-      <br/>
-      <Link to="/groups">Groups</Link>
-      <br/>
-      <Link to="/group">Group</Link>
-      <br/>
-      <Link to="/budget-members">Budget Members</Link>
-      <br/>
-      <Link to="/budget-member">Budget Member</Link>
-      <br/>
-      <Link to="/budget-assistants">Budget Assistants</Link>
-      <br/>
-      <Link to="/budget-assistant">Budget Assistant</Link>
-      <br/> */}
-
       <Routes>
         <Route path="/" element={<HomeLayout />} />
         <Route path="dashboard" element={<DashboardLayout />} />
@@ -59,9 +34,9 @@ function App() {
         <Route path="budget-plans" element={<BudgetPlansLayout />} />
         <Route path="budget-plans/:id" element={<BudgetGoalsLayout />} />
         <Route path="budget-members" element={<BudgetMembersLayout />} />
-        <Route path="budget-member" element={<BudgetMemberLayout />} />
+        <Route path="budget-members/:id" element={<BudgetMemberLayout />} />
         <Route path="budget-assistants" element={<BudgetAssistantsLayout />} />
-        <Route path="budget-assistant" element={<BudgetAssistantLayout />} />
+        <Route path="budget-assistants/:id" element={<BudgetAssistantLayout />} />
         <Route path="groups" element={<GroupsLayout />} />
         <Route path="groups/:id" element={<GroupLayout />} />
         <Route path="*" element={<ErrorLayout />} />

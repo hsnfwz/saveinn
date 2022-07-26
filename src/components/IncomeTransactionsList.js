@@ -80,7 +80,12 @@ function IncomeTransactionsList() {
     <Container fluid>
       <Row>
         <Col>
-          <Button onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
+          <h1>Income Transactions</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Button type="button" onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
         </Col>
       </Row>
       <Row>
@@ -93,7 +98,7 @@ function IncomeTransactionsList() {
                 <p>{ projectedData.category }</p>
                 <p>{ currencyFormat.format(projectedData.amount) }</p>
                 <p>{ moment(projectedData.date).format('YYYY-MM-DD') }</p>
-                <Button onClick={() => {
+                <Button type="button" onClick={() => {
                   setTitle(projectedData.title);
                   setDescription(projectedData.description);
                   setCategory(projectedData.category);
@@ -102,7 +107,7 @@ function IncomeTransactionsList() {
                 }}>
                   Edit
                 </Button>
-                <Button onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -145,8 +150,8 @@ function IncomeTransactionsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={async () => await handleClose()}>Close</Button>
-              <Button onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
+              <Button type="button" onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
             </Modal.Footer>
           </Modal>
         </Col>
