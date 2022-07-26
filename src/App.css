@@ -10,10 +10,20 @@ body, html{
     font-weight: bold;
     border-color: #63D3A9;
 }
+
+.blueBtns{
+    background-color: #758ECD;
+    color: white;
+    border-color: #758ECD;
+}
 .brandLogo{
     color: #63D3A9;
     font-weight: bolder;
 }
 .formInput{
     width: 50vh;
+}
+
+.question{
+    border: solid 2px #41403E;
 }

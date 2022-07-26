@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, ListGroup, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar, Figure } from 'react-bootstrap';
+
+import saveInnLogo from "../layouts/images/saveInnLogo.svg";
+import questionsIcon from "../layouts/images/faqIcon.svg";
+
+import '../App.css';
 
 const projectedData = [
   {
@@ -65,27 +70,61 @@ function QuestionsList() {
   }
 
   return (
-    <Container fluid>
+    <Container fluid >
       <Row>
-        <Col>
-          <Button onClick={() => setShowAddModal(true)}>Ask Question</Button>
-        </Col>
+        <Navbar className="d-flex justify-content-between" style={{backgroundColor:"#ffffff"}}>
+          <Container fluid>
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
+                  <img 
+                  src= {saveInnLogo}
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top mx-2"
+                  alt="Save Inn logo"/>
+              </Navbar.Brand>
+          </Container>
+          <Container fluid className="d-flex justify-content-end">
+              <Navbar.Text>Have a question?</Navbar.Text>
+              <Button className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Ask Question</Button>
+          </Container>
+        </Navbar>
+      </Row>
+      <Row className='px-5 mt-3 d-flex justify-content-center'>
+        <img 
+          src= {questionsIcon}
+          width="200"
+          height="200"
+          alt="Save Inn logo"/>
+        <h2 className='d-flex justify-content-center mt-3 mb-5'>All Questions</h2>
       </Row>
       <Row>
         <Col>
-          <ListGroup>
+          <ListGroup className='mx-5'>
             {projectedData.map((projectedData, index) => (
-              <ListGroup.Item key={index}>
-                <h4>{ projectedData.title }</h4>
+              <ListGroup.Item className='px-4 py-5 mx-5' key={index}>
+                <Row className='d-flex justify-content-between flex-row'>
+                  <Col>
+                    <h4 className='font-weight-bold'>{ projectedData.title }</h4>
+                  </Col>
+                  <Col className='d-flex justify-content-end'>
+                    <p>{ moment(projectedData.date).format('YYYY-MM-DD') }</p>
+                  </Col>
+                </Row>
                 <p>{ projectedData.description }</p>
-                <p>{ moment(projectedData.date).format('YYYY-MM-DD') }</p>
-                <Link to={`/questions/${projectedData.id}`}>View</Link>
-                <Button onClick={() => {
-                  setTitle(projectedData.title);
-                  setDescription(projectedData.description);
-                  setShowEditModal(true);
-                }}>Edit</Button>
-                <Button onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Row>
+                  <Col>
+                    <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
+                      setTitle(projectedData.title);
+                      setDescription(projectedData.description);
+                      setShowEditModal(true);
+                    }}>Edit</Button>
+                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                  </Col>
+                  <Col className='d-flex justify-content-end'>
+                    <Link className='' to={`/questions/${projectedData.id}`}>View</Link>
+                  </Col>
+                  
+                </Row>     
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -118,8 +157,8 @@ function QuestionsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={async () => await handleClose()}>Close</Button>
-              <Button onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Ask'}</Button>
+              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>
