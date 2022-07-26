@@ -63,7 +63,7 @@ function App() {
         <Route path="budget-assistants" element={<BudgetAssistantsLayout />} />
         <Route path="budget-assistant" element={<BudgetAssistantLayout />} />
         <Route path="groups" element={<GroupsLayout />} />
-        <Route path="group" element={<GroupLayout />} />
+        <Route path="groups/:id" element={<GroupLayout />} />
         <Route path="*" element={<ErrorLayout />} />
       </Routes>
     </>
