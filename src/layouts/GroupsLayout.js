@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
+import GroupsList from "../components/GroupsList";
 
 function GroupsLayout() {
 
@@ -6,7 +7,7 @@ function GroupsLayout() {
     <Container fluid>
       <Row>
         <Col>
-          Groups
+          <GroupsList />
         </Col>
       </Row>
     </Container>

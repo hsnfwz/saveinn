@@ -15,6 +15,7 @@ const projectedData = [
     description: 'Lorem ipsum dolor 1',
     startDate: new Date(),
     endDate: new Date(),
+    duration: undefined,
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const projectedData = [
     description: 'Lorem ipsum dolor 2',
     startDate: new Date(),
     endDate: new Date(),
+    duration: undefined,
   },
 ];
 
