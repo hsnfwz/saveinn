@@ -72,7 +72,7 @@ function QuestionsList() {
   return (
     <Container fluid >
       <Row>
-        <Navbar className="d-flex justify-content-between" style={{backgroundColor:"#ffffff"}}>
+        <Navbar className="d-flex justify-content-between pt-4" style={{backgroundColor:"#ffffff"}}>
           <Container fluid>
               <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
                   <img 
@@ -81,7 +81,7 @@ function QuestionsList() {
                   height="50"
                   className="d-inline-block align-top mx-2"
                   alt="Save Inn logo"/>
-              </Navbar.Brand>
+              Save Inn</Navbar.Brand>
           </Container>
           <Container fluid className="d-flex justify-content-end">
               <Navbar.Text>Have a question?</Navbar.Text>
@@ -94,7 +94,7 @@ function QuestionsList() {
           src= {questionsIcon}
           width="200"
           height="200"
-          alt="Save Inn logo"/>
+          alt="Question Icon"/>
         <h2 className='d-flex justify-content-center mt-3 mb-5'>All Questions</h2>
       </Row>
       <Row>
@@ -123,7 +123,6 @@ function QuestionsList() {
                   <Col className='d-flex justify-content-end'>
                     <Link className='' to={`/questions/${projectedData.id}`}>View</Link>
                   </Col>
-                  
                 </Row>     
               </ListGroup.Item>
             ))}

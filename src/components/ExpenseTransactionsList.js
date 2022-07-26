@@ -104,7 +104,7 @@ function ExpenseTransactionsList() {
                   <td>{ currencyFormat.format(projectedData.amount) }</td>
                   <td>{ moment(projectedData.date).format('YYYY-MM-DD') }</td>
                   <td>
-                    <Button className="btn btn-secondary blueBtns me-2" style={{fontWeight:"normal"}} onClick={() => {
+                    <Button className="btn btn-secondary blueBtns me-1" style={{fontWeight:"normal"}} onClick={() => {
                       setTitle(projectedData.title);
                       setDescription(projectedData.description);
                       setCategory(projectedData.category);

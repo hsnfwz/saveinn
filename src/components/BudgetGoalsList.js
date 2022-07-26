@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import moment from 'moment';
-import { Container, Row, Col, ListGroup, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
 import { currencyFormat } from '../helpers';
+
+import saveInnLogo from "../layouts/images/saveInnLogo.svg";
+
+import '../App.css';
 
 const projectedData = [
   {
@@ -83,21 +87,44 @@ function BudgetGoalsList() {
   return (
     <Container fluid>
       <Row>
-        <Col>
-          <Button onClick={() => setShowAddModal(true)}>Add Budget Goal</Button>
+        <Navbar className="d-flex justify-content-between pt-4" style={{backgroundColor:"#ffffff"}}>
+          <Container fluid>
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
+                  <img 
+                  src= {saveInnLogo}
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top mx-2"
+                  alt="Save Inn logo"/>
+              Save Inn</Navbar.Brand>
+          </Container>
+          <Container fluid className="d-flex justify-content-end">
+              <Navbar.Text>Go back to <a href='/budget-plans'>All Plans</a></Navbar.Text>
+          </Container>
+        </Navbar>
+      </Row>
+      <Row className='px-5 mt-3'>
+        <Col className=' d-flex justify-content-end'>
+          <Button className="btn btn-secondary saveBtns m-2 me-5" onClick={() => setShowAddModal(true)}>Add Budget Goal</Button>
         </Col>
       </Row>
       <Row>
         <Col>
-          <ListGroup>
+          <ListGroup className='mx-5'>
             {projectedData.map((projectedData, index) => (
-              <ListGroup.Item key={index}>
-                <h4>{ projectedData.name }</h4>
+              <ListGroup.Item className='px-4 py-3 mx-5' key={index}>
+                <Row className='d-flex justify-content-between flex-row'>
+                  <Col>
+                    <h4 className='font-weight-bold'>{ projectedData.name }</h4>
+                  </Col>
+                  <Col className='d-flex justify-content-end'>
+                    <p className='me-2'>Start: { moment(projectedData.startDate).format('YYYY-MM-DD') }</p>
+                    <p>End: { moment(projectedData.endDate).format('YYYY-MM-DD') }</p>
+                  </Col>
+                </Row>
+                <p>Amount saved: { currencyFormat.format(projectedData.amountSaved) }</p>
                 <p>{ projectedData.description }</p>
-                <p>{ currencyFormat.format(projectedData.amountSaved) }</p>
-                <p>Start: { moment(projectedData.startDate).format('YYYY-MM-DD') }</p>
-                <p>End: { moment(projectedData.endDate).format('YYYY-MM-DD') }</p>
-                <Button onClick={() => {
+                <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
                   setName(projectedData.name);
                   setDescription(projectedData.description);
                   setStartDate(projectedData.startDate);
@@ -107,7 +134,7 @@ function BudgetGoalsList() {
                 }}>
                   Edit
                 </Button>
-                <Button onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -123,7 +150,7 @@ function BudgetGoalsList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Budget Goal
+                New Budget Goal
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -155,8 +182,8 @@ function BudgetGoalsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={async () => await handleClose()}>Close</Button>
-              <Button onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

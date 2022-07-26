@@ -80,7 +80,7 @@ function AnswersList() {
 
   return (
     <Container fluid>
-      <Navbar className="d-flex justify-content-between" style={{backgroundColor:"#ffffff"}}>
+      <Navbar className="d-flex justify-content-between pt-4">
         <Container fluid>
             <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
                 <img 
@@ -89,7 +89,7 @@ function AnswersList() {
                 height="50"
                 className="d-inline-block align-top mx-2"
                 alt="Save Inn logo"/>
-            </Navbar.Brand>
+            Save Inn</Navbar.Brand>
         </Container>
         <Container fluid className="d-flex justify-content-end">
             <Navbar.Text>Go back to <a href='/questions'>All Questions</a></Navbar.Text>
@@ -114,7 +114,7 @@ function AnswersList() {
                   </Col>
                 </Row>
                 <p>{ projectedData.description }</p>
-                <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
+                <Button className="btn btn-secondary blueBtns m-2 me-5" style={{fontWeight:"normal"}} onClick={() => {
                   setTitle(projectedData.title);
                   setDescription(projectedData.description);
                   setShowEditModal(true);
