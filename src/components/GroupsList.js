@@ -1,45 +1,38 @@
 import { useState } from 'react';
-import moment from 'moment';
-import { Container, Row, Col, ListGroup, Button, Modal, Form } from 'react-bootstrap';
-import { currencyFormat } from '../helpers';
+import { Link } from 'react-router-dom';
+import { Container, Row, Col, ListGroup, Button, Modal, Form, ToggleButton, ButtonGroup } from 'react-bootstrap';
 
 const projectedData = [
   {
     id: 1,
-    amount: 1000,
-    title: 'Lorem 1',
+    name: 'Lorem 1',
     description: 'Lorem ipsum dolor 1',
-    category: 'Category 1',
-    date: new Date(),
+    isPublic: true,
   },
   {
     id: 2,
-    amount: 50.25,
-    title: 'Lorem 2',
-    description: 'Lorem ipsum dolor 1',
-    category: 'Category 2',
-    date: new Date(),
+    name: 'Lorem 2',
+    description: 'Lorem ipsum dolor 2',
+    isPublic: false,
   },
 ];
 
-function IncomeTransactionsList() {
+function GroupsList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState(0);
+  const [isPublic, setIsPublic] = useState(false);
 
   async function handleRefresh() {
     // send request
   }
 
   async function handleAdd() {
-    console.log('[title]:', title);
+    console.log('[name]:', name);
     console.log('[description]:', description);
-    console.log('[category]:', category);
-    console.log('[amount]:', amount);
+    console.log('[isPublic]:', isPublic);
 
     // send request
 
@@ -48,10 +41,9 @@ function IncomeTransactionsList() {
   }
 
   async function handleEdit() {
-    console.log('[title]:', title);
+    console.log('[name]:', name);
     console.log('[description]:', description);
-    console.log('[category]:', category);
-    console.log('[amount]:', amount);
+    console.log('[isPublic]:', isPublic);
 
     // send request
 
@@ -68,10 +60,9 @@ function IncomeTransactionsList() {
   }
 
   function handleClose() {
-    setTitle('');
+    setName('');
     setDescription('');
-    setCategory('');
-    setAmount(0);
+    setIsPublic(false);
     setShowAddModal(false);
     setShowEditModal(false);
   }
@@ -80,12 +71,12 @@ function IncomeTransactionsList() {
     <Container fluid>
       <Row>
         <Col>
-          <h1>Income Transactions</h1>
+          <h1>Groups</h1>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Button type="button" onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
+          <Button type="button" onClick={() => setShowAddModal(true)}>Add Group</Button>
         </Col>
       </Row>
       <Row>
@@ -93,16 +84,14 @@ function IncomeTransactionsList() {
           <ListGroup>
             {projectedData.map((projectedData, index) => (
               <ListGroup.Item key={index}>
-                <h4>{ projectedData.title }</h4>
+                <h4>{ projectedData.name }</h4>
                 <p>{ projectedData.description }</p>
-                <p>{ projectedData.category }</p>
-                <p>{ currencyFormat.format(projectedData.amount) }</p>
-                <p>{ moment(projectedData.date).format('YYYY-MM-DD') }</p>
+                <p>{ projectedData.isPublic ? 'Public Group' : 'Private Group' }</p>
+                <Link to={`/groups/${projectedData.id}`}>View</Link>
                 <Button type="button" onClick={() => {
-                  setTitle(projectedData.title);
+                  setName(projectedData.name);
                   setDescription(projectedData.description);
-                  setCategory(projectedData.category);
-                  setAmount(projectedData.amount);
+                  setIsPublic(projectedData.isPublic);
                   setShowEditModal(true);
                 }}>
                   Edit
@@ -123,14 +112,14 @@ function IncomeTransactionsList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Income Transaction
+                Group
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-2">
-                  <Form.Label>Title</Form.Label>
-                  <Form.Control type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
                 </Form.Group>
 
                 <Form.Group className="mb-2">
@@ -139,13 +128,8 @@ function IncomeTransactionsList() {
                 </Form.Group>
 
                 <Form.Group className="mb-2">
-                  <Form.Label>Category</Form.Label>
-                  <Form.Control type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} />
-                </Form.Group>
-
-                <Form.Group>
-                  <Form.Label>Amount</Form.Label>
-                  <Form.Control type="number" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)}/>
+                  <Form.Label>Public</Form.Label>
+                  <Form.Check onChange={(e) => setIsPublic(!isPublic)} />
                 </Form.Group>
               </Form>
             </Modal.Body>
@@ -160,4 +144,4 @@ function IncomeTransactionsList() {
   );
 }
 
-export default IncomeTransactionsList;
+export default GroupsList;

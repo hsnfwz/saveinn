@@ -10,6 +10,7 @@ const projectedData = [
     description: 'Lorem ipsum dolor 1',
     startDate: new Date(),
     endDate: new Date(),
+    duration: undefined,
   },
   {
     id: 2,
@@ -17,6 +18,7 @@ const projectedData = [
     description: 'Lorem ipsum dolor 2',
     startDate: new Date(),
     endDate: new Date(),
+    duration: undefined,
   },
 ];
 
@@ -78,7 +80,12 @@ function BudgetPlansList() {
     <Container fluid>
       <Row>
         <Col>
-          <Button onClick={() => setShowAddModal(true)}>Add Budget Plan</Button>
+          <h1>Budget Plans</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Button type="button" onClick={() => setShowAddModal(true)}>Add Budget Plan</Button>
         </Col>
       </Row>
       <Row>
@@ -91,7 +98,7 @@ function BudgetPlansList() {
                 <p>Start: { moment(projectedData.startDate).format('YYYY-MM-DD') }</p>
                 <p>End: { moment(projectedData.endDate).format('YYYY-MM-DD') }</p>
                 <Link to={`/budget-plans/${projectedData.id}`}>View</Link>
-                <Button onClick={() => {
+                <Button type="button" onClick={() => {
                   setName(projectedData.name);
                   setDescription(projectedData.description);
                   setStartDate(projectedData.startDate);
@@ -100,7 +107,7 @@ function BudgetPlansList() {
                 }}>
                   Edit
                 </Button>
-                <Button onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -143,8 +150,8 @@ function BudgetPlansList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={async () => await handleClose()}>Close</Button>
-              <Button onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
+              <Button type="button" onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
             </Modal.Footer>
           </Modal>
         </Col>
