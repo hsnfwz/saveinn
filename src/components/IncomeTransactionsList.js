@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import moment from 'moment';
-import { Container, Row, Col, ListGroup, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Modal, Form, Navbar } from 'react-bootstrap';
 import { currencyFormat } from '../helpers';
 
 const projectedData = [
@@ -79,38 +79,45 @@ function IncomeTransactionsList() {
   return (
     <Container fluid>
       <Row>
-        <Col>
-          <h1>Income Transactions</h1>
+        <Col className='d-flex justify-content-end'>
+          <Button className="btn btn-secondary saveBtns my-2" onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Button type="button" onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <ListGroup>
-            {projectedData.map((projectedData, index) => (
-              <ListGroup.Item key={index}>
-                <h4>{ projectedData.title }</h4>
-                <p>{ projectedData.description }</p>
-                <p>{ projectedData.category }</p>
-                <p>{ currencyFormat.format(projectedData.amount) }</p>
-                <p>{ moment(projectedData.date).format('YYYY-MM-DD') }</p>
-                <Button type="button" onClick={() => {
-                  setTitle(projectedData.title);
-                  setDescription(projectedData.description);
-                  setCategory(projectedData.category);
-                  setAmount(projectedData.amount);
-                  setShowEditModal(true);
-                }}>
-                  Edit
-                </Button>
-                <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+          <Table striped bordered hover>
+            <thead>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </thead>
+            <tbody>
+              {projectedData.map((projectedData, index) => (
+                <tr key={index}>
+                  <td>{ projectedData.title }</td>
+                  <td>{ projectedData.description }</td>
+                  <td>{ projectedData.category }</td>
+                  <td>{ currencyFormat.format(projectedData.amount) }</td>
+                  <td>{ moment(projectedData.date).format('YYYY-MM-DD') }</td>
+                  <td>
+                    <Button className="btn btn-secondary blueBtns me-1" style={{fontWeight:"normal"}} onClick={() => {
+                      setTitle(projectedData.title);
+                      setDescription(projectedData.description);
+                      setCategory(projectedData.category);
+                      setAmount(projectedData.amount);
+                      setShowEditModal(true);
+                    }}>
+                      Edit
+                    </Button>
+                    <Button className="btn btn-danger" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                  </td>
+                </tr>
+              ))}`
+          </tbody>
+          </Table>
         </Col>
       </Row>
       <Row>
@@ -123,7 +130,7 @@ function IncomeTransactionsList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Income Transaction
+                New Income Transaction
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -150,8 +157,8 @@ function IncomeTransactionsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
-              <Button type="button" onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>
