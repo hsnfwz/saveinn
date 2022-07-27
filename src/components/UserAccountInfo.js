@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Container, Row, Col, ListGroup, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
+
+import saveInnLogo from "../layouts/images/saveInnLogo.svg";
+import userIcon from "../layouts/images/userIcon.svg";
+
+import '../App.css';
 
 const projectedData = {
   id: 1,
@@ -11,6 +17,8 @@ function UserAccountInfo() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
+  let navigate = useNavigate();
 
   async function handleRefresh() {
     // send request
@@ -39,27 +47,57 @@ function UserAccountInfo() {
   }
 
   return (
-    <Container fluid>
+    <Container fluid style={{height:"100vh"}}>
       <Row>
-        <Col>
-          <h1>User Account</h1>
-        </Col>
+        <Navbar className="d-flex justify-content-between py-4" style={{backgroundColor:"#ffffff"}}>
+          <Container fluid>
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
+                  <img 
+                  src= {saveInnLogo}
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top mx-2"
+                  alt="Save Inn logo"/>
+              Save Inn</Navbar.Brand>
+          </Container>
+          <Container fluid className="d-flex justify-content-end">
+            <Button className="btn btn-secondary saveBtns px-5" onClick={() => navigate("/")}>Log Out</Button>
+          </Container>
+        </Navbar>
       </Row>
       <Row>
-        <Col>
-          <ListGroup>
-            <ListGroup.Item>
-              <p>{ projectedData.firstName }</p>
-              <p>{ projectedData.lastName }</p>
-              <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete Account</Button>
-              <Button type="button" onClick={async () => {
-                setFirstName(projectedData.firstName);
-                setLastName(projectedData.lastName);
-                setShowEditModal(true);
-              }}>Edit Account</Button>
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
+        <Row>
+          <Col className='d-flex align-items-center justify-content-center pt-2'>
+            <h2>User Account</h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col className='d-flex align-items-center justify-content-center pt-2'>
+            <img
+            src= {userIcon}
+            width="100"
+            height="100"
+            className="mx-2"
+            alt="Save Inn logo"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col className='d-flex align-items-center justify-content-center py-2'>
+            <h3 className='me-1'>{ projectedData.firstName }</h3>
+            <h3>{ projectedData.lastName }</h3>
+          </Col>
+        </Row>
+        <Row>
+          <Col className='d-flex justify-content-center mt-2'>
+            <Button className="btn btn-secondary blueBtns mx-2" style={{fontWeight:"normal"}} onClick={async () => {
+              setFirstName(projectedData.firstName);
+              setLastName(projectedData.lastName);
+              setShowEditModal(true);
+            }}>Edit Account</Button>
+            <Button className="btn btn-danger mx-2" onClick={async () => await handleDelete(projectedData)}>Delete Account</Button>
+          </Col>
+        </Row>
       </Row>
       <Row>
         <Col>
@@ -71,7 +109,7 @@ function UserAccountInfo() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                User Account
+                Edit Account
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -87,8 +125,8 @@ function UserAccountInfo() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
-              <Button type="button" onClick={() => handleEdit()}>Edit</Button>
+              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => handleEdit()}>Edit</Button>
+              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

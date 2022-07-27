@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, ListGroup, Button, Modal, Form, ToggleButton, ButtonGroup } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Button, Modal, Form, ToggleButton, ButtonGroup, Navbar } from 'react-bootstrap';
+
+import saveInnLogo from "../layouts/images/saveInnLogo.svg";
+import communityIcon from "../layouts/images/communityIcon.svg";
+
+import '../App.css';
 
 const projectedData = [
   {
@@ -70,33 +75,61 @@ function GroupsList() {
   return (
     <Container fluid>
       <Row>
-        <Col>
-          <h1>Groups</h1>
-        </Col>
+        <Navbar className="d-flex justify-content-between pt-4" style={{backgroundColor:"#ffffff"}}>
+          <Container fluid>
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
+                  <img 
+                  src= {saveInnLogo}
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top mx-2"
+                  alt="Save Inn logo"/>
+              Save Inn</Navbar.Brand>
+          </Container>
+          <Container fluid className="d-flex justify-content-end">
+              <Navbar.Text>Get your community involved!</Navbar.Text>
+              <Button className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Create Group</Button>
+          </Container>
+        </Navbar>
+      </Row>
+      <Row className='px-5 mt-3 d-flex justify-content-center'>
+        <img 
+          src= {communityIcon}
+          width="320"
+          height="250"
+          alt="CommunityIcon"/>
+        <h2 className='d-flex justify-content-center mt-4 mb-5'>Groups</h2>
       </Row>
       <Row>
         <Col>
-          <Button type="button" onClick={() => setShowAddModal(true)}>Add Group</Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <ListGroup>
+          <ListGroup className='mx-5'>
             {projectedData.map((projectedData, index) => (
-              <ListGroup.Item key={index}>
-                <h4>{ projectedData.name }</h4>
+              <ListGroup.Item className='px-4 py-3 mx-5' key={index}>
+                <Row>
+                  <Col className='d-flex justify-content-between flex-row'>
+                    <h4 className='font-weight-bold'>{ projectedData.name }</h4>
+                  </Col>
+                  <Col className='d-flex justify-content-end'>
+                    <p className='text-muted'>{ projectedData.isPublic ? 'Public Group' : 'Private Group' }</p>
+                  </Col>
+                </Row>
                 <p>{ projectedData.description }</p>
-                <p>{ projectedData.isPublic ? 'Public Group' : 'Private Group' }</p>
-                <Link to={`/groups/${projectedData.id}`}>View</Link>
-                <Button type="button" onClick={() => {
-                  setName(projectedData.name);
-                  setDescription(projectedData.description);
-                  setIsPublic(projectedData.isPublic);
-                  setShowEditModal(true);
-                }}>
-                  Edit
-                </Button>
-                <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Row>
+                  <Col>
+                    <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
+                    setName(projectedData.name);
+                    setDescription(projectedData.description);
+                    setIsPublic(projectedData.isPublic);
+                    setShowEditModal(true);
+                    }}>
+                      Edit
+                    </Button>
+                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                  </Col>
+                  <Col className='d-flex justify-content-end'>
+                    <Link to={`/groups/${projectedData.id}`}>View</Link>
+                  </Col>
+                </Row>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -112,7 +145,7 @@ function GroupsList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Group
+                Create Group
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -134,8 +167,8 @@ function GroupsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
-              <Button type="button" onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Create'}</Button>
+              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

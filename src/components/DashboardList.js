@@ -23,6 +23,7 @@ function DashboardList(){
                     alt="Save Inn logo"/>
                     My Dashboard</Navbar.Brand>
                 <Nav xs={6}>
+                    <Nav.Link href="/budget-members/1">My Account</Nav.Link>
                     <Nav.Link href="/questions">Questions</Nav.Link>
                     <Nav.Link href="/groups">Groups</Nav.Link>
                     <Nav.Link href="/budget-plans">My Plans</Nav.Link>
