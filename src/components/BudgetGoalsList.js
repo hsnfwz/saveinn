@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
+import { useLocation } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
 import { currencyFormat } from '../helpers';
 
@@ -7,74 +8,133 @@ import saveInnLogo from "../layouts/images/saveInnLogo.svg";
 
 import '../App.css';
 
-const projectedData = [
-  {
-    id: 1,
-    amountSaved: 1000,
-    name: 'Lorem 1',
-    description: 'Lorem ipsum dolor 1',
-    startDate: new Date(),
-    endDate: new Date(),
-  },
-  {
-    id: 2,
-    amountSaved: 500,
-    name: 'Lorem 2',
-    description: 'Lorem ipsum dolor 2',
-    startDate: new Date(),
-    endDate: new Date(),
-  },
-];
-
 function BudgetGoalsList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
+  const [budgetGoalId, setBudgetGoalId] = useState(0);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState(undefined);
   const [endDate, setEndDate] = useState(undefined);
   const [amountSaved, setAmountSaved] = useState(0);
 
+  const [budgetGoalRecords, setBudgetGoalRecords] = useState([]);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    (async function() {
+      await handleRefresh();
+    }());
+  }, []);
+
   async function handleRefresh() {
-    // send request
+    try {
+      const endpoint = 'http://localhost:8080/budgetGoal';
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setBudgetGoalRecords(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleAdd() {
-    console.log('[name]:', name);
-    console.log('[description]:', description);
-    console.log('[startDate]:', startDate);
-    console.log('[endDate]:', endDate);
-    console.log('[amountSaved]:', amountSaved);
+    const budgetPlanId = location.pathname.split('/')[2];
 
-    // send request
+    try {
+      const endpoint = 'http://localhost:8080/budgetGoal';
 
-    handleClose();
-    handleRefresh();
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        name,
+        description,
+        startDate,
+        endDate,
+        amountSaved,
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleEdit() {
-    console.log('[name]:', name);
-    console.log('[description]:', description);
-    console.log('[startDate]:', startDate);
-    console.log('[endDate]:', endDate);
-    console.log('[amountSaved]:', amountSaved);
+    const budgetPlanId = location.pathname.split('/')[2];
 
-    // send request
+    try {
+      const endpoint = `http://localhost:8080/budgetGoal/${budgetGoalId}`;
 
-    handleClose();
-    handleRefresh();
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        name,
+        description,
+        startDate,
+        endDate,
+        amountSaved,
+      }
+
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function handleDelete(projectedData) {
-    console.log('[projectedData]:', projectedData);
+  async function handleDelete(budgetGoalId) {
+    try {
+      const endpoint = `http://localhost:8080/budgetGoal/${budgetGoalId}`;
 
-    // send request
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
 
-    handleRefresh();
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleClose() {
+    setBudgetGoalId(0);
     setName('');
     setDescription('');
     setStartDate(undefined);
@@ -111,30 +171,31 @@ function BudgetGoalsList() {
       <Row>
         <Col>
           <ListGroup className='mx-5'>
-            {projectedData.map((projectedData, index) => (
+            {budgetGoalRecords.map((budgetGoalRecord, index) => (
               <ListGroup.Item className='px-4 py-3 mx-5' key={index}>
                 <Row className='d-flex justify-content-between flex-row'>
                   <Col>
-                    <h4 className='font-weight-bold'>{ projectedData.name }</h4>
+                    <h4 className='font-weight-bold'>{ budgetGoalRecord.name }</h4>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <p className='me-2'>Start: { moment(projectedData.startDate).format('YYYY-MM-DD') }</p>
-                    <p>End: { moment(projectedData.endDate).format('YYYY-MM-DD') }</p>
+                    <p className='me-2'>Start: { moment(budgetGoalRecord.startDate).format('YYYY-MM-DD') }</p>
+                    <p>End: { moment(budgetGoalRecord.endDate).format('YYYY-MM-DD') }</p>
                   </Col>
                 </Row>
-                <p>Amount saved: { currencyFormat.format(projectedData.amountSaved) }</p>
-                <p>{ projectedData.description }</p>
+                <p>Amount saved: { currencyFormat.format(budgetGoalRecord.amountSaved) }</p>
+                <p>{ budgetGoalRecord.description }</p>
                 <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
-                  setName(projectedData.name);
-                  setDescription(projectedData.description);
-                  setStartDate(projectedData.startDate);
-                  setEndDate(projectedData.endDate);
-                  setAmountSaved(projectedData.amountSaved);
+                  setBudgetGoalId(budgetGoalRecord.id);
+                  setName(budgetGoalRecord.name);
+                  setDescription(budgetGoalRecord.description);
+                  setStartDate(budgetGoalRecord.startDate);
+                  setEndDate(budgetGoalRecord.endDate);
+                  setAmountSaved(budgetGoalRecord.amountSaved);
                   setShowEditModal(true);
                 }}>
                   Edit
                 </Button>
-                <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(budgetGoalRecord.id)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -183,7 +244,7 @@ function BudgetGoalsList() {
             </Modal.Body>
             <Modal.Footer>
               <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
-              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
+              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

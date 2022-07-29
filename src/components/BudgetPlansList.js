@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
@@ -8,71 +8,124 @@ import planIcon from "../layouts/images/plan.svg";
 
 import '../App.css';
 
-const projectedData = [
-  {
-    id: 1,
-    name: 'Lorem 1',
-    description: 'Lorem ipsum dolor 1',
-    startDate: new Date(),
-    endDate: new Date(),
-    duration: undefined,
-  },
-  {
-    id: 2,
-    name: 'Lorem 2',
-    description: 'Lorem ipsum dolor 2',
-    startDate: new Date(),
-    endDate: new Date(),
-    duration: undefined,
-  },
-];
-
 function BudgetPlansList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
+  const [budgetPlanId, setBudgetPlanId] = useState(0);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState(undefined);
   const [endDate, setEndDate] = useState(undefined);
 
+  const [budgetPlanRecords, setBudgetPlanRecords] = useState([]);
+
+  useEffect(() => {
+    (async function() {
+      await handleRefresh();
+    }());
+  }, []);
+
   async function handleRefresh() {
-    // send request
+    try {
+      const endpoint = 'http://localhost:8080/budgetPlan';
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setBudgetPlanRecords(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleAdd() {
-    console.log('[name]:', name);
-    console.log('[description]:', description);
-    console.log('[startDate]:', startDate);
-    console.log('[endDate]:', endDate);
+    try {
+      const endpoint = 'http://localhost:8080/budgetPlan';
 
-    // send request
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        name,
+        description,
+        startDate,
+        endDate,
+      }
 
-    handleClose();
-    handleRefresh();
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleEdit() {
-    console.log('[name]:', name);
-    console.log('[description]:', description);
-    console.log('[startDate]:', startDate);
-    console.log('[endDate]:', endDate);
+    try {
+      const endpoint = `http://localhost:8080/budgetPlan/${budgetPlanId}`;
 
-    // send request
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        name,
+        description,
+        startDate,
+        endDate,
+      }
 
-    handleClose();
-    handleRefresh();
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function handleDelete(projectedData) {
-    console.log('[projectedData]:', projectedData);
+  async function handleDelete(budgetPlanId) {
+    try {
+      const endpoint = `http://localhost:8080/budgetPlan/${budgetPlanId}`;
 
-    // send request
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
 
-    handleRefresh();
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleClose() {
+    setBudgetPlanId(0);
     setName('');
     setDescription('');
     setStartDate(undefined);
@@ -111,31 +164,32 @@ function BudgetPlansList() {
       <Row>
         <Col>
           <ListGroup className='mx-5'>
-            {projectedData.map((projectedData, index) => (
+            {budgetPlanRecords.map((budgetPlanRecord, index) => (
               <ListGroup.Item className='px-4 py-3 mx-5' key={index}>
                 <Row className='d-flex justify-content-between flex-row'>
                   <Col>
-                    <h4 className='font-weight-bold'>{ projectedData.name }</h4>
+                    <h4 className='font-weight-bold'>{ budgetPlanRecord.name }</h4>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <p className='me-2'>Start: { moment(projectedData.startDate).format('YYYY-MM-DD') }</p>
-                    <p>End: { moment(projectedData.endDate).format('YYYY-MM-DD') }</p>
+                    <p className='me-2'>Start: { moment(budgetPlanRecord.startDate).format('YYYY-MM-DD') }</p>
+                    <p>End: { moment(budgetPlanRecord.endDate).format('YYYY-MM-DD') }</p>
                   </Col>
                 </Row>
-                <p>{ projectedData.description }</p>
+                <p>{ budgetPlanRecord.description }</p>
                 <Row>
                   <Col>
                     <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
-                      setName(projectedData.name);
-                      setDescription(projectedData.description);
-                      setStartDate(projectedData.startDate);
-                      setEndDate(projectedData.endDate);
+                      setBudgetPlanId(budgetPlanRecord.id);
+                      setName(budgetPlanRecord.name);
+                      setDescription(budgetPlanRecord.description);
+                      setStartDate(budgetPlanRecord.startDate);
+                      setEndDate(budgetPlanRecord.endDate);
                       setShowEditModal(true);
                     }}>Edit</Button>
-                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(budgetPlanRecord.id)}>Delete</Button>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <Link className='' to={`/budget-plans/${projectedData.id}`}>View</Link>
+                    <Link className='' to={`/budget-plans/${budgetPlanRecord.id}`}>View</Link>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -181,7 +235,7 @@ function BudgetPlansList() {
             </Modal.Body>
             <Modal.Footer>
               <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
-              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
+              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>
