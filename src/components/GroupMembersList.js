@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Container, Row, Col, ListGroup, Button, Modal, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
+
+import saveInnLogo from "../layouts/images/saveInnLogo.svg";
+import userIcon from "../layouts/images/userIcon.svg";
+
+import '../App.css';
 
 const projectedData = [
   {
@@ -57,23 +63,54 @@ function GroupMembersList() {
   return (
     <Container fluid>
       <Row>
+        <Navbar className="d-flex justify-content-between pt-4" style={{backgroundColor:"#ffffff"}}>
+          <Container fluid>
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
+                  <img 
+                  src= {saveInnLogo}
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top mx-2"
+                  alt="Save Inn logo"/>
+              Save Inn</Navbar.Brand>
+          </Container>
+          <Container fluid className="d-flex justify-content-end">
+              <Navbar.Text>Know of new savers?</Navbar.Text>
+              <Button className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Add Group Member</Button>
+          </Container>
+        </Navbar>
+      </Row>
+      <Row className='mx-5 mt-3 px-5'>
         <Col>
           <h1>Group Members</h1>
         </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Button type="button" onClick={() => setShowAddModal(true)}>Add Group Member</Button>
+        <Col className='d-flex justify-content-end align-items-end'>
+          <Link to={`/groups`}>Go back to Groups</Link>
         </Col>
       </Row>
-      <Row>
+      <Row className='mx-5 mt-3 px-5'>
         <Col>
           <ListGroup>
             {projectedData.map((projectedData, index) => (
               <ListGroup.Item key={index}>
-                <p>{ projectedData.firstName }</p>
-                <p>{ projectedData.lastName }</p>
-                <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Row className='d-flex align-items-center'>
+                  <Col md="auto">
+                    <img
+                    src= {userIcon}
+                    width="50"
+                    height="50"
+                    className="mx-2"
+                    alt="Save Inn logo"
+                    />
+                  </Col>
+                  <Col className='d-flex flex-row align-items-center pt-2'>
+                    <h6 className='me-1'>{ projectedData.firstName }</h6>
+                    <h6>{ projectedData.lastName }</h6>
+                  </Col>
+                  <Col className='d-flex justify-content-end'>
+                    <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                  </Col>
+                </Row>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -89,7 +126,7 @@ function GroupMembersList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Group Member
+                Add Group Member
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -101,8 +138,8 @@ function GroupMembersList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" onClick={async () => await handleClose()}>Close</Button>
-              <Button type="button" onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>
