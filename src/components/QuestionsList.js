@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar, Figure } from 'react-bootstrap';
@@ -8,61 +8,118 @@ import questionsIcon from "../layouts/images/faqIcon.svg";
 
 import '../App.css';
 
-const projectedData = [
-  {
-    id: 1,
-    title: 'Lorem ipsum dolor 1?',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Lorem ipsum dolor sit amet consectetur adipiscing. In aliquam sem fringilla ut morbi tincidunt augue interdum velit. Morbi tristique senectus et netus et malesuada.',
-    date: new Date(),
-  },
-  {
-    id: 2,
-    title: 'Lorem ipsum dolor 2?',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Lorem ipsum dolor sit amet consectetur adipiscing. In aliquam sem fringilla ut morbi tincidunt augue interdum velit. Morbi tristique senectus et netus et malesuada.',
-    date: new Date(),
-  },
-];
-
 function QuestionsList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
+  const [questionId, setQuestionId] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
+  const [questionRecords, setQuestionRecords] = useState([]);
+
+  useEffect(() => {
+    (async function() {
+      await handleRefresh();
+    }());
+  }, []);
+
   async function handleRefresh() {
-    // get table records
+    try {
+      const endpoint = 'http://localhost:8080/question';
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setQuestionRecords(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleAdd() {
-    console.log('[title]:', title);
-    console.log('[description]:', description);
+    try {
+      const endpoint = 'http://localhost:8080/question';
 
-    // send request
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        title,
+        description,
+      }
 
-    handleClose();
-    handleRefresh();
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleEdit() {
-    console.log('[title]:', title);
-    console.log('[description]:', description);
+    try {
+      const endpoint = `http://localhost:8080/question/${questionId}`;
 
-    // send request
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        title,
+        description,
+      }
 
-    handleClose();
-    handleRefresh();
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function handleDelete(projectedData) {
-    console.log('[projectedData]:', projectedData);
+  async function handleDelete(questionId) {
+    try {
+      const endpoint = `http://localhost:8080/question/${questionId}`;
 
-    // send request
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
 
-    handleRefresh();
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleClose() {
+    setQuestionId(0);
     setTitle('');
     setDescription('');
     setShowAddModal(false);
@@ -100,28 +157,29 @@ function QuestionsList() {
       <Row>
         <Col>
           <ListGroup className='mx-5'>
-            {projectedData.map((projectedData, index) => (
+            {questionRecords.map((questionRecord, index) => (
               <ListGroup.Item className='px-4 py-5 mx-5' key={index}>
                 <Row className='d-flex justify-content-between flex-row'>
                   <Col>
-                    <h4 className='font-weight-bold'>{ projectedData.title }</h4>
+                    <h4 className='font-weight-bold'>{ questionRecord.title }</h4>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <p>{ moment(projectedData.date).format('YYYY-MM-DD') }</p>
+                    <p>{ moment(questionRecord.date).format('YYYY-MM-DD') }</p>
                   </Col>
                 </Row>
-                <p>{ projectedData.description }</p>
+                <p>{ questionRecord.description }</p>
                 <Row>
                   <Col>
                     <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
-                      setTitle(projectedData.title);
-                      setDescription(projectedData.description);
+                      setQuestionId(questionRecord.id);
+                      setTitle(questionRecord.title);
+                      setDescription(questionRecord.description);
                       setShowEditModal(true);
                     }}>Edit</Button>
-                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(questionRecord.id)}>Delete</Button>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <Link className='' to={`/questions/${projectedData.id}`}>View</Link>
+                    <Link className='' to={`/questions/${questionRecord.id}`}>View</Link>
                   </Col>
                 </Row>     
               </ListGroup.Item>
@@ -157,7 +215,7 @@ function QuestionsList() {
             </Modal.Body>
             <Modal.Footer>
               <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Ask'}</Button>
-              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
+              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

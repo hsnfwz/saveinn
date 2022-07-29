@@ -7,71 +7,126 @@ import saveInnLogo from "../layouts/images/saveInnLogo.svg";
 
 import '../App.css';
 
-const projectedData = [
-  {
-    id: 1,
-    title: 'Lorem ipsum dolor 1?',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Lorem ipsum dolor sit amet consectetur adipiscing. In aliquam sem fringilla ut morbi tincidunt augue interdum velit. Morbi tristique senectus et netus et malesuada.',
-    date: new Date(),
-  },
-  {
-    id: 2,
-    title: 'Lorem ipsum dolor 2?',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Lorem ipsum dolor sit amet consectetur adipiscing. In aliquam sem fringilla ut morbi tincidunt augue interdum velit. Morbi tristique senectus et netus et malesuada.',
-    date: new Date(),
-  },
-];
-
 function AnswersList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
+  const [answerId, setAnswerId] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
+  const [answerRecords, setAnswerRecords] = useState([]);
 
   const location = useLocation();
   
   useEffect(() => {
     (async function() {
-      console.log('[location]:', location);
-
-      // send request
+      await handleRefresh();
     }());
   }, []);
 
   async function handleRefresh() {
-    // get table records
+    try {
+      const endpoint = 'http://localhost:8080/answer';
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setAnswerRecords(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleAdd() {
-    console.log('[title]:', title);
-    console.log('[description]:', description);
+    const questionId = location.pathname.split('/')[2];
 
-    // send request
+    try {
+      const endpoint = 'http://localhost:8080/answer';
 
-    handleClose();
-    handleRefresh();
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        questionId,
+        title,
+        description,
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleEdit() {
-    console.log('[title]:', title);
-    console.log('[description]:', description);
+    const questionId = location.pathname.split('/')[2];
 
-    // send request
+    try {
+      const endpoint = `http://localhost:8080/answer/${answerId}`;
 
-    handleClose();
-    handleRefresh();
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        questionId,
+        title,
+        description,
+      }
+
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function handleDelete(projectedData) {
-    console.log('[projectedData]:', projectedData);
+  async function handleDelete(answerId) {
+    try {
+      const endpoint = `http://localhost:8080/answer/${answerId}`;
 
-    // send request
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
 
-    handleRefresh();
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleClose() {
+    setAnswerId(0);
     setTitle('');
     setDescription('');
     setShowAddModal(false);
@@ -103,23 +158,24 @@ function AnswersList() {
       <Row>
         <Col>
           <ListGroup className='mx-5'>
-            {projectedData.map((projectedData, index) => (
+            {answerRecords.map((answerRecord, index) => (
               <ListGroup.Item className='px-4 py-3 mx-5' key={index}>
                 <Row className='d-flex justify-content-between flex-row'>
                   <Col>
-                    <h4 className='font-weight-bold'>{ projectedData.title }</h4>
+                    <h4 className='font-weight-bold'>{ answerRecord.title }</h4>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <p>{ moment(projectedData.date).format('YYYY-MM-DD') }</p>
+                    <p>{ moment(answerRecord.date).format('YYYY-MM-DD') }</p>
                   </Col>
                 </Row>
-                <p>{ projectedData.description }</p>
+                <p>{ answerRecord.description }</p>
                 <Button className="btn btn-secondary blueBtns m-2 me-5" style={{fontWeight:"normal"}} onClick={() => {
-                  setTitle(projectedData.title);
-                  setDescription(projectedData.description);
+                  setAnswerId(answerRecord.id);
+                  setTitle(answerRecord.title);
+                  setDescription(answerRecord.description);
                   setShowEditModal(true);
                 }}>Edit</Button>
-                <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(answerRecord.id)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -153,7 +209,7 @@ function AnswersList() {
             </Modal.Body>
             <Modal.Footer>
               <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Answer'}</Button>
-              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
+              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

@@ -1,73 +1,126 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { Container, Row, Col, Table, Button, Modal, Form, Navbar } from 'react-bootstrap';
 import { currencyFormat } from '../helpers';
-
-const projectedData = [
-  {
-    id: 1,
-    amount: 1000,
-    title: 'Lorem 1',
-    description: 'Lorem ipsum dolor 1',
-    category: 'Category 1',
-    date: new Date(),
-  },
-  {
-    id: 2,
-    amount: 50.25,
-    title: 'Lorem 2',
-    description: 'Lorem ipsum dolor 1',
-    category: 'Category 2',
-    date: new Date(),
-  },
-];
 
 function IncomeTransactionsList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
+  const [incomeId, setIncomeId] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState(0);
 
+  const [incomeRecords, setIncomeRecords] = useState([]);
+
+  useEffect(() => {
+    (async function() {
+      await handleRefresh();
+    }());
+  }, []);
+
   async function handleRefresh() {
-    // send request
+    try {
+      const endpoint = 'http://localhost:8080/income';
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setIncomeRecords(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleAdd() {
-    console.log('[title]:', title);
-    console.log('[description]:', description);
-    console.log('[category]:', category);
-    console.log('[amount]:', amount);
+    try {
+      const endpoint = 'http://localhost:8080/income';
 
-    // send request
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        title,
+        description,
+        category,
+        amount,
+      }
 
-    handleClose();
-    handleRefresh();
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleEdit() {
-    console.log('[title]:', title);
-    console.log('[description]:', description);
-    console.log('[category]:', category);
-    console.log('[amount]:', amount);
+    try {
+      const endpoint = `http://localhost:8080/income/${incomeId}`;
 
-    // send request
+      const body = {
+        userId: undefined, // TODO: get userId from cookie
+        title,
+        description,
+        category,
+        amount,
+      }
 
-    handleClose();
-    handleRefresh();
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function handleDelete(projectedData) {
-    console.log('[projectedData]:', projectedData);
+  async function handleDelete(incomeId) {
+    try {
+      const endpoint = `http://localhost:8080/income/${incomeId}`;
 
-    // send request
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
 
-    handleRefresh();
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleClose() {
+    setIncomeId(0);
     setTitle('');
     setDescription('');
     setCategory('');
@@ -95,24 +148,25 @@ function IncomeTransactionsList() {
               <th>Actions</th>
             </thead>
             <tbody>
-              {projectedData.map((projectedData, index) => (
+              {incomeRecords.map((incomeRecord, index) => (
                 <tr key={index}>
-                  <td>{ projectedData.title }</td>
-                  <td>{ projectedData.description }</td>
-                  <td>{ projectedData.category }</td>
-                  <td>{ currencyFormat.format(projectedData.amount) }</td>
-                  <td>{ moment(projectedData.date).format('YYYY-MM-DD') }</td>
+                  <td>{ incomeRecord.title }</td>
+                  <td>{ incomeRecord.description }</td>
+                  <td>{ incomeRecord.category }</td>
+                  <td>{ currencyFormat.format(incomeRecord.amount) }</td>
+                  <td>{ moment(incomeRecord.date).format('YYYY-MM-DD') }</td>
                   <td>
                     <Button className="btn btn-secondary blueBtns me-1" style={{fontWeight:"normal"}} onClick={() => {
-                      setTitle(projectedData.title);
-                      setDescription(projectedData.description);
-                      setCategory(projectedData.category);
-                      setAmount(projectedData.amount);
+                      setIncomeId(incomeRecord.id);
+                      setTitle(incomeRecord.title);
+                      setDescription(incomeRecord.description);
+                      setCategory(incomeRecord.category);
+                      setAmount(incomeRecord.amount);
                       setShowEditModal(true);
                     }}>
                       Edit
                     </Button>
-                    <Button className="btn btn-danger" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                    <Button className="btn btn-danger" onClick={async () => await handleDelete(incomeRecord.id)}>Delete</Button>
                   </td>
                 </tr>
               ))}`
@@ -158,7 +212,7 @@ function IncomeTransactionsList() {
             </Modal.Body>
             <Modal.Footer>
               <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
-              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
+              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>
