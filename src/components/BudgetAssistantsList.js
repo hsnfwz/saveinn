@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -8,29 +8,31 @@ import membersIcon from "../layouts/images/assistantIcon.svg"
 
 import '../App.css';
 
-const projectedData = [
-  {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-    areaOfExpertise: 'Real Estate',
-    yearsOfExperience: 5,
-    location: 'Vancouver, BC, Canada'
-  },
-  {
-    id: 2,
-    firstName: 'Sarah',
-    lastName: 'Shaw',
-    areaOfExpertise: 'Crypto',
-    yearsOfExperience: 2,
-    location: 'Toronto, Ontario, Canada'
-  },
-];
-
 function BudgetAssistantsList() {
+  const [budgetAssistantRecords, setBudgetAssistantRecords] = useState([]);
+
+  useEffect(() => {
+    (async function() {
+      await handleRefresh();
+    }());
+  }, []);
 
   async function handleRefresh() {
-    // send request
+    try {
+      const endpoint = 'http://localhost:8080/budgetAssistant';
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setBudgetAssistantRecords(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -70,7 +72,7 @@ function BudgetAssistantsList() {
       <Row className='mx-5'>
         <Col>
           <ListGroup className='mx-5'>
-            {projectedData.map((projectedData, index) => (
+            {budgetAssistantRecords.map((budgetAssistantRecord, index) => (
               <ListGroup.Item className='mx-5' key={index}>
                 <Row className='py-2'>
                   <Col md="auto">
@@ -85,22 +87,19 @@ function BudgetAssistantsList() {
                   <Col>
                     <Row>
                       <Col className='d-flex flex-row'>
-                        <p className='me-1'>Name: { projectedData.firstName }</p>
-                        <p>{ projectedData.lastName }</p>
+                        <p className='me-1'>Name: { budgetAssistantRecord.firstName }</p>
+                        <p>{ budgetAssistantRecord.lastName }</p>
                       </Col>
                     </Row>
                     <Row>
                       <Col className='d-flex flex-row'>
-                        <p className='me-5'>Area of Expertise: { projectedData.areaOfExpertise }</p>
-                        <p>Years of Experience: { projectedData.yearsOfExperience }</p>
+                        <p className='me-5'>Area of Expertise: { budgetAssistantRecord.areaOfExpertise }</p>
+                        <p>Years of Experience: { budgetAssistantRecord.yearsOfExperience }</p>
                       </Col>
-                    </Row>
-                    <Row>
-                      <p>Location: { projectedData.location }</p>
                     </Row>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <Link to={`/budget-members/${projectedData.id}`}>View Profile</Link>
+                    <Link to={`/budget-assistants/${budgetAssistantRecord.id}`}>View Profile</Link>
                   </Col>
                 </Row>
               </ListGroup.Item>

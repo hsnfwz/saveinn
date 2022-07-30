@@ -101,9 +101,9 @@ function ExpenseTransactionsList() {
     }
   }
 
-  async function handleDelete(expenseId) {
+  async function handleDelete(_expenseId) {
     try {
-      const endpoint = `http://localhost:8080/income/${expenseId}`;
+      const endpoint = `http://localhost:8080/income/${_expenseId}`;
 
       const options = {
         method: 'DELETE',

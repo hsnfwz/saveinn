@@ -115,9 +115,9 @@ function BudgetGoalsList() {
     }
   }
 
-  async function handleDelete(budgetGoalId) {
+  async function handleDelete(_budgetGoalId) {
     try {
-      const endpoint = `http://localhost:8080/budgetGoal/${budgetGoalId}`;
+      const endpoint = `http://localhost:8080/budgetGoal/${_budgetGoalId}`;
 
       const options = {
         method: 'DELETE',

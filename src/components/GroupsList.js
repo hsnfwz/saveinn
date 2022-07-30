@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, ToggleButton, ButtonGroup, Navbar } from 'react-bootstrap';
 
@@ -7,64 +7,119 @@ import communityIcon from "../layouts/images/communityIcon.svg";
 
 import '../App.css';
 
-const projectedData = [
-  {
-    id: 1,
-    name: 'Lorem 1',
-    description: 'Lorem ipsum dolor 1',
-    isPublic: true,
-  },
-  {
-    id: 2,
-    name: 'Lorem 2',
-    description: 'Lorem ipsum dolor 2',
-    isPublic: false,
-  },
-];
-
 function GroupsList() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
+  const [groupId, setGroupId] = useState(0);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(false);
 
+  const [groupRecords, setGroupRecords] = useState([]);
+
+  useEffect(() => {
+    (async function() {
+      await handleRefresh();
+    }());
+  }, []);
+
   async function handleRefresh() {
-    // send request
+    try {
+      const endpoint = 'http://localhost:8080/group';
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setGroupRecords(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleAdd() {
-    console.log('[name]:', name);
-    console.log('[description]:', description);
-    console.log('[isPublic]:', isPublic);
+    try {
+      const endpoint = 'http://localhost:8080/group';
 
-    // send request
+      const body = {
+        name,
+        description,
+        isPublic,
+      }
 
-    handleClose();
-    handleRefresh();
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleEdit() {
-    console.log('[name]:', name);
-    console.log('[description]:', description);
-    console.log('[isPublic]:', isPublic);
+    try {
+      const endpoint = `http://localhost:8080/group/${groupId}`;
 
-    // send request
+      const body = {
+        name,
+        description,
+        isPublic,
+      }
 
-    handleClose();
-    handleRefresh();
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      handleClose();
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function handleDelete(projectedData) {
-    console.log('[projectedData]:', projectedData);
+  async function handleDelete(_groupId) {
+    try {
+      const endpoint = `http://localhost:8080/group/${_groupId}`;
 
-    // send request
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
 
-    handleRefresh();
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleClose() {
+    setGroupId(0);
     setName('');
     setDescription('');
     setIsPublic(false);
@@ -103,31 +158,32 @@ function GroupsList() {
       <Row>
         <Col>
           <ListGroup className='mx-5'>
-            {projectedData.map((projectedData, index) => (
+            {groupRecords.map((groupRecord, index) => (
               <ListGroup.Item className='px-4 py-3 mx-5' key={index}>
                 <Row>
                   <Col className='d-flex justify-content-between flex-row'>
-                    <h4 className='font-weight-bold'>{ projectedData.name }</h4>
+                    <h4 className='font-weight-bold'>{ groupRecord.name }</h4>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <p className='text-muted'>{ projectedData.isPublic ? 'Public Group' : 'Private Group' }</p>
+                    <p className='text-muted'>{ groupRecord.isPublic ? 'Public Group' : 'Private Group' }</p>
                   </Col>
                 </Row>
-                <p>{ projectedData.description }</p>
+                <p>{ groupRecord.description }</p>
                 <Row>
                   <Col>
                     <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
-                    setName(projectedData.name);
-                    setDescription(projectedData.description);
-                    setIsPublic(projectedData.isPublic);
-                    setShowEditModal(true);
+                      setGroupId(groupRecord.id);
+                      setName(groupRecord.name);
+                      setDescription(groupRecord.description);
+                      setIsPublic(groupRecord.isPublic);
+                      setShowEditModal(true);
                     }}>
                       Edit
                     </Button>
-                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(groupRecord.id)}>Delete</Button>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <Link to={`/groups/${projectedData.id}`}>View</Link>
+                    <Link to={`/groups/${groupRecord.id}`}>View</Link>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -168,7 +224,7 @@ function GroupsList() {
             </Modal.Body>
             <Modal.Footer>
               <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Create'}</Button>
-              <Button className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
+              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

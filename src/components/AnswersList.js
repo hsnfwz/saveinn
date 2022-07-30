@@ -107,9 +107,9 @@ function AnswersList() {
     }
   }
 
-  async function handleDelete(answerId) {
+  async function handleDelete(_answerId) {
     try {
-      const endpoint = `http://localhost:8080/answer/${answerId}`;
+      const endpoint = `http://localhost:8080/answer/${_answerId}`;
 
       const options = {
         method: 'DELETE',

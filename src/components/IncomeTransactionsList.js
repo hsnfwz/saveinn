@@ -101,9 +101,9 @@ function IncomeTransactionsList() {
     }
   }
 
-  async function handleDelete(incomeId) {
+  async function handleDelete(_incomeId) {
     try {
-      const endpoint = `http://localhost:8080/income/${incomeId}`;
+      const endpoint = `http://localhost:8080/income/${_incomeId}`;
 
       const options = {
         method: 'DELETE',
