@@ -1,16 +1,33 @@
-import { Container, Row, Col } from "react-bootstrap";
-import LogInInfo from "../components/LogInInfo";
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
 
-function LogInLayout(){
+// context
+import { AuthContext } from '../context/AuthContext';
+
+// components
+import LogInInfo from '../components/LogInInfo';
+
+function LogInLayout() {
+    const auth = useContext(AuthContext);
+
     return(
-        <Container fluid>
-            <Col>
-                <Row>
-                    <LogInInfo/>
-                </Row>
-            </Col>
-        </Container>
+        <>
+            {!auth.user && (
+                <Container fluid>
+                    <Col>
+                        <Row>
+                            <LogInInfo/>
+                        </Row>
+                    </Col>
+                </Container>
+            )}
+
+            {auth.user && (
+                <Navigate to="/dashboard" /> 
+            )}
+        </>
     )
 }
 
-export default LogInLayout
+export default LogInLayout;

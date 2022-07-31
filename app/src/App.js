@@ -30,28 +30,26 @@ function App() {
   const auth = useContext(AuthContext);
 
   return (
-    // <AuthProvider>
-      <Routes>
-        <Route path="/" element={<HomeLayout />} />
-        <Route path="dashboard" element={auth.user ? <DashboardLayout /> : <LogInLayout />} />
-        <Route path="questions" element={<QuestionsLayout />} />
-        <Route path="questions/:id" element={<AnswersLayout />} />
-        <Route path="income-transactions" element={<IncomeTransactionsLayout />} />
-        <Route path="expense-transactions" element={<ExpenseTransactionsLayout />} />
-        <Route path="budget-goals" element={<BudgetGoalsLayout />} />
-        <Route path="budget-plans" element={<BudgetPlansLayout />} />
-        <Route path="budget-plans/:id" element={<BudgetGoalsLayout />} />
-        <Route path="budget-members" element={<BudgetMembersLayout />} />
-        <Route path="budget-members/:id" element={<BudgetMemberLayout />} />
-        <Route path="budget-assistants" element={<BudgetAssistantsLayout />} />
-        <Route path="budget-assistants/:id" element={<BudgetAssistantLayout />} />
-        <Route path="sign-up" element={<RegistrationLayout/>}/>
-        <Route path="log-in" element={auth.user ? <DashboardLayout /> : <LogInLayout />} />
-        <Route path="groups" element={<GroupsLayout />} />
-        <Route path="groups/:id" element={<GroupLayout />} />
-        <Route path="*" element={<ErrorLayout />} />
-      </Routes>
-    // </AuthProvider>
+    <Routes>
+      <Route path="/" element={<HomeLayout />} />
+      <Route path="dashboard" element={<DashboardLayout />} />
+      <Route path="questions" element={<QuestionsLayout />} />
+      <Route path="questions/:id" element={<AnswersLayout />} />
+      <Route path="income-transactions" element={<IncomeTransactionsLayout />} />
+      <Route path="expense-transactions" element={<ExpenseTransactionsLayout />} />
+      <Route path="budget-goals" element={<BudgetGoalsLayout />} />
+      <Route path="budget-plans" element={<BudgetPlansLayout />} />
+      <Route path="budget-plans/:id" element={<BudgetGoalsLayout />} />
+      <Route path="budget-members" element={<BudgetMembersLayout />} />
+      <Route path="budget-members/:id" element={<BudgetMemberLayout />} />
+      <Route path="budget-assistants" element={<BudgetAssistantsLayout />} />
+      <Route path="budget-assistants/:id" element={<BudgetAssistantLayout />} />
+      <Route path="sign-up" element={<RegistrationLayout/>}/>
+      <Route path="log-in" element={<LogInLayout />} />
+      <Route path="groups" element={<GroupsLayout />} />
+      <Route path="groups/:id" element={<GroupLayout />} />
+      <Route path="*" element={<ErrorLayout />} />
+    </Routes>
   );
 }
 
