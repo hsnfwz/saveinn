@@ -143,7 +143,7 @@ function GroupsList() {
           </Container>
           <Container fluid className="d-flex justify-content-end">
               <Navbar.Text>Get your community involved!</Navbar.Text>
-              <Button className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Create Group</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Create Group</Button>
           </Container>
         </Navbar>
       </Row>
@@ -171,7 +171,7 @@ function GroupsList() {
                 <p>{ groupRecord.description }</p>
                 <Row>
                   <Col>
-                    <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
+                    <Button type="button" className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
                       setGroupId(groupRecord.id);
                       setName(groupRecord.name);
                       setDescription(groupRecord.description);
@@ -180,7 +180,7 @@ function GroupsList() {
                     }}>
                       Edit
                     </Button>
-                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(groupRecord.id)}>Delete</Button>
+                    <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(groupRecord.id)}>Delete</Button>
                   </Col>
                   <Col className='d-flex justify-content-end'>
                     <Link to={`/groups/${groupRecord.id}`}>View</Link>
@@ -223,8 +223,8 @@ function GroupsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Create'}</Button>
-              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Create'}</Button>
+              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

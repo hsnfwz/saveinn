@@ -57,7 +57,7 @@ function BudgetAssistantsList() {
               aria-label="Search"
               style={{width:"16em"}}
             />
-            <Button className="btn btn-secondary saveBtns px-5">Search</Button>
+            <Button type="button" className="btn btn-secondary saveBtns px-5">Search</Button>
           </Form>
         </Navbar>
       </Row>

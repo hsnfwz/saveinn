@@ -142,7 +142,7 @@ function QuestionsList() {
           </Container>
           <Container fluid className="d-flex justify-content-end">
               <Navbar.Text>Have a question?</Navbar.Text>
-              <Button className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Ask Question</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Ask Question</Button>
           </Container>
         </Navbar>
       </Row>
@@ -170,13 +170,13 @@ function QuestionsList() {
                 <p>{ questionRecord.description }</p>
                 <Row>
                   <Col>
-                    <Button className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
+                    <Button type="button" className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
                       setQuestionId(questionRecord.id);
                       setTitle(questionRecord.title);
                       setDescription(questionRecord.description);
                       setShowEditModal(true);
                     }}>Edit</Button>
-                    <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(questionRecord.id)}>Delete</Button>
+                    <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(questionRecord.id)}>Delete</Button>
                   </Col>
                   <Col className='d-flex justify-content-end'>
                     <Link className='' to={`/questions/${questionRecord.id}`}>View</Link>
@@ -214,8 +214,8 @@ function QuestionsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Ask'}</Button>
-              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Ask'}</Button>
+              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

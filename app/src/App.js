@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 // layouts
 import HomeLayout from './layouts/HomeLayout';
@@ -20,17 +20,20 @@ import LogInLayout from './layouts/LogInLayout';
 import ErrorLayout from './layouts/ErrorLayout';
 
 // context
-import AuthProvider from './context/AuthContext';
+import { AuthContext } from './context/AuthContext';
 
 // css
 import './App.css';
+import { useContext } from 'react';
 
 function App() {
+  const auth = useContext(AuthContext);
+
   return (
-    <AuthProvider>
+    // <AuthProvider>
       <Routes>
         <Route path="/" element={<HomeLayout />} />
-        <Route path="dashboard" element={<DashboardLayout />} />
+        <Route path="dashboard" element={auth.user ? <DashboardLayout /> : <LogInLayout />} />
         <Route path="questions" element={<QuestionsLayout />} />
         <Route path="questions/:id" element={<AnswersLayout />} />
         <Route path="income-transactions" element={<IncomeTransactionsLayout />} />
@@ -42,13 +45,13 @@ function App() {
         <Route path="budget-members/:id" element={<BudgetMemberLayout />} />
         <Route path="budget-assistants" element={<BudgetAssistantsLayout />} />
         <Route path="budget-assistants/:id" element={<BudgetAssistantLayout />} />
-        <Route path="registration" element={<RegistrationLayout/>}/>
-        <Route path="log-in" element={<LogInLayout/>}/>
+        <Route path="sign-up" element={<RegistrationLayout/>}/>
+        <Route path="log-in" element={auth.user ? <DashboardLayout /> : <LogInLayout />} />
         <Route path="groups" element={<GroupsLayout />} />
         <Route path="groups/:id" element={<GroupLayout />} />
         <Route path="*" element={<ErrorLayout />} />
       </Routes>
-    </AuthProvider>
+    // </AuthProvider>
   );
 }
 

@@ -1,14 +1,25 @@
-import { Container, Row, Col, Button, Form, InputGroup, Navbar, Nav } from "react-bootstrap";
-import { useState, useEffect } from "react";
-//Images
-import saveInnLogo from "../assets/images/saveInnLogo.svg";
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Button, Form, InputGroup, Navbar, Nav } from 'react-bootstrap';
+
+// context
+import { AuthContext } from '../context/AuthContext';
+
+// images
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
+
 //css
 import '../App.css';
-import { useNavigate } from "react-router-dom";
 
-function DashboardList(){
+function DashboardInfo() {
+    const auth = useContext(AuthContext);
 
     let navigate = useNavigate();
+
+    async function handleSignOut() {
+        await auth.signOut();
+        if (!auth.user) navigate("/", { replace: false });
+    }
 
     return(
         <Container fluid>
@@ -30,11 +41,11 @@ function DashboardList(){
                 </Nav>
                 </Container>
                 <Container className="d-flex justify-content-end">
-                    <Button className="btn btn-secondary saveBtns px-5" onClick={() => navigate("/")}>Log Out</Button>
+                    <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={async () => await handleSignOut()}>Log Out</Button>
                 </Container>
             </Navbar>
         </Container>
     )
 }
 
-export default DashboardList
+export default DashboardInfo

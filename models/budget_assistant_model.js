@@ -28,20 +28,12 @@ BudgetAssistantModel.insertRow = async (data) => {
     email,
     username,
     password,
-    // confirmPassword,
     firstName,
     lastName,
     areaOfExpertise,
     postalCode,
     yearsOfExperience,
   } = data;
-
-  // can be done on the frontend
-  // if (email === '' || username === '' || password === '' || confirmPassword === '') return res.json({ message: 'Please fill in all fields.' });
-    // can be done on the frontend
-  // if (username.length < 8 || username.length > 20) return res.json({ message: 'Username must be between 8 and 20 characters long.', isSuccessful: 0 });
-  // if (password.length < 8 || password.length > 20) return res.json({ message: 'Password must be between 8 and 20 characters long.', isSuccessful: 0 });
-  // if (confirmPassword !== password) return res.json({ message: 'Passwords do not match.', isSuccessful: 0 });
 
   try {
     const poolQuery1 = 'SELECT * FROM budget_member WHERE email=$1 OR username=$2';
@@ -60,7 +52,7 @@ BudgetAssistantModel.insertRow = async (data) => {
     const salt = encryptedPassword.salt;
     const hash = encryptedPassword.hash;
   
-    const poolQuery3 = 'INSERT INTO budget_assistant (username, email, salt, hash, first_name, last_name, employment_position, postal_code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)';
+    const poolQuery3 = 'INSERT INTO budget_assistant (username, email, salt, hash, first_name, last_name, area_of_expertise, postal_code, years_of_experience) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)';
   
     const { rows: rows3 } = pool.query(poolQuery3, [username, email, salt, hash, firstName, lastName, areaOfExpertise, postalCode, yearsOfExperience]);
 
@@ -74,13 +66,14 @@ BudgetAssistantModel.updateRowById = async (budgetAssistantId, data) => {
   const {
     firstName,
     lastName,
-    employmentPosition,
+    areaOfExpertise,
     postalCode,
+    yearsOfExperience
   } = data;
 
   try {  
-    const poolQuery = 'UPDATE budget_assistant SET (first_name, last_name, employment_position, postal_code) = ($1, $2, $3, $4) WHERE budget_assistant_id=$5';
-    const { rows } = pool.query(poolQuery, [firstName, lastName, employmentPosition, postalCode, budgetAssistantId]);
+    const poolQuery = 'UPDATE budget_assistant SET (first_name, last_name, area_of_expertise, postal_code, years_of_experience) = ($1, $2, $3, $4, $5) WHERE budget_assistant_id=$6';
+    const { rows } = pool.query(poolQuery, [firstName, lastName, areaOfExpertise, postalCode, yearsOfExperience, budgetAssistantId]);
     return { message: 'Success', rows };
   } catch(error) {
     return { message: error, rows: [] };

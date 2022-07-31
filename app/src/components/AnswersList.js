@@ -152,7 +152,7 @@ function AnswersList() {
       </Navbar>
       <Row className='px-5 mt-3'>
         <Col className=' d-flex justify-content-end'>
-          <Button className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Answer Question</Button>
+          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Answer Question</Button>
         </Col>
       </Row>
       <Row>
@@ -169,13 +169,13 @@ function AnswersList() {
                   </Col>
                 </Row>
                 <p>{ answerRecord.description }</p>
-                <Button className="btn btn-secondary blueBtns m-2 me-5" style={{fontWeight:"normal"}} onClick={() => {
+                <Button type="button" className="btn btn-secondary blueBtns m-2 me-5" style={{fontWeight:"normal"}} onClick={() => {
                   setAnswerId(answerRecord.id);
                   setTitle(answerRecord.title);
                   setDescription(answerRecord.description);
                   setShowEditModal(true);
                 }}>Edit</Button>
-                <Button className="btn btn-danger m-2" onClick={async () => await handleDelete(answerRecord.id)}>Delete</Button>
+                <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(answerRecord.id)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -208,8 +208,8 @@ function AnswersList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Answer'}</Button>
-              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Answer'}</Button>
+              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

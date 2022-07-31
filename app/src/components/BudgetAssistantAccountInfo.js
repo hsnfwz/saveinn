@@ -112,7 +112,7 @@ function BudgetAssistantAccountInfo() {
                   Save Inn</Navbar.Brand>
               </Container>
               <Container fluid className="d-flex justify-content-end">
-                <Button className="btn btn-secondary saveBtns px-5" onClick={() => navigate("/")}>Log Out</Button>
+                <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={() => navigate("/")}>Log Out</Button>
               </Container>
             </Navbar>
           </Row>
@@ -141,12 +141,12 @@ function BudgetAssistantAccountInfo() {
             </Row>
             <Row>
               <Col className='d-flex justify-content-center mt-2'>
-                <Button className="btn btn-secondary blueBtns mx-2" style={{fontWeight:"normal"}} onClick={async () => {
+                <Button type="button" className="btn btn-secondary blueBtns mx-2" style={{fontWeight:"normal"}} onClick={async () => {
                   setFirstName(budgetAssistantRecord.firstName);
                   setLastName(budgetAssistantRecord.lastName);
                   setShowEditModal(true);
                 }}>Edit Account</Button>
-                <Button className="btn btn-danger mx-2" onClick={async () => await handleDelete()}>Delete Account</Button>
+                <Button type="button" className="btn btn-danger mx-2" onClick={async () => await handleDelete()}>Delete Account</Button>
               </Col>
             </Row>
           </Row>
@@ -176,8 +176,8 @@ function BudgetAssistantAccountInfo() {
                   </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => handleEdit()}>Edit</Button>
-                  <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+                  <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => handleEdit()}>Edit</Button>
+                  <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
                 </Modal.Footer>
               </Modal>
             </Col>

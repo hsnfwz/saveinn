@@ -1,17 +1,17 @@
-import { Container, Row, Col, Button, Form, InputGroup, Navbar, Nav } from "react-bootstrap";
-import { useState, useEffect } from "react";
-//Images
-import saveInnLogo from '../assets/images/saveInnLogo.svg';
-import piggyBank from "../assets/images/manPiggyBank.svg";
-import backgroundImage from "../assets/images/landingBackground.png";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Button, Form, InputGroup, Navbar, Nav } from 'react-bootstrap';
 
-//css
+// images
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
+import piggyBank from '../assets/images/manPiggyBank.svg';
+import backgroundImage from '../assets/images/landingBackground.png';
+
+// css
 import '../App.css';
-import { useNavigate } from "react-router-dom";
 
 function HomeInfo() {
 
-    const [email, setEmail] = useState('');
     let navigate = useNavigate();
 
     return (
@@ -26,13 +26,9 @@ function HomeInfo() {
                 className="d-inline-block align-top mx-2"
                 alt="Save Inn logo"/>
                 Save Inn</Navbar.Brand>
-            <Nav xs={6}>
-                <Nav.Link>Product</Nav.Link>
-                <Nav.Link>About Us</Nav.Link>
-            </Nav>
             </Container>
             <Container className="d-flex justify-content-end">
-                <Button className="btn btn-secondary saveBtns px-5" onClick={() => navigate("log-in")}>Log In</Button>
+                <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={() => navigate("log-in")}>Log In</Button>
             </Container>
         </Navbar>
         <Row className="d-flex align-items-center px-2" style={{ height: "60vh"}}>
@@ -44,12 +40,7 @@ function HomeInfo() {
                     <h4 className="text-muted">The budget manager platform to build a community, save together, and enjoy more worry-free years.</h4>
                 </Row>
                 <Row className="pt-2">
-                    <InputGroup>
-                        <Form.Control type="text" placeholder="Email address" onChange={(e)=>setEmail(e.target.value)}/>
-                        <Button className="btn btn-secondary saveBtns" onClick={() => navigate("registration", {state:{ email : email}, replace: true})}>
-                            Sign up for Save Inn
-                        </Button>
-                    </InputGroup>
+                    <Button type="button" className="btn btn-secondary saveBtns" onClick={() => navigate("sign-up", { replace: false })}>Sign Up</Button>
                 </Row>
             </Col>
             <Col className="d-flex justify-content-center">

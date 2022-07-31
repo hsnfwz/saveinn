@@ -28,19 +28,11 @@ BudgetMemberModel.insertRow = async (data) => {
     email,
     username,
     password,
-    // confirmPassword,
     firstName,
     lastName,
     employmentPosition,
     postalCode,
   } = data;
-
-  // can be done on the frontend
-  // if (email === '' || username === '' || password === '' || confirmPassword === '') return res.json({ message: 'Please fill in all fields.' });
-    // can be done on the frontend
-  // if (username.length < 8 || username.length > 20) return res.json({ message: 'Username must be between 8 and 20 characters long.', isSuccessful: 0 });
-  // if (password.length < 8 || password.length > 20) return res.json({ message: 'Password must be between 8 and 20 characters long.', isSuccessful: 0 });
-  // if (confirmPassword !== password) return res.json({ message: 'Passwords do not match.', isSuccessful: 0 });
 
   try {
     const poolQuery1 = 'SELECT * FROM budget_member WHERE email=$1 OR username=$2';

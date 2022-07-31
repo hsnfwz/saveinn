@@ -133,7 +133,7 @@ function IncomeTransactionsList() {
     <Container fluid>
       <Row>
         <Col className='d-flex justify-content-end'>
-          <Button className="btn btn-secondary saveBtns my-2" onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
+          <Button type="button" className="btn btn-secondary saveBtns my-2" onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
         </Col>
       </Row>
       <Row>
@@ -156,7 +156,7 @@ function IncomeTransactionsList() {
                   <td>{ currencyFormat.format(incomeRecord.amount) }</td>
                   <td>{ moment(incomeRecord.date).format('YYYY-MM-DD') }</td>
                   <td>
-                    <Button className="btn btn-secondary blueBtns me-1" style={{fontWeight:"normal"}} onClick={() => {
+                    <Button type="button" className="btn btn-secondary blueBtns me-1" style={{fontWeight:"normal"}} onClick={() => {
                       setIncomeId(incomeRecord.id);
                       setTitle(incomeRecord.title);
                       setDescription(incomeRecord.description);
@@ -166,7 +166,7 @@ function IncomeTransactionsList() {
                     }}>
                       Edit
                     </Button>
-                    <Button className="btn btn-danger" onClick={async () => await handleDelete(incomeRecord.id)}>Delete</Button>
+                    <Button type="button" className="btn btn-danger" onClick={async () => await handleDelete(incomeRecord.id)}>Delete</Button>
                   </td>
                 </tr>
               ))}`
@@ -211,8 +211,8 @@ function IncomeTransactionsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
-              <Button className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>
