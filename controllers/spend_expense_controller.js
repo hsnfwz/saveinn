@@ -1,0 +1,38 @@
+const SpendExpenseModel = require('../models/spend_expense_model');
+
+const SpendExpenseController = {};
+
+SpendExpenseController.handleGetAllRows = async (req, res, next) => {
+  const budgetMemberId = req.query.budgetMemberId;
+  const result = await SpendExpenseModel.getAllRows(budgetMemberId);
+  res.json(result);
+}
+
+SpendExpenseController.handleGetRowById = async (req, res, next) => {
+  const spendExpenseId = req.params.id;
+  const result = await SpendExpenseModel.getRowById(spendExpenseId);
+  res.json(result);
+}
+
+SpendExpenseController.handleInsertRow = async (req, res, next) => {
+  const result = await SpendExpenseModel.insertRow(req.body);
+  res.json(result);
+}
+
+SpendExpenseController.handleUpdateRowById = async (req, res, next) => {
+  const spendExpenseId = req.params.id;
+  const result = await SpendExpenseModel.updateRowById(spendExpenseId, req.body);
+  res.json(result);
+}
+
+SpendExpenseController.handleDeleteRowById = async (req, res, next) => {
+  const spendExpenseId = req.params.id;
+  const result = await SpendExpenseModel.deleteRowById(spendExpenseId);
+  res.json(result);
+}
+
+SpendExpenseController.handle404NotFound = async (req, res, next) => {
+  res.json({ rows: [], message: '404 Not Found' });
+}
+
+module.exports = SpendExpenseController;

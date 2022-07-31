@@ -1,29 +1,39 @@
 const express = require('express');
-const pool = require('./pg');
+const pool = require('../pg');
 
 const router = express.Router();
 
-router.get('/get-req', (req, res) => {
-  res.json({ message: 'GET request' });
+router.get('/', async (req, res) => {
+  const poolQuery = 'SELECT * FROM budget_member';
+  
+  const { rows } = await pool.query(poolQuery);
+
+  res.json({ rows });
 });
 
-router.get('/get-req/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   res.json({ message: 'GET id request' });
 });
 
-router.post('/post-req', (req, res) => {
-  res.json({ message: 'POST request' });
+router.post('/', async (req, res) => {
+  const { firstName, lastName } = req.body;
+
+  const poolQuery = 'INSERT INTO budget_member (firstName, lastName) VALUES ($1, $2)';
+
+  const { rows } = await pool.query(poolQuery, [firstName, lastName]);
+
+  res.json({ rows });
 });
 
-router.put('/put-req/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   res.json({ message: 'PUT request' });
 });
 
-router.delete('/delete-req/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   res.json({ message: 'DELETE request' });
 });
 
-router.all('*', (req, res) => {
+router.all('*', async (req, res) => {
   res.json({ message: '404 Not Found' });
 });
 
