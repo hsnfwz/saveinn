@@ -1,12 +1,12 @@
 import { Container, Row, Col } from "react-bootstrap";
-import LogInList from "./components/LogInList";
+import LogInInfo from "../components/LogInInfo";
 
 function LogInLayout(){
     return(
         <Container fluid>
             <Col>
                 <Row>
-                    <LogInList/>
+                    <LogInInfo/>
                 </Row>
             </Col>
         </Container>

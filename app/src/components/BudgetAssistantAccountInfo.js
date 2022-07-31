@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
 import { useNavigate, useLocation } from "react-router-dom";
 
-import saveInnLogo from "../layouts/images/saveInnLogo.svg";
-import userIcon from "../layouts/images/userIcon.svg";
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
+import userIcon from '../assets/images/userIcon.svg';
 
 import '../App.css';
 

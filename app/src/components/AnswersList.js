@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
 
-import saveInnLogo from "../layouts/images/saveInnLogo.svg";
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
 
 import '../App.css';
 

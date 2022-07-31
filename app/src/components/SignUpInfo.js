@@ -2,11 +2,11 @@ import { Container, Row, Col, Navbar, Button, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import saveInnLogo from "../images/saveInnLogo.svg";
+import saveInnLogo from "../assets/images/saveInnLogo.svg";
 
-import '../../App.css';
+import '../App.css';
 
-function RegistrationList(props){
+function SignUpInfo(props){
     const [isAssistant, setIsAssistant] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -105,4 +105,4 @@ function RegistrationList(props){
     )
 }
 
-export default RegistrationList
+export default SignUpInfo

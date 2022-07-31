@@ -1,14 +1,15 @@
 import { Container, Row, Col, Button, Form, InputGroup, Navbar, Nav } from "react-bootstrap";
 import { useState, useEffect } from "react";
 //Images
-import saveInnLogo from "../images/saveInnLogo.svg";
-import piggyBank from "../images/manPiggyBank.svg";
-import backgroundImage from "../images/landingBackground.png"
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
+import piggyBank from "../assets/images/manPiggyBank.svg";
+import backgroundImage from "../assets/images/landingBackground.png";
+
 //css
-import '../../App.css';
+import '../App.css';
 import { useNavigate } from "react-router-dom";
 
-function HomeList() {
+function HomeInfo() {
 
     const [email, setEmail] = useState('');
     let navigate = useNavigate();
@@ -64,4 +65,4 @@ function HomeList() {
     );
 }
 
-export default HomeList;
+export default HomeInfo;

@@ -2,11 +2,11 @@ import { Container, Row, Col, Form, Button, Navbar } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import saveInnLogo from "../images/saveInnLogo.svg";
+import saveInnLogo from "../assets/images/saveInnLogo.svg";
 
-import '../../App.css';
+import '../App.css';
 
-function LogInList(props){
+function LogInInfo(props){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -61,4 +61,4 @@ function LogInList(props){
     )
 }
 
-export default LogInList;
+export default LogInInfo;

@@ -124,5 +124,5 @@ app.use('/budget_member_group', budgetMemberGroupRoutes);
 app.use('/budget_member_belongs_to_group', budgetMemberBelongsToGroupRoutes);
 
 // app - run
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

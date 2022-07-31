@@ -1,16 +1,12 @@
 import { Container, Row, Col} from "react-bootstrap";
-import RegistrationList from "./components/RegistrationList";
+import SignUpInfo from "../components/SignUpInfo";
 
-
-
-function RegistrationLayout(){
-
-
+function RegistrationLayout() {
     return(
         <Container fluid>
             <Col>
                 <Row>
-                    <RegistrationList/>
+                    <SignUpInfo/>
                 </Row>
             </Col>
         </Container>

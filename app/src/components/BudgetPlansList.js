@@ -3,8 +3,8 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
 
-import saveInnLogo from "../layouts/images/saveInnLogo.svg";
-import planIcon from "../layouts/images/plan.svg";
+import saveInnLogo from "../assets/images/saveInnLogo.svg";
+import planIcon from "../assets/images/plan.svg";
 
 import '../App.css';
 

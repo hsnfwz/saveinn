@@ -1,12 +1,12 @@
 import { Container, Row, Col } from "react-bootstrap";
-import HomeList from "./components/HomeList";
+import HomeInfo from '../components/HomeInfo';
 
 function HomeLayout(){
   return(
     <Container fluid>
       <Col>
         <Row>
-          <HomeList></HomeList>
+          <HomeInfo />
         </Row>
       </Col>
     </Container>

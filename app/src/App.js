@@ -19,12 +19,15 @@ import RegistrationLayout from './layouts/RegistrationLayout';
 import LogInLayout from './layouts/LogInLayout';
 import ErrorLayout from './layouts/ErrorLayout';
 
+// context
+import AuthProvider from './context/AuthContext';
+
 // css
 import './App.css';
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Routes>
         <Route path="/" element={<HomeLayout />} />
         <Route path="dashboard" element={<DashboardLayout />} />
@@ -45,7 +48,7 @@ function App() {
         <Route path="groups/:id" element={<GroupLayout />} />
         <Route path="*" element={<ErrorLayout />} />
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 

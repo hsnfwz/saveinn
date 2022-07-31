@@ -1,7 +1,7 @@
 import { Container, Row, Col, Button, Form, InputGroup, Navbar, Nav } from "react-bootstrap";
 import { useState, useEffect } from "react";
 //Images
-import saveInnLogo from "../layouts/images/saveInnLogo.svg";
+import saveInnLogo from "../assets/images/saveInnLogo.svg";
 //css
 import '../App.css';
 import { useNavigate } from "react-router-dom";

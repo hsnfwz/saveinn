@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, ToggleButton, ButtonGroup, Navbar } from 'react-bootstrap';
 
-import saveInnLogo from "../layouts/images/saveInnLogo.svg";
-import communityIcon from "../layouts/images/communityIcon.svg";
+import saveInnLogo from "../assets/images/saveInnLogo.svg";
+import communityIcon from "../assets/images/communityIcon.svg";
 
 import '../App.css';
 
