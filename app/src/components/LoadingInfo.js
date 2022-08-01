@@ -1,8 +1,5 @@
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 
-// css
-import '../App.css';
-
 function LoadingInfo() {
 
   return (

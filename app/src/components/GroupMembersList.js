@@ -7,9 +7,6 @@ import userIcon from '../assets/images/userIcon.svg';
 import userAssistantIcon from '../assets/images/userAssistantIcon.svg';
 import communityIcon from '../assets/images/communityIcon.svg';
 
-// css
-import '../App.css';
-
 function GroupMembersList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -53,32 +50,7 @@ function GroupMembersList({ auth }) {
   }
 
   async function handleAdd() {
-    // try {
-    //   const endpoint = 'http://localhost:5000/user_belongs_to_group';
-
-    //   const body = {
-    //     name,
-    //     description,
-    //     isPublic,
-    //   }
-
-    //   const options = {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(body),
-    //     credentials: 'include',
-    //   };
-
-    //   const res = await fetch(endpoint, options);
-    //   const data = await res.json();
-
-    //   handleClose();
-    //   await handleRefresh();
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    
   }
 
   async function handleDelete(userGroupId, saveinnUserId) {
@@ -116,7 +88,7 @@ function GroupMembersList({ auth }) {
       </Row>
       <Row className='d-flex justify-content-center'>
         <Col className='d-flex justify-content-center'>
-          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Add Group Member</Button>
+          <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>Add Group Member</Button>
         </Col>
       </Row>
       <Row className='mx-5 mt-3 px-5'>
@@ -139,7 +111,7 @@ function GroupMembersList({ auth }) {
                     <h6>{ groupMemberRecord.lastName }</h6>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <Button type="button" className="btn-danger" onClick={async () => await handleDelete(groupMemberRecord.userGroupId, groupMemberRecord.saveinnUserId)}>Delete</Button>
+                    <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(groupMemberRecord.userGroupId, groupMemberRecord.saveinnUserId)}>Delete</Button>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -169,8 +141,8 @@ function GroupMembersList({ auth }) {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => handleAdd()}>Add</Button>
-              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="saveinn-green-btn" style={{ fontWeight: "normal" }} onClick={() => handleAdd()}>Add</Button>
+              <Button type="button" className="saveinn-red-btn" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

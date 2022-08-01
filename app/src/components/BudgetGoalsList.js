@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
+import moment from 'moment';
+
+// helpers
 import { currencyFormat } from '../helpers';
 
-import saveInnLogo from "../assets/images/saveInnLogo.svg";
+// images
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
+import planIcon from '../assets/images/plan.svg';
 
-import '../App.css';
-
-function BudgetGoalsList() {
+function BudgetGoalsList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -30,8 +32,10 @@ function BudgetGoalsList() {
   }, []);
 
   async function handleRefresh() {
+    const planBudgetPlanId = location.pathname.split('/')[2];
+
     try {
-      const endpoint = 'http://localhost:8080/budgetGoal';
+      const endpoint = `http://localhost:5000/plan_has_goal?planBudgetPlanId=${planBudgetPlanId}`;
 
       const options = {
         method: 'GET',
@@ -41,7 +45,7 @@ function BudgetGoalsList() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      setBudgetGoalRecords(data);
+      setBudgetGoalRecords(data.rows);
     } catch (error) {
       console.log(error);
     }
@@ -51,10 +55,10 @@ function BudgetGoalsList() {
     const budgetPlanId = location.pathname.split('/')[2];
 
     try {
-      const endpoint = 'http://localhost:8080/budgetGoal';
+      const endpoint = 'http://localhost:5000/set_budget_goal';
 
       const body = {
-        userId: undefined, // TODO: get userId from cookie
+        saveinnUserId: auth.user.saveinnUserId,
         name,
         description,
         startDate,
@@ -74,6 +78,25 @@ function BudgetGoalsList() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
+      const endpoint2 = 'http://localhost:5000/plan_has_goal';
+
+      const body2 = {
+        planBudgetPlanId: budgetPlanId,
+        setBudgetGoalId: data.row.setBudgetGoalId,
+      };
+
+      const options2 = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body2),
+        credentials: 'include',
+      };
+
+      const res2 = await fetch(endpoint2, options2);
+      const data2 = await res2.json();
+
       handleClose();
       await handleRefresh();
     } catch (error) {
@@ -82,13 +105,11 @@ function BudgetGoalsList() {
   }
 
   async function handleEdit() {
-    const budgetPlanId = location.pathname.split('/')[2];
-
     try {
-      const endpoint = `http://localhost:8080/budgetGoal/${budgetGoalId}`;
+      const endpoint = `http://localhost:5000/set_budget_goal/${budgetGoalId}`;
 
       const body = {
-        userId: undefined, // TODO: get userId from cookie
+        saveinnUserId: auth.user.saveinnUserId,
         name,
         description,
         startDate,
@@ -117,7 +138,7 @@ function BudgetGoalsList() {
 
   async function handleDelete(_budgetGoalId) {
     try {
-      const endpoint = `http://localhost:8080/budgetGoal/${_budgetGoalId}`;
+      const endpoint = `http://localhost:5000/set_budget_goal/${_budgetGoalId}`;
 
       const options = {
         method: 'DELETE',
@@ -146,28 +167,18 @@ function BudgetGoalsList() {
 
   return (
     <Container fluid>
-      <Row>
-        <Navbar className="d-flex justify-content-between pt-4" style={{ backgroundColor: "#ffffff" }}>
-          <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
-                  <img 
-                  src= {saveInnLogo}
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top mx-2"
-                  alt="Save Inn logo"/>
-              Save Inn</Navbar.Brand>
-          </Container>
-          <Container fluid className="d-flex justify-content-end">
-              <Navbar.Text>Go back to <a href='/budget-plans'>All Plans</a></Navbar.Text>
-          </Container>
-        </Navbar>
+      <Row className='px-5 mt-3 d-flex justify-content-center'>
+        <img 
+          src= {planIcon}
+          width="250"
+          height="250"
+          alt="Plan Icon"/>
+        <h2 className='d-flex justify-content-center mt-3 mb-5'>Budget Goals</h2>
       </Row>
-      <Row className='px-5 mt-3'>
-        <Col className=' d-flex justify-content-end'>
-          <Button type="button" className="btn btn-secondary saveBtns m-2 me-5" onClick={() => setShowAddModal(true)}>Add Budget Goal</Button>
-        </Col>
-      </Row>
+      <Container fluid className="d-flex justify-content-center">
+        <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>New Goal</Button>
+      </Container>
+      <br />
       <Row>
         <Col>
           <ListGroup className='mx-5'>
@@ -184,8 +195,8 @@ function BudgetGoalsList() {
                 </Row>
                 <p>Amount saved: { currencyFormat.format(budgetGoalRecord.amountSaved) }</p>
                 <p>{ budgetGoalRecord.description }</p>
-                <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
-                  setBudgetGoalId(budgetGoalRecord.id);
+                <Button type="button" className="saveinn-blue-btn" style={{ fontWeight: "normal" }} onClick={() => {
+                  setBudgetGoalId(budgetGoalRecord.setBudgetGoalId);
                   setName(budgetGoalRecord.name);
                   setDescription(budgetGoalRecord.description);
                   setStartDate(budgetGoalRecord.startDate);
@@ -195,7 +206,7 @@ function BudgetGoalsList() {
                 }}>
                   Edit
                 </Button>
-                <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(budgetGoalRecord.id)}>Delete</Button>
+                <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(budgetGoalRecord.setBudgetGoalId)}>Delete</Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -217,7 +228,7 @@ function BudgetGoalsList() {
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-2">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Name*</Form.Label>
                   <Form.Control type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
                 </Form.Group>
 
@@ -227,12 +238,12 @@ function BudgetGoalsList() {
                 </Form.Group>
 
                 <Form.Group className="mb-2">
-                  <Form.Label>Start Date</Form.Label>
+                  <Form.Label>Start Date*</Form.Label>
                   <Form.Control type="date" onChange={(e) => setStartDate(e.target.value)} />
                 </Form.Group>
 
                 <Form.Group className="mb-2">
-                  <Form.Label>End Date</Form.Label>
+                  <Form.Label>End Date*</Form.Label>
                   <Form.Control type="date" onChange={(e) => setEndDate(e.target.value)} />
                 </Form.Group>
 
@@ -243,8 +254,8 @@ function BudgetGoalsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
-              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="saveinn-green-btn" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!name || !startDate || !endDate}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" className="saveinn-red-btn" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

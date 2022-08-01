@@ -6,9 +6,6 @@ import { Container, Row, Col, ListGroup, Button, Modal, Form, ToggleButton, Butt
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
 import communityIcon from '../assets/images/communityIcon.svg';
 
-// css
-import '../App.css';
-
 function GroupsList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -162,9 +159,10 @@ function GroupsList({ auth }) {
       </Row>
       <Row className='d-flex justify-content-center'>
         <Col className='d-flex justify-content-center'>
-          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Create Group</Button>
+          <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>Create Group</Button>
         </Col>
       </Row>
+      <br />
       <Row>
         <Col>
           <ListGroup className='mx-5'>
@@ -181,7 +179,7 @@ function GroupsList({ auth }) {
                 <p>{ groupRecord.description }</p>
                 <Row>
                   <Col>
-                    <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
+                    <Button type="button" className="saveinn-blue-btn" style={{ fontWeight: "normal" }} onClick={() => {
                       setGroupId(groupRecord.userGroupId);
                       setName(groupRecord.name);
                       setDescription(groupRecord.description);
@@ -190,7 +188,7 @@ function GroupsList({ auth }) {
                     }}>
                       Edit
                     </Button>
-                    <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(groupRecord.userGroupId)}>Delete</Button>
+                    <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(groupRecord.userGroupId)}>Delete</Button>
                   </Col>
                   <Col className='d-flex justify-content-end'>
                     <Link to={`/groups/${groupRecord.userGroupId}`}>View</Link>
@@ -233,8 +231,8 @@ function GroupsList({ auth }) {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!name}>{ showEditModal ? 'Edit' : 'Create'}</Button>
-              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="saveinn-green-btn" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!name}>{ showEditModal ? 'Edit' : 'Create'}</Button>
+              <Button type="button" className="saveinn-red-btn" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

@@ -5,9 +5,6 @@ import { Container, Row, Col, Navbar, Button, Form } from 'react-bootstrap';
 // images
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
 
-// css
-import '../App.css';
-
 function SignUpInfo({ auth }) {
     const [isAssistant, setIsAssistant] = useState(false);
     const [firstName, setFirstName] = useState('');
@@ -67,8 +64,6 @@ function SignUpInfo({ auth }) {
             const res = await fetch(endpoint, options);
             const data = await res.json();
 
-            console.log(data);
-
             const endpoint2 = 'http://localhost:5000/saveinn_user';
 
             const body2 = {
@@ -112,7 +107,7 @@ function SignUpInfo({ auth }) {
                             <Form.Label>Already have an account?</Form.Label>
                         </div>
                         <div>
-                            <Button type="button" className="btn btn-light m-2" onClick={() => navigate("/log-in", { replace: false })}>Log In</Button>
+                            <Button type="button" className="saveinn-green-btn" onClick={() => navigate("/log-in", { replace: false })}>Log In</Button>
                         </div>
                     </div>
                     <br />
@@ -170,7 +165,7 @@ function SignUpInfo({ auth }) {
                         </Form.Group>
                     )}
                     <br />
-                    <Button type="button" className="btn btn-secondary saveBtns" disabled={!firstName || !lastName || !username || !email || !password || !postalCode} onClick={async () => await handleSignUp()}>Sign Up</Button>
+                    <Button type="button" className="saveinn-green-btn" disabled={!firstName || !lastName || !username || !email || !password || !postalCode} onClick={async () => await handleSignUp()}>Sign Up</Button>
                 </Form>
             </Container>
         </Container>

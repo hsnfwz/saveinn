@@ -22,6 +22,7 @@ import ErrorLayout from './layouts/ErrorLayout';
 import AccountLayout from './layouts/AccountLayout';
 
 // css
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 function App() {

@@ -5,9 +5,6 @@ import { Container, Row, Col, Button, Form, InputGroup, Navbar, Nav } from 'reac
 // images
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
 
-// css
-import '../App.css';
-
 function DashboardInfo({ auth }) {
     let navigate = useNavigate();
 
@@ -40,7 +37,7 @@ function DashboardInfo({ auth }) {
                 </Nav>
                 </Container>
                 <Container className="d-flex justify-content-end">
-                    <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={async () => await handleSignOut()}>Log Out</Button>
+                    <Button type="button" className="saveinn-green-btn" onClick={async () => await handleSignOut()}>Log Out</Button>
                 </Container>
             </Navbar>
         </Container>

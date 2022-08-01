@@ -7,9 +7,6 @@ import saveInnLogo from '../assets/images/saveInnLogo.svg';
 import piggyBank from '../assets/images/manPiggyBank.svg';
 import backgroundImage from '../assets/images/landingBackground.png';
 
-// css
-import '../App.css';
-
 function HomeInfo() {
 
     let navigate = useNavigate();
@@ -25,7 +22,7 @@ function HomeInfo() {
                         <h4 className="text-muted">The budget manager platform to build a community, save together, and enjoy more worry-free years.</h4>
                     </Row>
                     <Row className="pt-2">
-                        <Button type="button" className="btn btn-secondary saveBtns" onClick={() => navigate("sign-up", { replace: false })}>Sign Up</Button>
+                        <Button type="button" className="saveinn-green-btn" onClick={() => navigate("sign-up", { replace: false })}>Sign Up</Button>
                     </Row>
                 </Col>
                 <Col className="d-flex justify-content-center">

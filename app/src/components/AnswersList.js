@@ -4,11 +4,7 @@ import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'rea
 import moment from 'moment';
 
 // images
-import saveInnLogo from '../assets/images/saveInnLogo.svg';
 import questionsIcon from '../assets/images/faqIcon.svg';
-
-// css
-import '../App.css';
 
 function AnswersList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -156,7 +152,7 @@ function AnswersList({ auth }) {
       </Row>
       <Row className='d-flex justify-content-center'>
         <Col className='d-flex justify-content-center'>
-          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Answer Question</Button>
+          <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>Answer Question</Button>
         </Col>
       </Row>
       <br />
@@ -197,13 +193,13 @@ function AnswersList({ auth }) {
                     {answerRecord.saveinnUserId === auth.user.saveinnUserId && (
                       <Row>
                         <Col>
-                          <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
+                          <Button type="button" className="saveinn-blue-btn" style={{ fontWeight: "normal" }} onClick={() => {
                             setAnswerId(answerRecord.answerId);
                             setTitle(answerRecord.title);
                             setDescription(answerRecord.description);
                             setShowEditModal(true);
                           }}>Edit</Button>
-                          <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(answerRecord.answerId)}>Delete</Button>
+                          <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(answerRecord.answerId)}>Delete</Button>
                         </Col>
                       </Row>
                     )}
@@ -239,8 +235,8 @@ function AnswersList({ auth }) {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!title || !description}>{ showEditModal ? 'Edit' : 'Answer'}</Button>
-              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="saveinn-green-btn" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!title || !description}>{ showEditModal ? 'Edit' : 'Answer'}</Button>
+              <Button type="button" className="saveinn-red-btn" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

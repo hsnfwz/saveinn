@@ -7,9 +7,6 @@ import saveInnLogo from '../assets/images/saveInnLogo.svg';
 import userIcon from '../assets/images/userAssistantIcon.svg';
 import membersIcon from '../assets/images/assistantIcon.svg'
 
-// css
-import '../App.css';
-
 function BudgetAssistantsList({ auth }) {
   const [budgetAssistantRecords, setBudgetAssistantRecords] = useState([]);
 

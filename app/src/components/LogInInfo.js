@@ -2,9 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Navbar } from 'react-bootstrap';
 
-// css
-import '../App.css';
-
 function LogInInfo({ auth }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,7 +34,7 @@ function LogInInfo({ auth }) {
                         <Form.Label>New to Save Inn?</Form.Label>
                     </div>
                     <div>
-                        <Button type="button" className="btn btn-light m-2" onClick={() => navigate("/sign-up", { replace: false })}>Sign Up</Button>
+                        <Button type="button" className="saveinn-green-btn" onClick={() => navigate("/sign-up", { replace: false })}>Sign Up</Button>
                     </div>
                 </div>
                 <br/>
@@ -52,7 +49,7 @@ function LogInInfo({ auth }) {
                     <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="formInput"/>
                 </Form.Group>
                 <br />
-                <Button type="button" className="btn btn-secondary saveBtns" disabled={!email || !password} onClick={async () => await handleLogIn()}>Log In</Button>
+                <Button type="button" className="saveinn-green-btn" disabled={!email || !password} onClick={async () => await handleLogIn()}>Log In</Button>
             </Form>
             </Container>
         </Container>

@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
+import moment from 'moment';
 
-import saveInnLogo from "../assets/images/saveInnLogo.svg";
-import planIcon from "../assets/images/plan.svg";
+// images
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
+import planIcon from '../assets/images/plan.svg';
 
-import '../App.css';
-
-function BudgetPlansList() {
+function BudgetPlansList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -28,7 +27,7 @@ function BudgetPlansList() {
 
   async function handleRefresh() {
     try {
-      const endpoint = 'http://localhost:8080/budgetPlan';
+      const endpoint = 'http://localhost:5000/plan_budget_plan';
 
       const options = {
         method: 'GET',
@@ -38,7 +37,7 @@ function BudgetPlansList() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      setBudgetPlanRecords(data);
+      setBudgetPlanRecords(data.rows);
     } catch (error) {
       console.log(error);
     }
@@ -46,15 +45,15 @@ function BudgetPlansList() {
 
   async function handleAdd() {
     try {
-      const endpoint = 'http://localhost:8080/budgetPlan';
+      const endpoint = 'http://localhost:5000/plan_budget_plan';
 
       const body = {
-        userId: undefined, // TODO: get userId from cookie
+        saveinnUserId: auth.user.saveinnUserId,
         name,
         description,
         startDate,
         endDate,
-      }
+      };
 
       const options = {
         method: 'POST',
@@ -77,15 +76,15 @@ function BudgetPlansList() {
 
   async function handleEdit() {
     try {
-      const endpoint = `http://localhost:8080/budgetPlan/${budgetPlanId}`;
+      const endpoint = `http://localhost:5000/plan_budget_plan/${budgetPlanId}`;
 
       const body = {
-        userId: undefined, // TODO: get userId from cookie
+        saveinnUserId: auth.user.saveinnUserId,
         name,
         description,
         startDate,
         endDate,
-      }
+      };
 
       const options = {
         method: 'PUT',
@@ -108,7 +107,7 @@ function BudgetPlansList() {
 
   async function handleDelete(_budgetPlanId) {
     try {
-      const endpoint = `http://localhost:8080/budgetPlan/${_budgetPlanId}`;
+      const endpoint = `http://localhost:5000/plan_budget_plan/${_budgetPlanId}`;
 
       const options = {
         method: 'DELETE',
@@ -136,31 +135,18 @@ function BudgetPlansList() {
 
   return (
     <Container fluid>
-      <Row>
-        <Navbar className="d-flex justify-content-between pt-4" style={{ backgroundColor: "#ffffff" }}>
-          <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
-                  <img 
-                  src= {saveInnLogo}
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top mx-2"
-                  alt="Save Inn logo"/>
-              Save Inn</Navbar.Brand>
-          </Container>
-          <Container fluid className="d-flex justify-content-end">
-              <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>New Plan</Button>
-          </Container>
-        </Navbar>
-      </Row>
       <Row className='px-5 mt-3 d-flex justify-content-center'>
         <img 
           src= {planIcon}
           width="250"
           height="250"
           alt="Plan Icon"/>
-        <h2 className='d-flex justify-content-center mt-3 mb-5'>My Plans</h2>
+        <h2 className='d-flex justify-content-center mt-3 mb-5'>Budget Plans</h2>
       </Row>
+      <Container fluid className="d-flex justify-content-center">
+          <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>New Plan</Button>
+      </Container>
+      <br />
       <Row>
         <Col>
           <ListGroup className='mx-5'>
@@ -178,18 +164,18 @@ function BudgetPlansList() {
                 <p>{ budgetPlanRecord.description }</p>
                 <Row>
                   <Col>
-                    <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
-                      setBudgetPlanId(budgetPlanRecord.id);
+                    <Button type="button" className="saveinn-blue-btn" style={{ fontWeight: "normal" }} onClick={() => {
+                      setBudgetPlanId(budgetPlanRecord.planBudgetPlanId);
                       setName(budgetPlanRecord.name);
                       setDescription(budgetPlanRecord.description);
                       setStartDate(budgetPlanRecord.startDate);
                       setEndDate(budgetPlanRecord.endDate);
                       setShowEditModal(true);
                     }}>Edit</Button>
-                    <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(budgetPlanRecord.id)}>Delete</Button>
+                    <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(budgetPlanRecord.planBudgetPlanId)}>Delete</Button>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <Link className='' to={`/budget-plans/${budgetPlanRecord.id}`}>View</Link>
+                    <Link className='' to={`/budget-plans/${budgetPlanRecord.planBudgetPlanId}`}>View</Link>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -213,7 +199,7 @@ function BudgetPlansList() {
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-2">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Name*</Form.Label>
                   <Form.Control type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
                 </Form.Group>
 
@@ -223,19 +209,19 @@ function BudgetPlansList() {
                 </Form.Group>
 
                 <Form.Group className="mb-2">
-                  <Form.Label>Start Date</Form.Label>
+                  <Form.Label>Start Date*</Form.Label>
                   <Form.Control type="date" onChange={(e) => setStartDate(e.target.value)} />
                 </Form.Group>
 
                 <Form.Group className="mb-2">
-                  <Form.Label>End Date</Form.Label>
+                  <Form.Label>End Date*</Form.Label>
                   <Form.Control type="date" onChange={(e) => setEndDate(e.target.value)} />
                 </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
-              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="saveinn-green-btn" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!name || !startDate || !endDate}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" className="saveinn-red-btn" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

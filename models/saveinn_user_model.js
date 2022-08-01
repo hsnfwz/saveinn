@@ -7,7 +7,6 @@ SaveinnUserModel.getAllRows = async () => {
   try {
     const poolQuery = 'SELECT saveinn_user_id AS "saveinnUserId", budget_member_id AS "budgetMemberId", budget_assistant_id AS "budgetAssistantId", email, username FROM saveinn_user';
     const { rows } = await pool.query(poolQuery);
-    console.log(rows);
     return { message: 'Success', rows };
   } catch(error) {
     return { message: error, rows: [] };

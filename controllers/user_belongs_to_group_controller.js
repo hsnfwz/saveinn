@@ -4,15 +4,15 @@ const UserBelongsToGroupController = {};
 
 UserBelongsToGroupController.handleGetAllRows = async (req, res, next) => {
   const userGroupId = req.query.userGroupId;
-  const saveinnUserId = req.query.saveinnUserId;
-  const result = await UserBelongsToGroupModel.getAllRows(userGroupId, saveinnUserId);
+  const setBudgetGoalId = req.query.setBudgetGoalId;
+  const result = await UserBelongsToGroupModel.getAllRows(userGroupId, setBudgetGoalId);
   res.json(result);
 }
 
 UserBelongsToGroupController.handleGetRowById = async (req, res, next) => {
   const userGroupId = req.params.userGroupId;
-  const saveinnUserId = req.params.saveinnUserId;
-  const result = await UserBelongsToGroupModel.getRowById(userGroupId, saveinnUserId);
+  const setBudgetGoalId = req.params.setBudgetGoalId;
+  const result = await UserBelongsToGroupModel.getRowById(userGroupId, setBudgetGoalId);
   res.json(result);
 }
 
@@ -23,15 +23,15 @@ UserBelongsToGroupController.handleInsertRow = async (req, res, next) => {
 
 UserBelongsToGroupController.handleUpdateRowById = async (req, res, next) => {
   const userGroupId = req.params.userGroupId;
-  const saveinnUserId = req.params.saveinnUserId;
-  const result = await UserBelongsToGroupModel.updateRowById(userGroupId, saveinnUserId, req.body);
+  const setBudgetGoalId = req.params.setBudgetGoalId;
+  const result = await UserBelongsToGroupModel.updateRowById(userGroupId, setBudgetGoalId, req.body);
   res.json(result);
 }
 
 UserBelongsToGroupController.handleDeleteRowById = async (req, res, next) => {
   const userGroupId = req.params.userGroupId;
-  const saveinnUserId = req.params.saveinnUserId;
-  const result = await UserBelongsToGroupModel.deleteRowById(userGroupId, saveinnUserId);
+  const setBudgetGoalId = req.params.setBudgetGoalId;
+  const result = await UserBelongsToGroupModel.deleteRowById(userGroupId, setBudgetGoalId);
   res.json(result);
 }
 

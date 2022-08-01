@@ -8,9 +8,6 @@ import { AuthContext } from '../context/AuthContext';
 // images
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
 
-// css
-import '../App.css';
-
 function NavbarInfo() {
   const auth = useContext(AuthContext);
 
@@ -50,13 +47,13 @@ function NavbarInfo() {
           </Container>
           <Container className="d-flex justify-content-end">
                 {auth.user && (
-                    <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={async () => await handleSignOut()}>Log Out</Button>
+                    <Button type="button" className="saveinn-green-btn" onClick={async () => await handleSignOut()}>Log Out</Button>
                 )}
                 {!auth.user && (location.pathname === '/log-in') && (
-                    <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={() => navigate("sign-up")}>Sign Up</Button>
+                    <Button type="button" className="saveinn-green-btn" onClick={() => navigate("sign-up")}>Sign Up</Button>
                 )}
                 {!auth.user && (location.pathname !== '/log-in') && (
-                    <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={() => navigate("log-in")}>Log In</Button>
+                    <Button type="button" className="saveinn-green-btn" onClick={() => navigate("log-in")}>Log In</Button>
                 )}
           </Container>
       </Navbar>

@@ -7,9 +7,6 @@ import moment from 'moment';
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
 import questionsIcon from '../assets/images/faqIcon.svg';
 
-// css
-import '../App.css';
-
 function QuestionsList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -140,7 +137,7 @@ function QuestionsList({ auth }) {
       </Row>
       <Row className='d-flex justify-content-center'>
         <Col className='d-flex justify-content-center'>
-          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Ask Question</Button>
+          <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>Ask Question</Button>
         </Col>
       </Row>
       <br />
@@ -161,13 +158,13 @@ function QuestionsList({ auth }) {
                 <Row>
                   {(questionRecord.saveinnUserId === auth.user.saveinnUserId) && (
                     <Col>
-                      <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
+                      <Button type="button" className="saveinn-blue-btn" style={{ fontWeight: "normal" }} onClick={() => {
                         setQuestionId(questionRecord.askQuestionId);
                         setTitle(questionRecord.title);
                         setDescription(questionRecord.description);
                         setShowEditModal(true);
                       }}>Edit</Button>
-                      <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(questionRecord.askQuestionId)}>Delete</Button>
+                      <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(questionRecord.askQuestionId)}>Delete</Button>
                     </Col>
                   )}
                   <Col className='d-flex justify-content-end'>
@@ -206,8 +203,8 @@ function QuestionsList({ auth }) {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!title || !description}>{ showEditModal ? 'Edit' : 'Ask'}</Button>
-              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="saveinn-green-btn" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!title || !description}>{ showEditModal ? 'Edit' : 'Ask'}</Button>
+              <Button type="button" className="saveinn-red-btn" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

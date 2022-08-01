@@ -151,7 +151,7 @@ function ExpenseTransactionsList() {
       </Row>
       <Row>
         <Col className='d-flex justify-content-center'>
-          <Button type="button" className="btn btn-secondary saveBtns my-2" onClick={() => setShowAddModal(true)}>Add Expense Transaction</Button>
+          <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>Add Expense Transaction</Button>
         </Col>
       </Row>
       <br />
@@ -177,7 +177,7 @@ function ExpenseTransactionsList() {
                   <td>{ currencyFormat.format(expenseRecord.amount) }</td>
                   <td>{ moment(expenseRecord.date).format('YYYY-MM-DD') }</td>
                   <td>
-                    <Button type="button" className="btn btn-secondary blueBtns me-1" style={{ fontWeight: "normal" }} onClick={() => {
+                    <Button type="button" className="saveinn-blue-btn" style={{ fontWeight: "normal" }} onClick={() => {
                       setExpenseId(expenseRecord.spendExpenseId);
                       setTitle(expenseRecord.title);
                       setDescription(expenseRecord.description);
@@ -187,7 +187,7 @@ function ExpenseTransactionsList() {
                     }}>
                       Edit
                     </Button>
-                    <Button type="button" className="btn btn-danger" onClick={async () => await handleDelete(expenseRecord.spendExpenseId)}>Delete</Button>
+                    <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(expenseRecord.spendExpenseId)}>Delete</Button>
                   </td>
                 </tr>
               ))}
@@ -232,8 +232,8 @@ function ExpenseTransactionsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
-              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
+              <Button type="button" className="saveinn-green-btn" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" className="saveinn-red-btn" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

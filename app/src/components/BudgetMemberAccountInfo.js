@@ -6,9 +6,6 @@ import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'rea
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
 import userIcon from '../assets/images/userIcon.svg';
 
-// css
-import '../App.css';
-
 function BudgetMemberAccountInfo({ auth }) {
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -243,8 +240,8 @@ function BudgetMemberAccountInfo({ auth }) {
                 <Form.Label>Username*</Form.Label>
                 <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)} className="formInput"/>
                 <div>
-                  <Button type="button" className="btn btn-secondary blueBtns m-2" onClick={async () => await handleEditUsername()} disabled={!username}>Submit</Button>
-                  <Button type="button" className="btn btn-danger m-2" onClick={() => {
+                  <Button type="button" className="saveinn-green-btn" onClick={async () => await handleEditUsername()} disabled={!username}>Submit</Button>
+                  <Button type="button" className="saveinn-red-btn" onClick={() => {
                     setShowEditUsername(false);
                     setErrorMessage('');
                   }}>Cancel</Button>
@@ -257,7 +254,7 @@ function BudgetMemberAccountInfo({ auth }) {
                   <p>Username: {username}</p>
                 </Col>
                 <Col>
-                  <Button type="button" onClick={() => setShowEditUsername(true)}>Edit</Button>
+                  <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditUsername(true)}>Edit</Button>
                 </Col>
               </Row>
             )}
@@ -266,8 +263,8 @@ function BudgetMemberAccountInfo({ auth }) {
                   <Form.Label>Email*</Form.Label>
                   <Form.Control type="email" value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
                   <div>
-                    <Button type="button" className="btn btn-secondary blueBtns m-2" onClick={async () => await handleEditEmail()} disabled={!email}>Submit</Button>
-                    <Button type="button" className="btn btn-danger m-2" onClick={() => {
+                    <Button type="button" className="saveinn-green-btn" onClick={async () => await handleEditEmail()} disabled={!email}>Submit</Button>
+                    <Button type="button" className="saveinn-red-btn" onClick={() => {
                       setShowEditEmail(false);
                       setErrorMessage('');
                     }}>Cancel</Button>
@@ -280,7 +277,7 @@ function BudgetMemberAccountInfo({ auth }) {
                   <p>Email: {email}</p>
                 </Col>
                 <Col>
-                  <Button type="button" onClick={() => setShowEditEmail(true)}>Edit</Button>
+                  <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditEmail(true)}>Edit</Button>
                 </Col>
               </Row>
             )}
@@ -289,8 +286,8 @@ function BudgetMemberAccountInfo({ auth }) {
                 <Form.Label>Password*</Form.Label>
                 <Form.Control type="password" value={password} placeholder="Password" onChange={(e)=>setPassword(e.target.value)} className="formInput"/>
                 <div>
-                  <Button type="button" className="btn btn-secondary blueBtns m-2" onClick={async () => await handleEditPassword()} disabled={!password}>Submit</Button>
-                  <Button type="button" className="btn btn-danger m-2" onClick={() => {
+                  <Button type="button" className="saveinn-green-btn" onClick={async () => await handleEditPassword()} disabled={!password}>Submit</Button>
+                  <Button type="button" className="saveinn-red-btn" onClick={() => {
                     setShowEditPassword(false);
                     setErrorMessage('');
                   }}>Cancel</Button>
@@ -303,7 +300,7 @@ function BudgetMemberAccountInfo({ auth }) {
                   <p>Password is hidden</p>
                 </Col>
                 <Col>
-                  <Button type="button" onClick={() => setShowEditPassword(true)}>Edit</Button>
+                  <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditPassword(true)}>Edit</Button>
                 </Col>
               </Row>
             )}
@@ -328,8 +325,8 @@ function BudgetMemberAccountInfo({ auth }) {
                     <Form.Control type="text" value={employmentPosition} placeholder="Employment" onChange={(e)=>setEmploymentPosition(e.target.value)} className="formInput"/>
                 </Form.Group>
                 <div>
-                  <Button type="button" className="btn btn-secondary blueBtns m-2" onClick={async () => await handleEditInfo()} disabled={!firstName || !lastName || !postalCode}>Submit</Button>
-                  <Button type="button" className="btn btn-danger m-2" onClick={() => setShowEditInfo(false)}>Cancel</Button>
+                  <Button type="button" className="saveinn-green-btn" onClick={async () => await handleEditInfo()} disabled={!firstName || !lastName || !postalCode}>Submit</Button>
+                  <Button type="button" className="saveinn-red-btn" onClick={() => setShowEditInfo(false)}>Cancel</Button>
                 </div>
               </>
             )}
@@ -340,11 +337,11 @@ function BudgetMemberAccountInfo({ auth }) {
                   <p>Last Name: {lastName}</p>
                   <p>Postal Code: {postalCode}</p>
                   <p>Employment Position: {employmentPosition}</p>
-                  <Button type="button" onClick={() => setShowEditInfo(true)}>Edit</Button>
+                  <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditInfo(true)}>Edit</Button>
                 </Col>
               </Row>
             )}
-            <Button type="button" className="btn btn-danger mt-2" onClick={async () => await handleDelete()}>Delete Account</Button>
+            <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete()}>Delete Account</Button>
           </Form>
       </Container>
     </Container>

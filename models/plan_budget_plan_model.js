@@ -1,123 +1,81 @@
-const express = require('express');
 const pool = require('../pg');
 
-const router = express.Router();
+const PlanBudgetPlanModel = {};
 
-router.get('/', async (req, res) => {
-  const poolQuery = 'SELECT * FROM name';
+PlanBudgetPlanModel.getAllRows = async (saveinnUserId) => {
+  try {
+    let rows = [];
+
+    if (saveinnUserId) {
+      const poolQuery = 'SELECT name, description, start_date AS "startDate", end_date AS "endDate", plan_budget_plan_id AS "planBudgetPlanId", saveinn_user_id AS "saveinnUserId" FROM plan_budget_plan WHERE saveinn_user_id=$1';
+      const { rows: _rows } = await pool.query(poolQuery, [saveinnUserId]);
+      rows = _rows;
+    } else {
+      const poolQuery = 'SELECT name, description, start_date AS "startDate", end_date AS "endDate", plan_budget_plan_id AS "planBudgetPlanId", saveinn_user_id AS "saveinnUserId" FROM plan_budget_plan';
+      const { rows: _rows } = await pool.query(poolQuery);
+      rows = _rows;
+    }
   
-  const { rows } = await pool.query(poolQuery);
+    return { message: 'Success', rows };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
 
-  res.json({ rows });
-});
+PlanBudgetPlanModel.getRowById = async (planBudgetPlanId) => {
+  try {
+    const poolQuery = 'SELECT name, description, start_date AS "startDate", end_date AS "endDate", plan_budget_plan_id AS "planBudgetPlanId", saveinn_user_id AS "saveinnUserId" FROM plan_budget_plan WHERE plan_budget_plan_id=$1';
+    const { rows } = await pool.query(poolQuery, [planBudgetPlanId]);
+    return { message: 'Success', rows };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
 
-router.get('/:id', async (req, res) => {
-  res.json({ message: 'GET id request' });
-});
+PlanBudgetPlanModel.insertRow = async (data) => {
+  const {
+    saveinnUserId,
+    name,
+    description,
+    startDate,
+    endDate,
+  } = data;
 
-router.post('/', async (req, res) => {
-  const { firstName, lastName } = req.body;
+  try {
+    const poolQuery = 'INSERT INTO plan_budget_plan (saveinn_user_id, name, description, start_date, end_date) VALUES ($1, $2, $3, $4, $5)';
+    const { rows } = await pool.query(poolQuery, [saveinnUserId, name, description, startDate, endDate]);
+    return { message: 'Success', rows };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
 
-  const poolQuery = 'INSERT INTO name (firstName, lastName) VALUES ($1, $2)';
+PlanBudgetPlanModel.updateRowById = async (planBudgetPlanId, data) => {
+  const {
+    saveinnUserId,
+    name,
+    description,
+    startDate,
+    endDate,
+  } = data;
 
-  const { rows } = await pool.query(poolQuery, [firstName, lastName]);
+  try {
+    const poolQuery = 'UPDATE plan_budget_plan SET (saveinn_user_id, name, description, start_date, end_date) = ($1, $2, $3, $4, $5) WHERE plan_budget_plan_id=$6';
+    const { rows } = await pool.query(poolQuery, [saveinnUserId, name, description, startDate, endDate, planBudgetPlanId]);
+    return { message: 'Success', rows };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
 
-  res.json({ rows });
-});
+PlanBudgetPlanModel.deleteRowById = async (planBudgetPlanId) => {
+  try {
+    const poolQuery = 'DELETE FROM plan_budget_plan WHERE plan_budget_plan_id=$1';
+    const { rows } = await pool.query(poolQuery, [planBudgetPlanId]);
+    return { message: 'Success', rows };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
 
-router.put('/:id', async (req, res) => {
-  res.json({ message: 'PUT request' });
-});
-
-router.delete('/:id', async (req, res) => {
-  res.json({ message: 'DELETE request' });
-});
-
-router.all('*', async (req, res) => {
-  res.json({ message: '404 Not Found' });
-});
-
-module.exports = router;
-
-
-
-
-// app.get('/', (req, res) => {
-//   res.render('pages/home');
-// });
-
-// app.get('/rectangles', (req, res) => {
-//   const poolQuery = 'SELECT * FROM rectangle';
-
-//   pool.query(poolQuery, (err, result) => {
-//     if (err) console.log(err);
-//     else res.render('pages/rectangles', { rows: result.rows });
-//   });
-// });
-
-// app.get('/rectangles/:id', (req, res) => {
-//   const id = req.params.id;
-
-//   if (!isNaN(id)) {
-//     const poolQuery = `SELECT * FROM rectangle WHERE id='${id}'`;
-
-//     pool.query(poolQuery, (err, result) => {
-//       if (err) console.log(err);
-//       else if (result.rows.length === 0) res.render('pages/error');
-//       else if (result.rows.length > 0) res.render('pages/rectangle', { row: result.rows[0] });
-//     });
-//   } else {
-//     res.render('pages/error');
-//   }
-// });
-
-// app.get('/add-rectangle', (req, res) => {
-//   res.render('pages/addRectangle');
-// });
-
-// app.post('/add-rectangle', (req, res) => {
-//   const { name, color, width, height } = req.body;
-
-//   const poolQuery = `INSERT INTO rectangle (name, color, width, height) VALUES ('${name}', '${color.toLowerCase()}', '${width}', '${height}')`;
-
-//   pool.query(poolQuery, (err, result) => {
-//     if (err) console.log(err);
-//     else res.redirect('/add-rectangle');
-//   });
-// });
-
-// app.post('/rectangles/:id/update', (req, res) => {
-//   const id = req.params.id;
-
-//   if (!isNaN(id)) {
-//     const { name, color, width, height } = req.body;
-
-//     const poolQuery = `UPDATE rectangle SET (name, color, width, height) = ('${name}', '${color.toLowerCase()}', '${width}','${height}') WHERE id='${id}'`;
-  
-//     pool.query(poolQuery, (err, result) => {
-//       if (err) console.log(err);
-//       else res.redirect(`/rectangles/${id}`);
-//     });
-//   } else {
-//     res.render('pages/error');
-//   }
-// });
-
-// app.get('/rectangles/:id/delete', (req, res) => {
-//   const id = req.params.id;
-
-//   if (!isNaN(id)) {
-//     const poolQuery = `DELETE FROM rectangle WHERE id='${id}'`;
-
-//     pool.query(poolQuery, (err, result) => {
-//       if (err) console.log(err);
-//       else res.redirect('/rectangles');
-//     });
-//   } else {
-//     res.render('pages/error');
-//   }
-// });
-
-// app.get('*', (req, res) => {
-//   res.render('pages/error');
-// });
+module.exports = PlanBudgetPlanModel;
