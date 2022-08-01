@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+// images
 import saveInnLogo from "../assets/images/saveInnLogo.svg";
 import userIcon from "../assets/images/userIcon.svg";
 import membersIcon from "../assets/images/membersIcon.svg"
 
+// css
 import '../App.css';
 
-function BudgetMembersList() {
+function BudgetMembersList({ auth }) {
   const [budgetMemberRecords, setBudgetMemberRecords] = useState([]);
 
   useEffect(() => {
@@ -19,7 +21,7 @@ function BudgetMembersList() {
 
   async function handleRefresh() {
     try {
-      const endpoint = 'http://localhost:8080/budgetMember';
+      const endpoint = 'http://localhost:5000/budget_member';
 
       const options = {
         method: 'GET',
@@ -29,7 +31,7 @@ function BudgetMembersList() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      setBudgetMemberRecords(data);
+      setBudgetMemberRecords(data.rows);
     } catch (error) {
       console.log(error);
     }
@@ -38,9 +40,9 @@ function BudgetMembersList() {
   return (
     <Container fluid>
       <Row>
-        <Navbar className="d-flex justify-content-between py-4" style={{backgroundColor:"#ffffff"}}>
+        <Navbar className="d-flex justify-content-between py-4" style={{ backgroundColor: "#ffffff" }}>
           <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
                   <img 
                   src= {saveInnLogo}
                   width="50"
@@ -49,16 +51,6 @@ function BudgetMembersList() {
                   alt="Save Inn logo"/>
               Save Inn</Navbar.Brand>
           </Container>
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Find members by username..."
-              className="me-2"
-              aria-label="Search"
-              style={{width:"16em"}}
-            />
-            <Button type="button" className="btn btn-secondary saveBtns px-5">Search</Button>
-          </Form>
         </Navbar>
       </Row>
       <Row className='px-5 mt-3 d-flex justify-content-center'>
@@ -92,11 +84,8 @@ function BudgetMembersList() {
                       </Col>
                     </Row>
                     <Row>
-                      <p>Employment: { budgetMemberRecord.employmentPosition }</p>
+                      <p>Employment Position: { budgetMemberRecord.employmentPosition }</p>
                     </Row>
-                  </Col>
-                  <Col className='d-flex justify-content-end'>
-                    <Link to={`/budget-members/${budgetMemberRecord.id}`}>View Profile</Link>
                   </Col>
                 </Row>
               </ListGroup.Item>

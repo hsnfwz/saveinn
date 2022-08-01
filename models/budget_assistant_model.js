@@ -5,7 +5,7 @@ const BudgetAssistantModel = {};
 
 BudgetAssistantModel.getAllRows = async () => {
   try {
-    const poolQuery = 'SELECT * FROM budget_assistant';
+    const poolQuery = 'SELECT first_name AS "firstName", last_name AS "lastName", area_of_expertise AS "areaOfExpertise", postal_code AS "postalCode", years_of_experience AS "yearsOfExperience", budget_assistant_id AS "budgetAssistantId" FROM budget_assistant';
     const { rows } = await pool.query(poolQuery);
     return { message: 'Success', rows };
   } catch(error) {
@@ -15,9 +15,9 @@ BudgetAssistantModel.getAllRows = async () => {
 
 BudgetAssistantModel.getRowById = async (budgetAssistantId) => {
   try {
-    const poolQuery = 'SELECT * FROM budget_assistant WHERE budget_assistant_id=$1';
+    const poolQuery = 'SELECT email, username, first_name AS "firstName", last_name AS "lastName", area_of_expertise AS "areaOfExpertise", postal_code AS "postalCode", years_of_experience AS "yearsOfExperience", budget_assistant_id AS "budgetAssistantId" FROM budget_assistant WHERE budget_assistant_id=$1';
     const { rows } = await pool.query(poolQuery, [budgetAssistantId]);
-    return { message: 'Success', rows };
+    return { message: 'Success', row: rows[0] };
   } catch(error) {
     return { message: error, rows: [] };
   }

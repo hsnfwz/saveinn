@@ -7,24 +7,29 @@ import { AuthContext } from '../context/AuthContext';
 
 // components
 import LogInInfo from '../components/LogInInfo';
+import LoadingInfo from '../components/LoadingInfo';
 
 function LogInLayout() {
     const auth = useContext(AuthContext);
 
     return(
         <>
-            {!auth.user && (
+            {auth.isAuthenticating && (
+                <LoadingInfo />
+            )}
+
+            {!auth.isAuthenticating && !auth.user && (
                 <Container fluid>
                     <Col>
                         <Row>
-                            <LogInInfo/>
+                            <LogInInfo auth={auth} />
                         </Row>
                     </Col>
                 </Container>
             )}
 
-            {auth.user && (
-                <Navigate to="/dashboard" /> 
+            {!auth.isAuthenticating && auth.user && (
+                <Navigate to="/dashboard" />
             )}
         </>
     )

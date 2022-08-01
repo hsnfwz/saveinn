@@ -7,24 +7,29 @@ import { AuthContext } from '../context/AuthContext';
 
 // components
 import SignUpInfo from '../components/SignUpInfo';
+import LoadingInfo from '../components/LoadingInfo';
 
 function RegistrationLayout() {
     const auth = useContext(AuthContext);
 
     return (
         <>
-            {auth.user && (
-                <Navigate to="/dashboard" />
+            {auth.isAuthenticating && (
+                <LoadingInfo />
             )}
 
-            {!auth.user && (
+            {!auth.isAuthenticating && !auth.user && (
                 <Container fluid>
                     <Col>
                         <Row>
-                            <SignUpInfo/>
+                            <SignUpInfo auth={auth} />
                         </Row>
                     </Col>
                 </Container>
+            )}
+
+            {!auth.isAuthenticating && auth.user && (
+                <Navigate to="/dashboard" />
             )}
         </>
     );

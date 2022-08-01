@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 
 // context
@@ -9,33 +9,38 @@ import { AuthContext } from '../context/AuthContext';
 import IncomeTransactionsList from '../components/IncomeTransactionsList';
 import ExpenseTransactionsList from '../components/ExpenseTransactionsList';
 import DashboardInfo from '../components/DashboardInfo';
+import LoadingInfo from '../components/LoadingInfo';
 
 function DashboardLayout() {
   const auth = useContext(AuthContext);
 
   return (
     <>
-        {auth.user && ( 
-          <Container fluid>
-            <Row>
-              <Col>
-                <DashboardInfo/>
-              </Col>
-            </Row>
-            <Row className="px-4">
-              <Col>
-                <IncomeTransactionsList />
-              </Col>
-              <Col>
-                <ExpenseTransactionsList />
-              </Col>
-            </Row>
-          </Container>
-        )}
+      {auth.isAuthenticating && (
+        <LoadingInfo />
+      )}
 
-        {!auth.user && (
-          <Navigate to="/log-in" />
-        )}
+      {!auth.isAuthenticating && auth.user && ( 
+        <Container fluid>
+          <Row>
+            <Col>
+              <DashboardInfo auth={auth} />
+            </Col>
+          </Row>
+          <Row className="px-4">
+            <Col>
+              <IncomeTransactionsList auth={auth} />
+            </Col>
+            <Col>
+              <ExpenseTransactionsList auth={auth} />
+            </Col>
+          </Row>
+        </Container>
+      )}
+
+      {!auth.isAuthenticating && !auth.user && (
+        <Navigate to="/log-in" />
+      )}
     </>
   );
 }

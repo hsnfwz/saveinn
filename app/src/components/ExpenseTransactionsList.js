@@ -1,9 +1,16 @@
-import { useState, useEffect } from 'react';
-import moment from 'moment';
+import { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col, Table, Button, Modal, Form, Navbar } from 'react-bootstrap';
+import moment from 'moment';
+
+// context
+import { AuthContext } from '../context/AuthContext';
+
+// helpers
 import { currencyFormat } from '../helpers';
 
 function ExpenseTransactionsList() {
+  const auth = useContext(AuthContext);
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -23,7 +30,7 @@ function ExpenseTransactionsList() {
 
   async function handleRefresh() {
     try {
-      const endpoint = 'http://localhost:8080/expense';
+      const endpoint = `http://localhost:5000/spend_expense?budgetMemberId=${auth.user.budgetMemberId}`;
 
       const options = {
         method: 'GET',
@@ -33,7 +40,7 @@ function ExpenseTransactionsList() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      setExpenseRecords(data);
+      setExpenseRecords(data.rows);
     } catch (error) {
       console.log(error);
     }
@@ -41,10 +48,10 @@ function ExpenseTransactionsList() {
 
   async function handleAdd() {
     try {
-      const endpoint = 'http://localhost:8080/expense';
+      const endpoint = 'http://localhost:5000/spend_expense';
 
       const body = {
-        userId: undefined, // TODO: get userId from cookie
+        budgetMemberId: auth.user.budgetMemberId,
         title,
         description,
         category,
@@ -72,10 +79,10 @@ function ExpenseTransactionsList() {
 
   async function handleEdit() {
     try {
-      const endpoint = `http://localhost:8080/income/${expenseId}`;
+      const endpoint = `http://localhost:5000/spend_expense/${expenseId}`;
 
       const body = {
-        userId: undefined, // TODO: get userId from cookie
+        budgetMemberId: auth.user.budgetMemberId,
         title,
         description,
         category,
@@ -103,7 +110,7 @@ function ExpenseTransactionsList() {
 
   async function handleDelete(_expenseId) {
     try {
-      const endpoint = `http://localhost:8080/income/${_expenseId}`;
+      const endpoint = `http://localhost:5000/spend_expense/${_expenseId}`;
 
       const options = {
         method: 'DELETE',
@@ -141,12 +148,14 @@ function ExpenseTransactionsList() {
         <Col>
           <Table striped bordered hover>
             <thead>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <tr>
+                <td>Title</td>
+                <td>Description</td>
+                <td>Category</td>
+                <td>Amount</td>
+                <td>Date</td>
+                <td>Actions</td>
+              </tr>
             </thead>
             <tbody>
               {expenseRecords.map((expenseRecord, index) => (
@@ -157,8 +166,8 @@ function ExpenseTransactionsList() {
                   <td>{ currencyFormat.format(expenseRecord.amount) }</td>
                   <td>{ moment(expenseRecord.date).format('YYYY-MM-DD') }</td>
                   <td>
-                    <Button type="button" className="btn btn-secondary blueBtns me-1" style={{fontWeight:"normal"}} onClick={() => {
-                      setExpenseId(expenseRecord.id);
+                    <Button type="button" className="btn btn-secondary blueBtns me-1" style={{ fontWeight: "normal" }} onClick={() => {
+                      setExpenseId(expenseRecord.spendExpenseId);
                       setTitle(expenseRecord.title);
                       setDescription(expenseRecord.description);
                       setCategory(expenseRecord.category);
@@ -167,10 +176,10 @@ function ExpenseTransactionsList() {
                     }}>
                       Edit
                     </Button>
-                    <Button type="button" className="btn btn-danger" onClick={async () => await handleDelete(expenseRecord.id)}>Delete</Button>
+                    <Button type="button" className="btn btn-danger" onClick={async () => await handleDelete(expenseRecord.spendExpenseId)}>Delete</Button>
                   </td>
                 </tr>
-              ))}`
+              ))}
             </tbody>
           </Table>
         </Col>
@@ -207,12 +216,12 @@ function ExpenseTransactionsList() {
 
                 <Form.Group>
                   <Form.Label>Amount</Form.Label>
-                  <Form.Control type="number" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)}/>
+                  <Form.Control type="number" step="any" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)}/>
                 </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
               <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>

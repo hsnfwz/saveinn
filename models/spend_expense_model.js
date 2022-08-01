@@ -7,11 +7,11 @@ SpendExpenseModel.getAllRows = async (budgetMemberId) => {
     let rows = [];
 
     if (budgetMemberId) {
-      const poolQuery = 'SELECT * FROM spend_expense WHERE budget_member_id=$1';
+      const poolQuery = 'SELECT title, description, category, amount, spend_expense_id AS "spendExpenseId" FROM spend_expense WHERE budget_member_id=$1';
       const { rows: _rows } = await pool.query(poolQuery, [budgetMemberId]);
       rows = _rows;
     } else {
-      const poolQuery = 'SELECT * FROM spend_expense';
+      const poolQuery = 'SELECT title, description, category, amount, spend_expense_id AS "spendExpenseId" FROM spend_expense';
       const { rows: _rows } = await pool.query(poolQuery);
       rows = _rows;
     }
@@ -24,7 +24,7 @@ SpendExpenseModel.getAllRows = async (budgetMemberId) => {
 
 SpendExpenseModel.getRowById = async (spendExpenseId) => {
   try {
-    const poolQuery = 'SELECT * FROM spend_expense WHERE spend_expense_id=$1';
+    const poolQuery = 'SELECT title, description, category, amount, spend_expense_id AS "spendExpenseId" FROM spend_expense WHERE spend_expense_id=$1';
     const { rows } = await pool.query(poolQuery, [spendExpenseId]);
     return { message: 'Success', rows };
   } catch(error) {

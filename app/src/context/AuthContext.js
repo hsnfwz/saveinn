@@ -4,6 +4,7 @@ export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(undefined);
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [authMessage, setAuthMessage] = useState('');
   const [signInMessage, setSignInMessage] = useState('');
   const [signOutMessage, setSignOutMessage] = useState('');
@@ -12,7 +13,7 @@ export default function AuthProvider({ children }) {
     (async function() {
       try {
         const endpoint = 'http://localhost:5000/user';
-  
+
         const options = {
           method: 'GET',
           credentials: 'include',
@@ -23,9 +24,10 @@ export default function AuthProvider({ children }) {
   
         setUser(data.user);
         setAuthMessage(data.message);
+        setIsAuthenticating(false);
 
-        console.log('[user]:', data.user);
-        console.log('[message]:', data.message);
+        // console.log('[user]:', data.user);
+        // console.log('[message]:', data.message); 
       } catch(error) {
         console.log(error);
       }
@@ -56,8 +58,8 @@ export default function AuthProvider({ children }) {
       setUser(data.user);
       setSignInMessage(data.message);
 
-      console.log('[user]:', data.user);
-      console.log('[message]:', data.message);
+      // console.log('[user]:', data.user);
+      // console.log('[message]:', data.message);
     } catch(error) {
       console.log(error);
     }
@@ -79,15 +81,15 @@ export default function AuthProvider({ children }) {
       setSignOutMessage(data.message);
       setSignInMessage('');
 
-      console.log('[user]:', data.user);
-      console.log('[message]:', data.message);
+      // console.log('[user]:', data.user);
+      // console.log('[message]:', data.message);
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <AuthContext.Provider value={{ user, authMessage, signInMessage, signOutMessage, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, isAuthenticating, authMessage, signInMessage, signOutMessage, signIn, signOut }}>
       { children }
     </AuthContext.Provider>
   );

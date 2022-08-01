@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar, Figure } from 'react-bootstrap';
+import moment from 'moment';
 
-import saveInnLogo from "../assets/images/saveInnLogo.svg";
-import questionsIcon from "../assets/images/faqIcon.svg";
+// images
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
+import questionsIcon from '../assets/images/faqIcon.svg';
 
+// css
 import '../App.css';
 
-function QuestionsList() {
+function QuestionsList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -26,7 +28,7 @@ function QuestionsList() {
 
   async function handleRefresh() {
     try {
-      const endpoint = 'http://localhost:8080/question';
+      const endpoint = 'http://localhost:5000/ask_question';
 
       const options = {
         method: 'GET',
@@ -36,7 +38,7 @@ function QuestionsList() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      setQuestionRecords(data);
+      setQuestionRecords(data.rows);
     } catch (error) {
       console.log(error);
     }
@@ -44,10 +46,10 @@ function QuestionsList() {
 
   async function handleAdd() {
     try {
-      const endpoint = 'http://localhost:8080/question';
+      const endpoint = 'http://localhost:5000/ask_question';
 
       const body = {
-        userId: undefined, // TODO: get userId from cookie
+        budgetMemberId: auth.user.budgetMemberId,
         title,
         description,
       }
@@ -73,10 +75,10 @@ function QuestionsList() {
 
   async function handleEdit() {
     try {
-      const endpoint = `http://localhost:8080/question/${questionId}`;
+      const endpoint = `http://localhost:5000/ask_question/${questionId}`;
 
       const body = {
-        userId: undefined, // TODO: get userId from cookie
+        budgetMemberId: auth.user.budgetMemberId,
         title,
         description,
       }
@@ -102,7 +104,7 @@ function QuestionsList() {
 
   async function handleDelete(_questionId) {
     try {
-      const endpoint = `http://localhost:8080/question/${_questionId}`;
+      const endpoint = `http://localhost:5000/ask_question/${_questionId}`;
 
       const options = {
         method: 'DELETE',
@@ -129,9 +131,9 @@ function QuestionsList() {
   return (
     <Container fluid >
       <Row>
-        <Navbar className="d-flex justify-content-between pt-4" style={{backgroundColor:"#ffffff"}}>
+        <Navbar className="d-flex justify-content-between pt-4" style={{ backgroundColor: "#ffffff" }}>
           <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
                   <img 
                   src= {saveInnLogo}
                   width="50"
@@ -148,11 +150,11 @@ function QuestionsList() {
       </Row>
       <Row className='px-5 mt-3 d-flex justify-content-center'>
         <img 
-          src= {questionsIcon}
+          src={questionsIcon}
           width="200"
           height="200"
           alt="Question Icon"/>
-        <h2 className='d-flex justify-content-center mt-3 mb-5'>All Questions</h2>
+        <h2 className='d-flex justify-content-center mt-3 mb-5'>Questions</h2>
       </Row>
       <Row>
         <Col>
@@ -164,24 +166,26 @@ function QuestionsList() {
                     <h4 className='font-weight-bold'>{ questionRecord.title }</h4>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <p>{ moment(questionRecord.date).format('YYYY-MM-DD') }</p>
+                    <p>{ moment(questionRecord.date).format('YYYY-MM-DD hh:mm A') }</p>
                   </Col>
                 </Row>
                 <p>{ questionRecord.description }</p>
                 <Row>
-                  <Col>
-                    <Button type="button" className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
-                      setQuestionId(questionRecord.id);
-                      setTitle(questionRecord.title);
-                      setDescription(questionRecord.description);
-                      setShowEditModal(true);
-                    }}>Edit</Button>
-                    <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(questionRecord.id)}>Delete</Button>
-                  </Col>
+                  {(questionRecord.budgetMemberId === auth.user.budgetMemberId) && (
+                    <Col>
+                      <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
+                        setQuestionId(questionRecord.askQuestionId);
+                        setTitle(questionRecord.title);
+                        setDescription(questionRecord.description);
+                        setShowEditModal(true);
+                      }}>Edit</Button>
+                      <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(questionRecord.askQuestionId)}>Delete</Button>
+                    </Col>
+                  )}
                   <Col className='d-flex justify-content-end'>
-                    <Link className='' to={`/questions/${questionRecord.id}`}>View</Link>
+                    <Link to={`/questions/${questionRecord.askQuestionId}`}>View</Link>
                   </Col>
-                </Row>     
+                </Row>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -214,7 +218,7 @@ function QuestionsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Ask'}</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!title || !description}>{ showEditModal ? 'Edit' : 'Ask'}</Button>
               <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>

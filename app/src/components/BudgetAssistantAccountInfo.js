@@ -1,22 +1,32 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
-import { useNavigate, useLocation } from "react-router-dom";
 
+// images
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
-import userIcon from '../assets/images/userIcon.svg';
+import userIcon from '../assets/images/userAssistantIcon.svg';
 
+// css
 import '../App.css';
 
-function BudgetAssistantAccountInfo() {
-  const [showEditModal, setShowEditModal] = useState(false);
+function BudgetAssistantAccountInfo({ auth }) {
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const [budgetAssistantRecord, setBudgetAssistantRecord] = useState(undefined);
+  const [showEditUsername, setShowEditUsername] = useState(false);
+  const [showEditEmail, setShowEditEmail] = useState(false);
+  const [showEditPassword, setShowEditPassword] = useState(false);
+  const [showEditInfo, setShowEditInfo] = useState(false);
 
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [areaOfExpertise, setAreaOfExpertise] = useState('');
+  const [yearsOfExperience, setYearsOfExperience] = useState(0);
 
-  let navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async function() {
@@ -25,10 +35,8 @@ function BudgetAssistantAccountInfo() {
   }, []);
 
   async function handleRefresh() {
-    const budgetAssistantId = location.pathname.split('/')[2];
-
     try {
-      const endpoint = `http://localhost:8080/budgetAssistant/${budgetAssistantId}`;
+      const endpoint = `http://localhost:5000/budget_assistant/${auth.user.budgetAssistantId}`;
 
       const options = {
         method: 'GET',
@@ -38,21 +46,31 @@ function BudgetAssistantAccountInfo() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      setBudgetAssistantRecord(data);
+      if (data.row) {
+        setUsername(data.row.username);
+        setEmail(data.row.email);
+        setFirstName(data.row.firstName);
+        setLastName(data.row.lastName);
+        setPostalCode(data.row.postalCode);
+        setAreaOfExpertise(data.row.areaOfExpertise);
+        setYearsOfExperience(data.row.yearsOfExperience);
+      }
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function handleEdit() {
+  async function handleEditInfo() {
     try {
-      const endpoint = `http://localhost:8080/budgetAssistant/${budgetAssistantRecord.id}`;
+      const endpoint = `http://localhost:5000/budget_assistant/${auth.user.budgetAssistantId}`;
 
       const body = {
-        userId: budgetAssistantRecord.id,
         firstName,
         lastName,
-      }
+        areaOfExpertise,
+        postalCode,
+        yearsOfExperience,
+      };
 
       const options = {
         method: 'PUT',
@@ -66,8 +84,105 @@ function BudgetAssistantAccountInfo() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      handleClose();
+      setShowEditInfo(false);
+
       await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleEditUsername() {
+    try {
+      const endpoint = `http://localhost:5000/budget_assistant/update_username/${auth.user.budgetAssistantId}`;
+
+      const body = {
+        username,
+      };
+
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      if (data.message !== 'Success') {
+        setErrorMessage(data.message);
+      } else {
+        setErrorMessage('');
+        setShowEditUsername(false);
+        await handleRefresh();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleEditEmail() {
+    try {
+      const endpoint = `http://localhost:5000/budget_assistant/update_email/${auth.user.budgetAssistantId}`;
+
+      const body = {
+        email,
+      };
+
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      if (data.message !== 'Success') {
+        setErrorMessage(data.message);
+      } else {
+        setErrorMessage('');
+        setShowEditEmail(false);
+        await handleRefresh();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleEditPassword() {
+    try {
+      const endpoint = `http://localhost:5000/budget_assistant/update_password/${auth.user.budgetAssistantId}`;
+
+      const body = {
+        password,
+      };
+
+      const options = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      if (data.message !== 'Success') {
+        setErrorMessage(data.message);
+      } else {
+        setErrorMessage('');
+        setShowEditPassword(false);
+        await handleRefresh();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -75,7 +190,7 @@ function BudgetAssistantAccountInfo() {
 
   async function handleDelete() {
     try {
-      const endpoint = `http://localhost:8080/budgetAssistant/${budgetAssistantRecord.id}`;
+      const endpoint = `http://localhost:5000/budget_assistant/${auth.user.budgetAssistantId}`;
 
       const options = {
         method: 'DELETE',
@@ -85,106 +200,174 @@ function BudgetAssistantAccountInfo() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      await handleRefresh();
+      auth.signOut();
+      navigate("/", { replace: false });
     } catch (error) {
       console.log(error);
     }
   }
 
-  function handleClose() {
-    setShowEditModal(false);
-  }
-
   return (
-    <>
-      {budgetAssistantRecord && (
-        <Container fluid style={{height:"100vh"}}>
-          <Row>
-            <Navbar className="d-flex justify-content-between py-4" style={{backgroundColor:"#ffffff"}}>
-              <Container fluid>
-                  <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
-                      <img 
-                      src= {saveInnLogo}
-                      width="50"
-                      height="50"
-                      className="d-inline-block align-top mx-2"
-                      alt="Save Inn logo"/>
-                  Save Inn</Navbar.Brand>
-              </Container>
-              <Container fluid className="d-flex justify-content-end">
-                <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={() => navigate("/")}>Log Out</Button>
-              </Container>
-            </Navbar>
-          </Row>
-          <Row>
-            <Row>
-              <Col className='d-flex align-items-center justify-content-center pt-2'>
-                <h2>User Account</h2>
-              </Col>
-            </Row>
-            <Row>
-              <Col className='d-flex align-items-center justify-content-center pt-2'>
-                <img
-                src= {userIcon}
-                width="100"
-                height="100"
-                className="mx-2"
-                alt="Save Inn logo"
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col className='d-flex align-items-center justify-content-center py-2'>
-                <h3 className='me-1'>{ budgetAssistantRecord.firstName }</h3>
-                <h3>{ budgetAssistantRecord.lastName }</h3>
-              </Col>
-            </Row>
-            <Row>
-              <Col className='d-flex justify-content-center mt-2'>
-                <Button type="button" className="btn btn-secondary blueBtns mx-2" style={{fontWeight:"normal"}} onClick={async () => {
-                  setFirstName(budgetAssistantRecord.firstName);
-                  setLastName(budgetAssistantRecord.lastName);
-                  setShowEditModal(true);
-                }}>Edit Account</Button>
-                <Button type="button" className="btn btn-danger mx-2" onClick={async () => await handleDelete()}>Delete Account</Button>
-              </Col>
-            </Row>
-          </Row>
-          <Row>
-            <Col>
-              <Modal
-                size="lg"
-                centered
-                show={showEditModal}
-                onHide={() => handleClose()}
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title>
-                    Edit Account
-                  </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Form>
-                    <Form.Group className="mb-2">
-                      <Form.Label>First Name</Form.Label>
-                      <Form.Control type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+    <Container fluid style={{ height: '100vh' }}> 
+      <Row>
+        <Navbar className="d-flex justify-content-between py-4" style={{ backgroundColor: "#ffffff" }}>
+          <Container fluid>
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
+                  <img 
+                  src= {saveInnLogo}
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top mx-2"
+                  alt="Save Inn logo"/>
+              Save Inn</Navbar.Brand>
+          </Container>
+          <Container fluid className="d-flex justify-content-end">
+            <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={() => navigate("/")}>Log Out</Button>
+          </Container>
+        </Navbar>
+      </Row>
+      <Row>
+        <Row>
+          <Col className='d-flex align-items-center justify-content-center pt-2'>
+            <h2>Account</h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col className='d-flex align-items-center justify-content-center pt-2'>
+            <img
+            src= {userIcon}
+            width="100"
+            height="100"
+            className="mx-2"
+            alt="Save Inn logo"
+            />
+          </Col>
+        </Row>
+      </Row>
+      <br />
+      <Row>
+        <Col>
+          <span className="d-flex flex-column justify-content-center align-items-center">{errorMessage}</span>
+        </Col>
+      </Row>
+      <br />
+      <Container fluid className="d-flex flex-column justify-content-center align-items-center">
+          <Form style={{ width: '50vh' }}>
+            {showEditUsername && (
+              <Form.Group className="my-2">
+                <Form.Label>Username*</Form.Label>
+                <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)} className="formInput"/>
+                <div>
+                  <Button type="button" className="btn btn-secondary blueBtns m-2" onClick={async () => await handleEditUsername()} disabled={!username}>Submit</Button>
+                  <Button type="button" className="btn btn-danger m-2" onClick={() => {
+                    setShowEditUsername(false);
+                    setErrorMessage('');
+                  }}>Cancel</Button>
+                </div>
+              </Form.Group>
+            )}
+            {!showEditUsername && (
+              <Row>
+                <Col>
+                  <p>Username: {username}</p>
+                </Col>
+                <Col>
+                  <Button type="button" onClick={() => setShowEditUsername(true)}>Edit</Button>
+                </Col>
+              </Row>
+            )}
+            {showEditEmail && (
+              <Form.Group className="my-2 col">
+                  <Form.Label>Email*</Form.Label>
+                  <Form.Control type="email" value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
+                  <div>
+                    <Button type="button" className="btn btn-secondary blueBtns m-2" onClick={async () => await handleEditEmail()} disabled={!email}>Submit</Button>
+                    <Button type="button" className="btn btn-danger m-2" onClick={() => {
+                      setShowEditEmail(false);
+                      setErrorMessage('');
+                    }}>Cancel</Button>
+                  </div>
+              </Form.Group>
+            )}
+            {!showEditEmail && (
+              <Row>
+                <Col>
+                  <p>Email: {email}</p>
+                </Col>
+                <Col>
+                  <Button type="button" onClick={() => setShowEditEmail(true)}>Edit</Button>
+                </Col>
+              </Row>
+            )}
+            {showEditPassword && (
+              <Form.Group className="my-2">
+                <Form.Label>Password*</Form.Label>
+                <Form.Control type="password" value={password} placeholder="Password" onChange={(e)=>setPassword(e.target.value)} className="formInput"/>
+                <div>
+                  <Button type="button" className="btn btn-secondary blueBtns m-2" onClick={async () => await handleEditPassword()} disabled={!password}>Submit</Button>
+                  <Button type="button" className="btn btn-danger m-2" onClick={() => {
+                    setShowEditPassword(false);
+                    setErrorMessage('');
+                  }}>Cancel</Button>
+                </div>
+              </Form.Group>
+            )}
+            {!showEditPassword && (
+              <Row>
+                <Col>
+                  <p>Password is hidden</p>
+                </Col>
+                <Col>
+                  <Button type="button" onClick={() => setShowEditPassword(true)}>Edit</Button>
+                </Col>
+              </Row>
+            )}
+            {showEditInfo && (
+              <>
+                <div className="row">
+                    <Form.Group className="my-2 col">
+                        <Form.Label>First Name*</Form.Label>
+                        <Form.Control type="text" value={firstName} placeholder="First Name" onChange={(e)=>setFirstName(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group className="mb-2">
-                      <Form.Label>Last Name</Form.Label>
-                      <Form.Control type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    <Form.Group className="my-2 col">
+                        <Form.Label>Last Name*</Form.Label>
+                        <Form.Control type="text" value={lastName} placeholder="Last Name" onChange={(e)=>setLastName(e.target.value)}/>
                     </Form.Group>
-                  </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => handleEdit()}>Edit</Button>
-                  <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
-                </Modal.Footer>
-              </Modal>
-            </Col>
-          </Row>
-        </Container>
-      )}
-    </>
+                </div>
+                <Form.Group className="my-2 col">
+                    <Form.Label>Postal Code*</Form.Label>
+                    <Form.Control type="text" value={postalCode} placeholder="Postal Code" onChange={(e)=>setPostalCode(e.target.value)}/>
+                </Form.Group>
+                <Form.Group className="my-2">
+                    <Form.Label>Area of Expertise</Form.Label>
+                    <Form.Control type="text" value={areaOfExpertise} placeholder="Area of Expertise" onChange={(e)=>setAreaOfExpertise(e.target.value)} className="formInput"/>
+                </Form.Group>
+                <Form.Group className="my-2">
+                    <Form.Label>Years of Experience</Form.Label>
+                    <Form.Control type="number" min="0" value={yearsOfExperience} placeholder="Enter a number" onChange={(e)=>setYearsOfExperience(e.target.value)} className="formInput"/>
+                </Form.Group>
+                <div>
+                  <Button type="button" className="btn btn-secondary blueBtns m-2" onClick={async () => await handleEditInfo()} disabled={!firstName || !lastName || !postalCode}>Submit</Button>
+                  <Button type="button" className="btn btn-danger m-2" onClick={() => setShowEditInfo(false)}>Cancel</Button>
+                </div>
+              </>
+            )}
+            {!showEditInfo && (
+              <Row>
+                <Col>
+                  <p>First Name: {firstName}</p>
+                  <p>Last Name: {lastName}</p>
+                  <p>Postal Code: {postalCode}</p>
+                  <p>Area of Expertise: {areaOfExpertise}</p>
+                  <p>Years of Experience: {yearsOfExperience}</p>
+                  <Button type="button" onClick={() => setShowEditInfo(true)}>Edit</Button>
+                </Col>
+              </Row>
+            )}
+            <Button type="button" className="btn btn-danger mt-2" onClick={async () => await handleDelete()}>Delete Account</Button>
+          </Form>
+      </Container>
+    </Container>
   );
 }
 

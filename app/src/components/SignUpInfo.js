@@ -8,7 +8,7 @@ import saveInnLogo from '../assets/images/saveInnLogo.svg';
 // css
 import '../App.css';
 
-function SignUpInfo(props) {
+function SignUpInfo({ auth }) {
     const [isAssistant, setIsAssistant] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -62,7 +62,7 @@ function SignUpInfo(props) {
         <Container fluid className="px-5 py-3">
             <Navbar className="d-flex justify-content-between">
                 <Container fluid>
-                    <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: "#63D3A9" }} href="/">
+                    <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/">
                         <img 
                         src= {saveInnLogo}
                         width="50"
@@ -77,8 +77,20 @@ function SignUpInfo(props) {
                 </Container>
             </Navbar>
             <Container fluid className="d-flex flex-column justify-content-center align-items-center">
-                <Form style={{width: "50vh"}}>
+                <Form style={{ width: '50vh' }}>
                     <Form.Label className="d-flex justify-content-center h4">Sign Up</Form.Label>
+                    <Form.Group className="my-2">
+                        <Form.Label>Username*</Form.Label>
+                        <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)} className="formInput"/>
+                    </Form.Group>
+                    <Form.Group className="my-2 col">
+                        <Form.Label>Email*</Form.Label>
+                        <Form.Control type="email" value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
+                    </Form.Group>
+                    <Form.Group className="my-2">
+                        <Form.Label>Password*</Form.Label>
+                        <Form.Control type="password" value={password} placeholder="Password" onChange={(e)=>setPassword(e.target.value)} className="formInput"/>
+                    </Form.Group>
                     <div className="row">
                         <Form.Group className="my-2 col">
                             <Form.Label>First Name*</Form.Label>
@@ -89,23 +101,9 @@ function SignUpInfo(props) {
                             <Form.Control type="text" value={lastName} placeholder="Last Name" onChange={(e)=>setLastName(e.target.value)}/>
                         </Form.Group>
                     </div>
-                    <Form.Group className="my-2">
-                        <Form.Label>Username*</Form.Label>
-                        <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)} className="formInput"/>
-                    </Form.Group>
-                    <div className="row">
-                        <Form.Group className="my-2 col">
-                            <Form.Label>Email*</Form.Label>
-                            <Form.Control type="email" value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
-                        </Form.Group>
-                        <Form.Group className="my-2 col">
-                            <Form.Label>Postal Code*</Form.Label>
-                            <Form.Control type="text" value={postalCode} placeholder="Postal Code" onChange={(e)=>setPostalCode(e.target.value)}/>
-                        </Form.Group>
-                    </div>
-                    <Form.Group className="my-2">
-                        <Form.Label>Password*</Form.Label>
-                        <Form.Control type="password" value={password} placeholder="Password" onChange={(e)=>setPassword(e.target.value)} className="formInput"/>
+                    <Form.Group className="my-2 col">
+                        <Form.Label>Postal Code*</Form.Label>
+                        <Form.Control type="text" value={postalCode} placeholder="Postal Code" onChange={(e)=>setPostalCode(e.target.value)}/>
                     </Form.Group>
                     <Form.Group className="my-2">
                         <Form.Label>Are you a financial advisor?</Form.Label>
@@ -122,7 +120,7 @@ function SignUpInfo(props) {
                             </Form.Group>
                             <Form.Group className="my-2 col">
                                 <Form.Label>Years of Experience</Form.Label>
-                                <Form.Control  type="number" value={yearsOfExperience} placeholder="Enter a number" min="0" onChange={(e)=>setYearsOfExperience(e.target.value)}/>
+                                <Form.Control type="number" value={yearsOfExperience} placeholder="Enter a number" min="0" onChange={(e)=>setYearsOfExperience(e.target.value)}/>
                             </Form.Group>
                         </div>
                     )}

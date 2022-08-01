@@ -1,16 +1,37 @@
-import { Container, Row, Col } from "react-bootstrap";
-import BudgetMembersList from "../components/BudgetMembersList";
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
+
+// context
+import { AuthContext } from '../context/AuthContext';
+
+// components
+import BudgetMembersList from '../components/BudgetMembersList';
+import LoadingInfo from '../components/LoadingInfo';
 
 function BudgetMembersLayout() {
+  const auth = useContext(AuthContext);
 
   return (
-    <Container fluid>
-      <Row>
-        <Col>
-          <BudgetMembersList />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      {auth.isAuthenticating && (
+        <LoadingInfo />
+      )}
+
+      {!auth.isAuthenticating && auth.user && (
+        <Container fluid>
+          <Row>
+            <Col>
+              <BudgetMembersList auth={auth} />
+            </Col>
+          </Row>
+        </Container>
+      )}
+
+      {!auth.isAuthenticating && !auth.user && (
+        <Navigate to="/log-in" />
+      )}
+    </>
   );
 }
 

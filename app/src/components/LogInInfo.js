@@ -1,9 +1,6 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Navbar } from 'react-bootstrap';
-
-// context
-import { AuthContext } from '../context/AuthContext';
 
 // images
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
@@ -11,9 +8,7 @@ import saveInnLogo from '../assets/images/saveInnLogo.svg';
 // css
 import '../App.css';
 
-function LogInInfo(props) {
-    const auth = useContext(AuthContext);
-
+function LogInInfo({ auth }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -25,10 +20,10 @@ function LogInInfo(props) {
     }
 
     return (
-        <Container fluid className="px-5 py-3" style={{height:"100vh"}}>
+        <Container fluid className="px-5 py-3" style={{ height: '100vh' }}>
             <Navbar className="d-flex justify-content-between">
                 <Container fluid>
-                    <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/">
+                    <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/">
                         <img 
                         src= {saveInnLogo}
                         width="50"
@@ -42,7 +37,7 @@ function LogInInfo(props) {
                     <Button type="button" className="btn btn-light m-2" onClick={() => navigate("/sign-up", { replace: false })}>Sign Up</Button>
                 </Container>
             </Navbar>
-            <Form className="d-flex flex-column justify-content-center align-items-center d-grid gap-2 col-6 mx-auto" style={{height:"70vh"}}>
+            <Form className="d-flex flex-column justify-content-center align-items-center d-grid gap-2 col-6 mx-auto" style={{ height: '70vh' }}>
                 <Form.Label className="h4">Log In</Form.Label>
                 <br/>
                 <span>{auth.signInMessage}</span>

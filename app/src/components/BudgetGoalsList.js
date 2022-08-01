@@ -147,9 +147,9 @@ function BudgetGoalsList() {
   return (
     <Container fluid>
       <Row>
-        <Navbar className="d-flex justify-content-between pt-4" style={{backgroundColor:"#ffffff"}}>
+        <Navbar className="d-flex justify-content-between pt-4" style={{ backgroundColor: "#ffffff" }}>
           <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/dashboard">
+              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
                   <img 
                   src= {saveInnLogo}
                   width="50"
@@ -184,7 +184,7 @@ function BudgetGoalsList() {
                 </Row>
                 <p>Amount saved: { currencyFormat.format(budgetGoalRecord.amountSaved) }</p>
                 <p>{ budgetGoalRecord.description }</p>
-                <Button type="button" className="btn btn-secondary blueBtns m-2" style={{fontWeight:"normal"}} onClick={() => {
+                <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
                   setBudgetGoalId(budgetGoalRecord.id);
                   setName(budgetGoalRecord.name);
                   setDescription(budgetGoalRecord.description);
@@ -243,7 +243,7 @@ function BudgetGoalsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{fontWeight:"normal"}} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
               <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>

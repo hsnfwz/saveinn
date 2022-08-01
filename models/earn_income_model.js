@@ -7,11 +7,11 @@ EarnIncomeModel.getAllRows = async (budgetMemberId) => {
     let rows = [];
 
     if (budgetMemberId) {
-      const poolQuery = 'SELECT * FROM earn_income WHERE budget_member_id=$1';
+      const poolQuery = 'SELECT title, description, category, amount, earn_income_id AS "earnIncomeId" FROM earn_income WHERE budget_member_id=$1';
       const { rows: _rows } = await pool.query(poolQuery, [budgetMemberId]);
       rows = _rows;
     } else {
-      const poolQuery = 'SELECT * FROM earn_income';
+      const poolQuery = 'SELECT title, description, category, amount, earn_income_id AS "earnIncomeId" FROM earn_income';
       const { rows: _rows } = await pool.query(poolQuery);
       rows = _rows;
     }
@@ -24,7 +24,7 @@ EarnIncomeModel.getAllRows = async (budgetMemberId) => {
 
 EarnIncomeModel.getRowById = async (earnIncomeId) => {
   try {
-    const poolQuery = 'SELECT * FROM earn_income WHERE earn_income_id=$1';
+    const poolQuery = 'SELECT title, description, category, amount, earn_income_id AS "earnIncomeId" FROM earn_income WHERE earn_income_id=$1';
     const { rows } = await pool.query(poolQuery, [earnIncomeId]);
     return { message: 'Success', rows };
   } catch(error) {

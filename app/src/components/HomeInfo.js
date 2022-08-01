@@ -18,7 +18,7 @@ function HomeInfo() {
         <Container fluid className="px-5" style={{height: "100vh", backgroundImage : `url(${backgroundImage})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundPosition:"center"}}>
         <Navbar className="p-4 mb-5">
             <Container className="d-flex justify-content-start">
-            <Navbar.Brand className="brandLogo d-flex align-items-center" style={{color: "#63D3A9"}} href="/">
+            <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/">
                 <img 
                 src= {saveInnLogo}
                 width="50"
