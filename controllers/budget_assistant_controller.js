@@ -24,23 +24,23 @@ BudgetAssistantController.handleUpdateRowById = async (req, res, next) => {
   res.json(result);
 }
 
-BudgetAssistantController.handleUpdateEmail = async (req, res, next) => {
-  const budgetAssistantId = req.params.id;
-  const result = await BudgetAssistantModel.updateEmail(budgetAssistantId, req.body);
-  res.json(result);
-}
+// BudgetAssistantController.handleUpdateEmail = async (req, res, next) => {
+//   const budgetAssistantId = req.params.id;
+//   const result = await BudgetAssistantModel.updateEmail(budgetAssistantId, req.body);
+//   res.json(result);
+// }
 
-BudgetAssistantController.handleUpdateUsername = async (req, res, next) => {
-  const budgetAssistantId = req.params.id;
-  const result = await BudgetAssistantModel.updateUsername(budgetAssistantId, req.body);
-  res.json(result);
-}
+// BudgetAssistantController.handleUpdateUsername = async (req, res, next) => {
+//   const budgetAssistantId = req.params.id;
+//   const result = await BudgetAssistantModel.updateUsername(budgetAssistantId, req.body);
+//   res.json(result);
+// }
 
-BudgetAssistantController.handleUpdatePassword = async (req, res, next) => {
-  const budgetAssistantId = req.params.id;
-  const result = await BudgetAssistantModel.updatePassword(budgetAssistantId, req.body);
-  res.json(result);
-}
+// BudgetAssistantController.handleUpdatePassword = async (req, res, next) => {
+//   const budgetAssistantId = req.params.id;
+//   const result = await BudgetAssistantModel.updatePassword(budgetAssistantId, req.body);
+//   res.json(result);
+// }
 
 BudgetAssistantController.handleDeleteRowById = async (req, res, next) => {
   const budgetAssistantId = req.params.id;

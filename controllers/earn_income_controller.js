@@ -3,8 +3,8 @@ const EarnIncomeModel = require('../models/earn_income_model');
 const EarnIncomeController = {};
 
 EarnIncomeController.handleGetAllRows = async (req, res, next) => {
-  const budgetMemberId = req.query.budgetMemberId;
-  const result = await EarnIncomeModel.getAllRows(budgetMemberId);
+  const saveinnUserId = req.query.saveinnUserId;
+  const result = await EarnIncomeModel.getAllRows(saveinnUserId);
   res.json(result);
 }
 

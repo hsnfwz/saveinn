@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, ToggleButton, ButtonGroup, Navbar } from 'react-bootstrap';
 
-import saveInnLogo from "../assets/images/saveInnLogo.svg";
-import communityIcon from "../assets/images/communityIcon.svg";
+// images
+import saveInnLogo from '../assets/images/saveInnLogo.svg';
+import communityIcon from '../assets/images/communityIcon.svg';
 
+// css
 import '../App.css';
 
-function GroupsList() {
+function GroupsList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -26,7 +28,7 @@ function GroupsList() {
 
   async function handleRefresh() {
     try {
-      const endpoint = 'http://localhost:8080/group';
+      const endpoint = 'http://localhost:5000/user_group';
 
       const options = {
         method: 'GET',
@@ -36,7 +38,7 @@ function GroupsList() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      setGroupRecords(data);
+      setGroupRecords(data.rows);
     } catch (error) {
       console.log(error);
     }
@@ -44,13 +46,13 @@ function GroupsList() {
 
   async function handleAdd() {
     try {
-      const endpoint = 'http://localhost:8080/group';
+      const endpoint = 'http://localhost:5000/user_group';
 
       const body = {
         name,
         description,
         isPublic,
-      }
+      };
 
       const options = {
         method: 'POST',
@@ -64,6 +66,27 @@ function GroupsList() {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
+      const userGroupId = data.row.userGroupId;
+
+      const endpoint2 = 'http://localhost:5000/user_belongs_to_group';
+
+      const body2 = {
+        userGroupId,
+        saveinnUserId: auth.user.saveinnUserId,
+      };
+
+      const options2 = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body2),
+        credentials: 'include',
+      };
+
+      const res2 = await fetch(endpoint2, options2);
+      const data2 = await res2.json();
+
       handleClose();
       await handleRefresh();
     } catch (error) {
@@ -73,7 +96,7 @@ function GroupsList() {
 
   async function handleEdit() {
     try {
-      const endpoint = `http://localhost:8080/group/${groupId}`;
+      const endpoint = `http://localhost:5000/user_group/${groupId}`;
 
       const body = {
         name,
@@ -102,7 +125,7 @@ function GroupsList() {
 
   async function handleDelete(_groupId) {
     try {
-      const endpoint = `http://localhost:8080/group/${_groupId}`;
+      const endpoint = `http://localhost:5000/user_group/${_groupId}`;
 
       const options = {
         method: 'DELETE',
@@ -129,24 +152,6 @@ function GroupsList() {
 
   return (
     <Container fluid>
-      <Row>
-        <Navbar className="d-flex justify-content-between pt-4" style={{ backgroundColor: "#ffffff" }}>
-          <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
-                  <img 
-                  src= {saveInnLogo}
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top mx-2"
-                  alt="Save Inn logo"/>
-              Save Inn</Navbar.Brand>
-          </Container>
-          <Container fluid className="d-flex justify-content-end">
-              <Navbar.Text>Get your community involved!</Navbar.Text>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Create Group</Button>
-          </Container>
-        </Navbar>
-      </Row>
       <Row className='px-5 mt-3 d-flex justify-content-center'>
         <img 
           src= {communityIcon}
@@ -154,6 +159,11 @@ function GroupsList() {
           height="250"
           alt="CommunityIcon"/>
         <h2 className='d-flex justify-content-center mt-4 mb-5'>Groups</h2>
+      </Row>
+      <Row className='d-flex justify-content-center'>
+        <Col className='d-flex justify-content-center'>
+          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Create Group</Button>
+        </Col>
       </Row>
       <Row>
         <Col>
@@ -172,7 +182,7 @@ function GroupsList() {
                 <Row>
                   <Col>
                     <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
-                      setGroupId(groupRecord.id);
+                      setGroupId(groupRecord.userGroupId);
                       setName(groupRecord.name);
                       setDescription(groupRecord.description);
                       setIsPublic(groupRecord.isPublic);
@@ -180,10 +190,10 @@ function GroupsList() {
                     }}>
                       Edit
                     </Button>
-                    <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(groupRecord.id)}>Delete</Button>
+                    <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleDelete(groupRecord.userGroupId)}>Delete</Button>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <Link to={`/groups/${groupRecord.id}`}>View</Link>
+                    <Link to={`/groups/${groupRecord.userGroupId}`}>View</Link>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -201,13 +211,13 @@ function GroupsList() {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Create Group
+                Group
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-2">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Name*</Form.Label>
                   <Form.Control type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
                 </Form.Group>
 
@@ -223,7 +233,7 @@ function GroupsList() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Create'}</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()} disabled={!name}>{ showEditModal ? 'Edit' : 'Create'}</Button>
               <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>

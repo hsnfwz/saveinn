@@ -3,8 +3,8 @@ const AskQuestionModel = require('../models/ask_question_model');
 const AskQuestionController = {};
 
 AskQuestionController.handleGetAllRows = async (req, res, next) => {
-  const budgetMemberId = req.query.budgetMemberId;
-  const result = await AskQuestionModel.getAllRows(budgetMemberId);
+  const saveinnUserId = req.query.saveinnUserId;
+  const result = await AskQuestionModel.getAllRows(saveinnUserId);
   res.json(result);
 }
 

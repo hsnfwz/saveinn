@@ -49,7 +49,7 @@ function QuestionsList({ auth }) {
       const endpoint = 'http://localhost:5000/ask_question';
 
       const body = {
-        budgetMemberId: auth.user.budgetMemberId,
+        saveinnUserId: auth.user.saveinnUserId,
         title,
         description,
       }
@@ -78,7 +78,7 @@ function QuestionsList({ auth }) {
       const endpoint = `http://localhost:5000/ask_question/${questionId}`;
 
       const body = {
-        budgetMemberId: auth.user.budgetMemberId,
+        saveinnUserId: auth.user.saveinnUserId,
         title,
         description,
       }
@@ -130,24 +130,6 @@ function QuestionsList({ auth }) {
 
   return (
     <Container fluid >
-      <Row>
-        <Navbar className="d-flex justify-content-between pt-4" style={{ backgroundColor: "#ffffff" }}>
-          <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
-                  <img 
-                  src= {saveInnLogo}
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top mx-2"
-                  alt="Save Inn logo"/>
-              Save Inn</Navbar.Brand>
-          </Container>
-          <Container fluid className="d-flex justify-content-end">
-              <Navbar.Text>Have a question?</Navbar.Text>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Ask Question</Button>
-          </Container>
-        </Navbar>
-      </Row>
       <Row className='px-5 mt-3 d-flex justify-content-center'>
         <img 
           src={questionsIcon}
@@ -156,6 +138,12 @@ function QuestionsList({ auth }) {
           alt="Question Icon"/>
         <h2 className='d-flex justify-content-center mt-3 mb-5'>Questions</h2>
       </Row>
+      <Row className='d-flex justify-content-center'>
+        <Col className='d-flex justify-content-center'>
+          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Ask Question</Button>
+        </Col>
+      </Row>
+      <br />
       <Row>
         <Col>
           <ListGroup className='mx-5'>
@@ -171,7 +159,7 @@ function QuestionsList({ auth }) {
                 </Row>
                 <p>{ questionRecord.description }</p>
                 <Row>
-                  {(questionRecord.budgetMemberId === auth.user.budgetMemberId) && (
+                  {(questionRecord.saveinnUserId === auth.user.saveinnUserId) && (
                     <Col>
                       <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {
                         setQuestionId(questionRecord.askQuestionId);

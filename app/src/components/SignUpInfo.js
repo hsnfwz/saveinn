@@ -20,6 +20,18 @@ function SignUpInfo({ auth }) {
     const [yearsOfExperience, setYearsOfExperience] = useState(0);
     const [areaOfExpertise, setAreaOfExpertise] = useState('');
 
+    const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        const timeId = setTimeout(() => {
+            setErrorMessage('');
+        }, 3000);
+
+        return () => {
+            clearTimeout(timeId);
+        }
+    }, [errorMessage]);
+
     let navigate = useNavigate();
 
     const radioChange = (e) => e.target.value == "yes" ? setIsAssistant(true) : setIsAssistant(false);
@@ -28,17 +40,20 @@ function SignUpInfo({ auth }) {
         try {
             const endpoint = isAssistant ? 'http://localhost:5000/budget_assistant' : 'http://localhost:5000/budget_member';
       
-            const body = {
-                firstName,
-                lastName,
-                username,
-                email,
-                password,
-                postalCode,
-                employmentPosition,
-                yearsOfExperience,
-                areaOfExpertise,
-            };
+            const body = isAssistant
+                ? {
+                    firstName,
+                    lastName,
+                    postalCode,
+                    yearsOfExperience,
+                    areaOfExpertise,
+                }
+                : {
+                    firstName,
+                    lastName,
+                    postalCode,
+                    employmentPosition,
+                };
       
             const options = {
               method: 'POST',
@@ -51,8 +66,36 @@ function SignUpInfo({ auth }) {
       
             const res = await fetch(endpoint, options);
             const data = await res.json();
-      
-            navigate('/log-in', { replace: false });
+
+            console.log(data);
+
+            const endpoint2 = 'http://localhost:5000/saveinn_user';
+
+            const body2 = {
+                username,
+                email,
+                password,
+                budgetMemberId: data.row.budgetMemberId || null,
+                budgetAssistantId: data.row.budgetAssistantId || null,
+            };
+
+            const options2 = {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body2),
+                credentials: 'include',
+              };
+
+              const res2 = await fetch(endpoint2, options2);
+              const data2 = await res2.json();
+
+              if (data2.message !== 'Success') {
+                setErrorMessage(data2.message);
+              } else {
+                navigate('/log-in', { replace: false });
+              }
         } catch(error) {
             console.log(error);
         }
@@ -60,25 +103,21 @@ function SignUpInfo({ auth }) {
 
     return(
         <Container fluid className="px-5 py-3">
-            <Navbar className="d-flex justify-content-between">
-                <Container fluid>
-                    <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/">
-                        <img 
-                        src= {saveInnLogo}
-                        width="50"
-                        height="50"
-                        className="d-inline-block align-top mx-2"
-                        alt="Save Inn logo"/>
-                    </Navbar.Brand>
-                </Container>
-                <Container fluid className="d-flex justify-content-end">
-                    <Navbar.Text>Already have an account?</Navbar.Text>
-                    <Button type="button" className="btn btn-light m-2" onClick={() => navigate("/log-in", { replace: false })}>Log In</Button>
-                </Container>
-            </Navbar>
             <Container fluid className="d-flex flex-column justify-content-center align-items-center">
-                <Form style={{ width: '50vh' }}>
+                <Form style={{ width: '30vw' }}>
                     <Form.Label className="d-flex justify-content-center h4">Sign Up</Form.Label>
+                    <br />
+                    <div className="d-flex justify-content-center">
+                        <div className="d-flex align-items-center">
+                            <Form.Label>Already have an account?</Form.Label>
+                        </div>
+                        <div>
+                            <Button type="button" className="btn btn-light m-2" onClick={() => navigate("/log-in", { replace: false })}>Log In</Button>
+                        </div>
+                    </div>
+                    <br />
+                        <div className="d-flex justify-content-center">{errorMessage}</div>
+                    <br />
                     <Form.Group className="my-2">
                         <Form.Label>Username*</Form.Label>
                         <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)} className="formInput"/>
@@ -130,7 +169,8 @@ function SignUpInfo({ auth }) {
                             <Form.Control type="text" value={employmentPosition} placeholder="Employment" onChange={(e)=>setEmploymentPosition(e.target.value)} className="formInput"/>
                         </Form.Group>
                     )}
-                    <Button type="button" className="btn btn-secondary saveBtns my-2 formInput" disabled={!firstName || !lastName || !username || !email || !password || !postalCode} onClick={async () => await handleSignUp()}>Sign Up</Button>
+                    <br />
+                    <Button type="button" className="btn btn-secondary saveBtns" disabled={!firstName || !lastName || !username || !email || !password || !postalCode} onClick={async () => await handleSignUp()}>Sign Up</Button>
                 </Form>
             </Container>
         </Container>

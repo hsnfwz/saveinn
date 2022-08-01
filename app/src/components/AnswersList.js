@@ -34,7 +34,7 @@ function AnswersList({ auth }) {
 
     try {
       const endpoint1 = `http://localhost:5000/ask_question/${askQuestionId}`;
-      const endpoint2 = 'http://localhost:5000/answer';
+      const endpoint2 = `http://localhost:5000/answer?askQuestionId=${askQuestionId}`;
 
       const options = {
         method: 'GET',
@@ -61,7 +61,7 @@ function AnswersList({ auth }) {
       const endpoint = 'http://localhost:5000/answer';
 
       const body = {
-        budgetMemberId: auth.user.budgetMemberId,
+        saveinnUserId: auth.user.saveinnUserId,
         askQuestionId,
         title,
         description,
@@ -93,7 +93,7 @@ function AnswersList({ auth }) {
       const endpoint = `http://localhost:5000/answer/${answerId}`;
 
       const body = {
-        budgetMemberId: auth.user.budgetMemberId,
+        saveinnUserId: auth.user.saveinnUserId,
         askQuestionId,
         title,
         description,
@@ -146,26 +146,6 @@ function AnswersList({ auth }) {
 
   return (
     <Container fluid>
-      <Navbar className="d-flex justify-content-between pt-4">
-        <Container fluid>
-            <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
-                <img 
-                src= {saveInnLogo}
-                width="50"
-                height="50"
-                className="d-inline-block align-top mx-2"
-                alt="Save Inn logo"/>
-            Save Inn</Navbar.Brand>
-        </Container>
-        <Container fluid className="d-flex justify-content-end">
-            <Navbar.Text>Go back to <a href='/questions'>All Questions</a></Navbar.Text>
-        </Container>
-      </Navbar>
-      <Row className='px-5 mt-3'>
-        <Col className=' d-flex justify-content-end'>
-          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Answer Question</Button>
-        </Col>
-      </Row>
       <Row className='px-5 mt-3 d-flex justify-content-center'>
         <img 
           src={questionsIcon}
@@ -174,6 +154,12 @@ function AnswersList({ auth }) {
           alt="Question Icon"/>
         <h2 className='d-flex justify-content-center mt-3 mb-5'>Answers</h2>
       </Row>
+      <Row className='d-flex justify-content-center'>
+        <Col className='d-flex justify-content-center'>
+          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Answer Question</Button>
+        </Col>
+      </Row>
+      <br />
       <Row>
         <Col>
           <ListGroup className='mx-5'>
@@ -208,7 +194,7 @@ function AnswersList({ auth }) {
                       </Col>
                     </Row>
                     <p>{ answerRecord.description }</p>
-                    {answerRecord.budgetMemberId === auth.user.budgetMemberId && (
+                    {answerRecord.saveinnUserId === auth.user.saveinnUserId && (
                       <Row>
                         <Col>
                           <Button type="button" className="btn btn-secondary blueBtns m-2" style={{ fontWeight: "normal" }} onClick={() => {

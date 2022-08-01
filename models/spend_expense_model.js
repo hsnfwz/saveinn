@@ -2,13 +2,13 @@ const pool = require('../pg');
 
 const SpendExpenseModel = {};
 
-SpendExpenseModel.getAllRows = async (budgetMemberId) => {
+SpendExpenseModel.getAllRows = async (saveinnUserId) => {
   try {
     let rows = [];
 
-    if (budgetMemberId) {
-      const poolQuery = 'SELECT title, description, category, amount, spend_expense_id AS "spendExpenseId" FROM spend_expense WHERE budget_member_id=$1';
-      const { rows: _rows } = await pool.query(poolQuery, [budgetMemberId]);
+    if (saveinnUserId) {
+      const poolQuery = 'SELECT title, description, category, amount, spend_expense_id AS "spendExpenseId" FROM spend_expense WHERE saveinn_user_id=$1';
+      const { rows: _rows } = await pool.query(poolQuery, [saveinnUserId]);
       rows = _rows;
     } else {
       const poolQuery = 'SELECT title, description, category, amount, spend_expense_id AS "spendExpenseId" FROM spend_expense';
@@ -34,7 +34,7 @@ SpendExpenseModel.getRowById = async (spendExpenseId) => {
 
 SpendExpenseModel.insertRow = async (data) => {
   const {
-    budgetMemberId,
+    saveinnUserId,
     amount,
     title,
     description,
@@ -42,8 +42,8 @@ SpendExpenseModel.insertRow = async (data) => {
   } = data;
 
   try {
-    const poolQuery = 'INSERT INTO spend_expense (budget_member_id, amount, title, description, category) VALUES ($1, $2, $3, $4, $5)';
-    const { rows } = await pool.query(poolQuery, [budgetMemberId, amount, title, description, category]);
+    const poolQuery = 'INSERT INTO spend_expense (saveinn_user_id, amount, title, description, category) VALUES ($1, $2, $3, $4, $5)';
+    const { rows } = await pool.query(poolQuery, [saveinnUserId, amount, title, description, category]);
     return { message: 'Success', rows };
   } catch(error) {
     return { message: error, rows: [] };
@@ -52,7 +52,7 @@ SpendExpenseModel.insertRow = async (data) => {
 
 SpendExpenseModel.updateRowById = async (spendExpenseId, data) => {
   const {
-    budgetMemberId,
+    saveinnUserId,
     amount,
     title,
     description,
@@ -60,8 +60,8 @@ SpendExpenseModel.updateRowById = async (spendExpenseId, data) => {
   } = data;
 
   try {
-    const poolQuery = 'UPDATE spend_expense SET (budget_member_id, amount, title, description, category) = ($1, $2, $3, $4, $5) WHERE spend_expense_id=$6';
-    const { rows } = await pool.query(poolQuery, [budgetMemberId, amount, title, description, category, spendExpenseId]);
+    const poolQuery = 'UPDATE spend_expense SET (saveinn_user_id, amount, title, description, category) = ($1, $2, $3, $4, $5) WHERE spend_expense_id=$6';
+    const { rows } = await pool.query(poolQuery, [saveinnUserId, amount, title, description, category, spendExpenseId]);
     return { message: 'Success', rows };
   } catch(error) {
     return { message: error, rows: [] };

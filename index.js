@@ -4,14 +4,11 @@ const express = require('express');
 const expressSession = require('express-session');
 const pgSession = require('connect-pg-simple')(expressSession);
 
-// app - utilities
-const authentication = require('./utilities/authentication');
-const encryption = require ('./utilities/encryption');
-
 // app - pg
 const pool = require('./pg');
 
 // app - routes
+const saveinnUserRoutes = require('./routes/saveinn_user_routes');
 const budgetMemberRoutes = require('./routes/budget_member_routes');
 const memberLocationRoutes = require('./routes/member_location_routes');
 const budgetAssistantRoutes = require('./routes/budget_assistant_routes');
@@ -25,8 +22,8 @@ const budgetPlanDurationRoutes = require('./routes/budget_plan_duration_routes')
 const setBudgetGoalRoutes = require('./routes/set_budget_goal_routes');
 const budgetGoalDurationRoutes = require('./routes/budget_goal_duration_routes');
 const planHasGoalRoutes = require('./routes/plan_has_goal_routes');
-const budgetMemberGroupRoutes = require('./routes/budget_member_group_routes');
-const budgetMemberBelongsToGroupRoutes = require('./routes/budget_member_belongs_to_group_routes');
+const userGroupRoutes = require('./routes/user_group_routes');
+const userBelongsToGroupRoutes = require('./routes/user_belongs_to_group_routes');
 
 // app - server
 const app = express();
@@ -48,65 +45,8 @@ app.use(expressSession({
   cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },
 }));
 
-// app - routes (authentication)
-app.get('/user', authentication.isAuthenticated, async (req, res, next) => {
-  return res.json({ message: 'Authenticated', user: req.session.user });
-});
-
-app.post('/user/sign_in', async (req, res, next) => {
-  const { email, password } = req.body;
-
-  try {
-    const poolQuery1 = 'SELECT budget_member_id AS "budgetMemberId", email, username, salt, hash FROM budget_member WHERE email=$1'
-    const { rows: rows1 } = await pool.query(poolQuery1, [email]);
-  
-    const poolQuery2 = 'SELECT budget_assistant_id AS "budgetAssistantId", email, username, salt, hash FROM budget_assistant WHERE email=$1'
-    const { rows: rows2 } = await pool.query(poolQuery2, [email]);
-  
-    if ((rows1.length === 0) && (rows2.length === 0)) return res.json({ message: `An account with email ${email} does not exist.`, user: undefined });
-
-    if (rows1.length > 0) {
-      const isValid = encryption.validatePassword(password, rows1[0].hash, rows1[0].salt);
-
-      if (!isValid) return res.json({ message: 'Password is incorrect.', user: undefined });
-
-      req.session.user = {
-        budgetMemberId: rows1[0].budgetMemberId,
-        email: rows1[0].email,
-        username: rows1[0].username,
-      };
-    
-      return res.json({ message: `Signed in as ${rows1[0].email}`, user: req.session.user });
-    } else if (rows2.length > 0) {
-      const isValid = encryption.validatePassword(password, rows2[0].hash, rows2[0].salt);
-      
-      if (!isValid) return res.json({ message: 'Password is incorrect.', user: undefined });
-    
-      req.session.user = {
-        budgetAssistantId: rows2[0].budgetAssistantId,
-        email: rows2[0].email,
-        username: rows2[0].username,
-      };
-    
-      return res.json({ message: `Signed in as ${rows2[0].email}`, user: req.session.user });
-    }
-  } catch(error) {
-    return res.json({ message: error, user: undefined });
-  }
-});
-
-app.delete('/user/sign_out', async (req, res, next) => {
-  try {
-    req.session.destroy((error) => {
-      if (error) console.log(error);
-      return res.json({ message: 'Signed out.', user: undefined });
-    });
-  } catch(error) {
-    return res.json({ message: error, user: undefined });
-  }
-});
-
 // app - routes (relations)
+app.use('/saveinn_user', saveinnUserRoutes);
 app.use('/budget_member', budgetMemberRoutes);
 app.use('/member_location', memberLocationRoutes);
 app.use('/budget_assistant', budgetAssistantRoutes);
@@ -120,8 +60,8 @@ app.use('/budget_plan_duration', budgetPlanDurationRoutes);
 app.use('/set_budget_goal', setBudgetGoalRoutes);
 app.use('/budget_goal_duration', budgetGoalDurationRoutes);
 app.use('/plan_has_goal', planHasGoalRoutes);
-app.use('/budget_member_group', budgetMemberGroupRoutes);
-app.use('/budget_member_belongs_to_group', budgetMemberBelongsToGroupRoutes);
+app.use('/user_group', userGroupRoutes);
+app.use('/user_belongs_to_group', userBelongsToGroupRoutes);
 
 // app - run
 const PORT = process.env.PORT || 5000;

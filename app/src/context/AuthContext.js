@@ -12,7 +12,7 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     (async function() {
       try {
-        const endpoint = 'http://localhost:5000/user';
+        const endpoint = 'http://localhost:5000/saveinn_user/user/auth';
 
         const options = {
           method: 'GET',
@@ -25,9 +25,6 @@ export default function AuthProvider({ children }) {
         setUser(data.user);
         setAuthMessage(data.message);
         setIsAuthenticating(false);
-
-        // console.log('[user]:', data.user);
-        // console.log('[message]:', data.message); 
       } catch(error) {
         console.log(error);
       }
@@ -36,7 +33,7 @@ export default function AuthProvider({ children }) {
 
   async function signIn(email, password) {
     try {
-      const endpoint = 'http://localhost:5000/user/sign_in';
+      const endpoint = 'http://localhost:5000/saveinn_user/user/sign_in';
 
       const body = {
         email,
@@ -57,9 +54,6 @@ export default function AuthProvider({ children }) {
 
       setUser(data.user);
       setSignInMessage(data.message);
-
-      // console.log('[user]:', data.user);
-      // console.log('[message]:', data.message);
     } catch(error) {
       console.log(error);
     }
@@ -67,7 +61,7 @@ export default function AuthProvider({ children }) {
 
   async function signOut() {
     try {
-      const endpoint = 'http://localhost:5000/user/sign_out';
+      const endpoint = 'http://localhost:5000/saveinn_user/user/sign_out';
 
       const options = {
         method: 'DELETE',
@@ -80,16 +74,13 @@ export default function AuthProvider({ children }) {
       setUser(data.user);
       setSignOutMessage(data.message);
       setSignInMessage('');
-
-      // console.log('[user]:', data.user);
-      // console.log('[message]:', data.message);
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticating, authMessage, signInMessage, signOutMessage, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, isAuthenticating, authMessage, signInMessage, signOutMessage, signIn, signOut, setAuthMessage, setSignInMessage, setSignOutMessage }}>
       { children }
     </AuthContext.Provider>
   );

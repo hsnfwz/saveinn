@@ -1,102 +1,133 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Button, Modal, Form, Navbar } from 'react-bootstrap';
 
-import saveInnLogo from "../assets/images/saveInnLogo.svg";
-import userIcon from "../assets/images/userIcon.svg";
+// images
+import userIcon from '../assets/images/userIcon.svg';
+import userAssistantIcon from '../assets/images/userAssistantIcon.svg';
+import communityIcon from '../assets/images/communityIcon.svg';
 
+// css
 import '../App.css';
 
-const projectedData = [
-  {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-  },
-  {
-    id: 2,
-    firstName: 'Sarah',
-    lastName: 'Shaw',
-  },
-];
-
-function GroupMembersList() {
+function GroupMembersList({ auth }) {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
 
   const [fullName, setFullName] = useState('');
 
+  const [groupMemberRecords, setGroupMemberRecords] = useState([]);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    (async function() {
+      await handleRefresh();
+    }());
+  }, []);
+
   async function handleRefresh() {
-    // send request
+    const userGroupId = location.pathname.split('/')[2];
+
+    try {
+      const endpoint = `http://localhost:5000/user_belongs_to_group?userGroupId=${userGroupId}`;
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      const endpoint2 = data.rows[0].budgetMemberId
+        ? `http://localhost:5000/budget_member/${data.rows[0].budgetMemberId}`
+        : `http://localhost:5000/budget_member/${data.rows[0].budgetAssistantId}`
+
+      const res2 = await fetch(endpoint2, options);
+      const data2 = await res2.json();
+
+      setGroupMemberRecords([data2.row]);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleAdd() {
-    console.log('fullName', fullName);
+    // try {
+    //   const endpoint = 'http://localhost:5000/user_belongs_to_group';
 
-    // send request
+    //   const body = {
+    //     name,
+    //     description,
+    //     isPublic,
+    //   }
 
-    handleClose();
-    handleRefresh();
+    //   const options = {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(body),
+    //     credentials: 'include',
+    //   };
+
+    //   const res = await fetch(endpoint, options);
+    //   const data = await res.json();
+
+    //   handleClose();
+    //   await handleRefresh();
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 
-  async function handleEdit() {
+  async function handleDelete(userGroupId, saveinnUserId) {
+    try {
+      const endpoint = `http://localhost:5000/user_belongs_to_group/${userGroupId}/${saveinnUserId}`;
 
-    // send request
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
 
-    handleClose();
-    handleRefresh();
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function handleDelete(projectedData) {
-    console.log(projectedData);
-
-    // send request
-
-    handleRefresh();
-  }
 
   function handleClose() {
     setShowAddModal(false);
-    setShowEditModal(false);
   }
 
   return (
     <Container fluid>
-      <Row>
-        <Navbar className="d-flex justify-content-between pt-4" style={{ backgroundColor: "#ffffff" }}>
-          <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
-                  <img 
-                  src= {saveInnLogo}
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top mx-2"
-                  alt="Save Inn logo"/>
-              Save Inn</Navbar.Brand>
-          </Container>
-          <Container fluid className="d-flex justify-content-end">
-              <Navbar.Text>Know of new savers?</Navbar.Text>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Add Group Member</Button>
-          </Container>
-        </Navbar>
+      <Row className='px-5 mt-3 d-flex justify-content-center'>
+        <img 
+          src= {communityIcon}
+          width="320"
+          height="250"
+          alt="CommunityIcon"/>
+        <h2 className='d-flex justify-content-center mt-4 mb-5'>Group Members</h2>
       </Row>
-      <Row className='mx-5 mt-3 px-5'>
-        <Col>
-          <h1>Group Members</h1>
-        </Col>
-        <Col className='d-flex justify-content-end align-items-end'>
-          <Link to={`/groups`}>Go back to Groups</Link>
+      <Row className='d-flex justify-content-center'>
+        <Col className='d-flex justify-content-center'>
+          <Button type="button" className="btn btn-secondary saveBtns m-2" onClick={() => setShowAddModal(true)}>Add Group Member</Button>
         </Col>
       </Row>
       <Row className='mx-5 mt-3 px-5'>
         <Col>
           <ListGroup>
-            {projectedData.map((projectedData, index) => (
+            {groupMemberRecords.map((groupMemberRecord, index) => (
               <ListGroup.Item key={index}>
                 <Row className='d-flex align-items-center'>
                   <Col md="auto">
                     <img
-                    src= {userIcon}
+                    src={groupMemberRecord.budgetMemberId ? userIcon : userAssistantIcon}
                     width="50"
                     height="50"
                     className="mx-2"
@@ -104,11 +135,11 @@ function GroupMembersList() {
                     />
                   </Col>
                   <Col className='d-flex flex-row align-items-center pt-2'>
-                    <h6 className='me-1'>{ projectedData.firstName }</h6>
-                    <h6>{ projectedData.lastName }</h6>
+                    <h6 className='me-1'>{ groupMemberRecord.firstName }</h6>
+                    <h6>{ groupMemberRecord.lastName }</h6>
                   </Col>
                   <Col className='d-flex justify-content-end'>
-                    <Button type="button" onClick={async () => await handleDelete(projectedData)}>Delete</Button>
+                    <Button type="button" className="btn-danger" onClick={async () => await handleDelete(groupMemberRecord.userGroupId, groupMemberRecord.saveinnUserId)}>Delete</Button>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -121,7 +152,7 @@ function GroupMembersList() {
           <Modal
             size="lg"
             centered
-            show={showEditModal ? showEditModal : showAddModal}
+            show={showAddModal}
             onHide={() => handleClose()}
           >
             <Modal.Header closeButton>
@@ -132,14 +163,14 @@ function GroupMembersList() {
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-2">
-                  <Form.Label>Full Name</Form.Label>
+                  <Form.Label>Name</Form.Label>
                   <Form.Control type="text" placeholder="Name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
                 </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => showEditModal ? handleEdit() : handleAdd()}>{ showEditModal ? 'Edit' : 'Add'}</Button>
-              <Button type="button" className="btn btn-danger m-2" onClick={async () => await handleClose()}>Close</Button>
+              <Button type="button" className="btn btn-secondary saveBtns m-2" style={{ fontWeight: "normal" }} onClick={() => handleAdd()}>Add</Button>
+              <Button type="button" className="btn btn-danger m-2" onClick={() => handleClose()}>Close</Button>
             </Modal.Footer>
           </Modal>
         </Col>

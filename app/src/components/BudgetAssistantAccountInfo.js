@@ -46,14 +46,19 @@ function BudgetAssistantAccountInfo({ auth }) {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      if (data.row) {
-        setUsername(data.row.username);
-        setEmail(data.row.email);
+      const endpoint2 = `http://localhost:5000/saveinn_user/${auth.user.saveinnUserId}`;
+
+      const res2 = await fetch(endpoint2, options);
+      const data2 = await res2.json();
+
+      if (data.row && data2.row) {
         setFirstName(data.row.firstName);
         setLastName(data.row.lastName);
         setPostalCode(data.row.postalCode);
         setAreaOfExpertise(data.row.areaOfExpertise);
         setYearsOfExperience(data.row.yearsOfExperience);
+        setUsername(data2.row.username);
+        setEmail(data2.row.email);
       }
     } catch (error) {
       console.log(error);
@@ -94,7 +99,7 @@ function BudgetAssistantAccountInfo({ auth }) {
 
   async function handleEditUsername() {
     try {
-      const endpoint = `http://localhost:5000/budget_assistant/update_username/${auth.user.budgetAssistantId}`;
+      const endpoint = `http://localhost:5000/saveinn_user/update_username/${auth.user.saveinnUserId}`;
 
       const body = {
         username,
@@ -126,7 +131,7 @@ function BudgetAssistantAccountInfo({ auth }) {
 
   async function handleEditEmail() {
     try {
-      const endpoint = `http://localhost:5000/budget_assistant/update_email/${auth.user.budgetAssistantId}`;
+      const endpoint = `http://localhost:5000/saveinn_user/update_email/${auth.user.saveinnUserId}`;
 
       const body = {
         email,
@@ -158,7 +163,7 @@ function BudgetAssistantAccountInfo({ auth }) {
 
   async function handleEditPassword() {
     try {
-      const endpoint = `http://localhost:5000/budget_assistant/update_password/${auth.user.budgetAssistantId}`;
+      const endpoint = `http://localhost:5000/saveinn_user/update_password/${auth.user.saveinnUserId}`;
 
       const body = {
         password,
@@ -209,23 +214,6 @@ function BudgetAssistantAccountInfo({ auth }) {
 
   return (
     <Container fluid style={{ height: '100vh' }}> 
-      <Row>
-        <Navbar className="d-flex justify-content-between py-4" style={{ backgroundColor: "#ffffff" }}>
-          <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
-                  <img 
-                  src= {saveInnLogo}
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top mx-2"
-                  alt="Save Inn logo"/>
-              Save Inn</Navbar.Brand>
-          </Container>
-          <Container fluid className="d-flex justify-content-end">
-            <Button type="button" className="btn btn-secondary saveBtns px-5" onClick={() => navigate("/")}>Log Out</Button>
-          </Container>
-        </Navbar>
-      </Row>
       <Row>
         <Row>
           <Col className='d-flex align-items-center justify-content-center pt-2'>

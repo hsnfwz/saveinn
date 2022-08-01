@@ -8,7 +8,6 @@ import { AuthContext } from '../context/AuthContext';
 // components
 import IncomeTransactionsList from '../components/IncomeTransactionsList';
 import ExpenseTransactionsList from '../components/ExpenseTransactionsList';
-import DashboardInfo from '../components/DashboardInfo';
 import LoadingInfo from '../components/LoadingInfo';
 
 function DashboardLayout() {
@@ -20,22 +19,19 @@ function DashboardLayout() {
         <LoadingInfo />
       )}
 
-      {!auth.isAuthenticating && auth.user && ( 
-        <Container fluid>
-          <Row>
-            <Col>
-              <DashboardInfo auth={auth} />
-            </Col>
-          </Row>
-          <Row className="px-4">
-            <Col>
-              <IncomeTransactionsList auth={auth} />
-            </Col>
-            <Col>
-              <ExpenseTransactionsList auth={auth} />
-            </Col>
-          </Row>
-        </Container>
+      {!auth.isAuthenticating && auth.user && (
+        <>
+          <Container fluid>
+            <Row className="px-4">
+              <Col>
+                <IncomeTransactionsList auth={auth} />
+              </Col>
+              <Col>
+                <ExpenseTransactionsList auth={auth} />
+              </Col>
+            </Row>
+          </Container>
+        </>
       )}
 
       {!auth.isAuthenticating && !auth.user && (

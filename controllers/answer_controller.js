@@ -3,8 +3,8 @@ const AnswerModel = require('../models/answer_model');
 const AnswerController = {};
 
 AnswerController.handleGetAllRows = async (req, res, next) => {
-  const budgetMemberId = req.query.budgetMemberId;
-  const result = await AnswerModel.getAllRows(budgetMemberId);
+  const askQuestionId = req.query.askQuestionId;
+  const result = await AnswerModel.getAllRows(askQuestionId);
   res.json(result);
 }
 

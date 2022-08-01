@@ -20,23 +20,27 @@ function AccountLayout() {
             )}
 
             {!auth.isAuthenticating && auth.user && auth.user.budgetMemberId && (
-                <Container fluid>
-                    <Col>
-                        <Row>
-                            <BudgetMemberAccountInfo auth={auth} />
-                        </Row>
-                    </Col>
-                </Container>
+                <>
+                    <Container fluid>
+                        <Col>
+                            <Row>
+                                <BudgetMemberAccountInfo auth={auth} />
+                            </Row>
+                        </Col>
+                    </Container>
+                </>
             )}
 
             {!auth.isAuthenticating && auth.user && auth.user.budgetAssistantId && (
-                <Container fluid>
-                    <Col>
-                        <Row>
-                            <BudgetAssistantAccountInfo auth={auth} />
-                        </Row>
-                    </Col>
-                </Container>
+                <>
+                    <Container fluid>
+                        <Col>
+                            <Row>
+                                <BudgetAssistantAccountInfo auth={auth} />
+                            </Row>
+                        </Col>
+                    </Container>
+                </>
             )}
 
             {!auth.isAuthenticating && !auth.user && (

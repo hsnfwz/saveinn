@@ -3,8 +3,8 @@ const SpendExpenseModel = require('../models/spend_expense_model');
 const SpendExpenseController = {};
 
 SpendExpenseController.handleGetAllRows = async (req, res, next) => {
-  const budgetMemberId = req.query.budgetMemberId;
-  const result = await SpendExpenseModel.getAllRows(budgetMemberId);
+  const saveinnUserId = req.query.saveinnUserId;
+  const result = await SpendExpenseModel.getAllRows(saveinnUserId);
   res.json(result);
 }
 

@@ -24,23 +24,23 @@ BudgetMemberController.handleUpdateRowById = async (req, res, next) => {
   res.json(result);
 }
 
-BudgetMemberController.handleUpdateEmail = async (req, res, next) => {
-  const budgetMemberId = req.params.id;
-  const result = await BudgetMemberModel.updateEmail(budgetMemberId, req.body);
-  res.json(result);
-}
+// BudgetMemberController.handleUpdateEmail = async (req, res, next) => {
+//   const budgetMemberId = req.params.id;
+//   const result = await BudgetMemberModel.updateEmail(budgetMemberId, req.body);
+//   res.json(result);
+// }
 
-BudgetMemberController.handleUpdateUsername = async (req, res, next) => {
-  const budgetMemberId = req.params.id;
-  const result = await BudgetMemberModel.updateUsername(budgetMemberId, req.body);
-  res.json(result);
-}
+// BudgetMemberController.handleUpdateUsername = async (req, res, next) => {
+//   const budgetMemberId = req.params.id;
+//   const result = await BudgetMemberModel.updateUsername(budgetMemberId, req.body);
+//   res.json(result);
+// }
 
-BudgetMemberController.handleUpdatePassword = async (req, res, next) => {
-  const budgetMemberId = req.params.id;
-  const result = await BudgetMemberModel.updatePassword(budgetMemberId, req.body);
-  res.json(result);
-}
+// BudgetMemberController.handleUpdatePassword = async (req, res, next) => {
+//   const budgetMemberId = req.params.id;
+//   const result = await BudgetMemberModel.updatePassword(budgetMemberId, req.body);
+//   res.json(result);
+// }
 
 BudgetMemberController.handleDeleteRowById = async (req, res, next) => {
   const budgetMemberId = req.params.id;

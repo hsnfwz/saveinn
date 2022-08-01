@@ -2,13 +2,13 @@ const pool = require('../pg');
 
 const EarnIncomeModel = {};
 
-EarnIncomeModel.getAllRows = async (budgetMemberId) => {
+EarnIncomeModel.getAllRows = async (saveinnUserId) => {
   try {
     let rows = [];
 
-    if (budgetMemberId) {
-      const poolQuery = 'SELECT title, description, category, amount, earn_income_id AS "earnIncomeId" FROM earn_income WHERE budget_member_id=$1';
-      const { rows: _rows } = await pool.query(poolQuery, [budgetMemberId]);
+    if (saveinnUserId) {
+      const poolQuery = 'SELECT title, description, category, amount, earn_income_id AS "earnIncomeId" FROM earn_income WHERE saveinn_user_id=$1';
+      const { rows: _rows } = await pool.query(poolQuery, [saveinnUserId]);
       rows = _rows;
     } else {
       const poolQuery = 'SELECT title, description, category, amount, earn_income_id AS "earnIncomeId" FROM earn_income';
@@ -34,7 +34,7 @@ EarnIncomeModel.getRowById = async (earnIncomeId) => {
 
 EarnIncomeModel.insertRow = async (data) => {
   const {
-    budgetMemberId,
+    saveinnUserId,
     amount,
     title,
     description,
@@ -42,8 +42,8 @@ EarnIncomeModel.insertRow = async (data) => {
   } = data;
 
   try {
-    const poolQuery = 'INSERT INTO earn_income (budget_member_id, amount, title, description, category) VALUES ($1, $2, $3, $4, $5)';
-    const { rows } = await pool.query(poolQuery, [budgetMemberId, amount, title, description, category]);
+    const poolQuery = 'INSERT INTO earn_income (saveinn_user_id, amount, title, description, category) VALUES ($1, $2, $3, $4, $5)';
+    const { rows } = await pool.query(poolQuery, [saveinnUserId, amount, title, description, category]);
     return { message: 'Success', rows };
   } catch(error) {
     return { message: error, rows: [] };
@@ -52,7 +52,7 @@ EarnIncomeModel.insertRow = async (data) => {
 
 EarnIncomeModel.updateRowById = async (earnIncomeId, data) => {
   const {
-    budgetMemberId,
+    saveinnUserId,
     amount,
     title,
     description,
@@ -60,8 +60,8 @@ EarnIncomeModel.updateRowById = async (earnIncomeId, data) => {
   } = data;
 
   try {
-    const poolQuery = 'UPDATE earn_income SET (budget_member_id, amount, title, description, category) = ($1, $2, $3, $4, $5) WHERE earn_income_id=$6';
-    const { rows } = await pool.query(poolQuery, [budgetMemberId, amount, title, description, category, earnIncomeId]);
+    const poolQuery = 'UPDATE earn_income SET (saveinn_user_id, amount, title, description, category) = ($1, $2, $3, $4, $5) WHERE earn_income_id=$6';
+    const { rows } = await pool.query(poolQuery, [saveinnUserId, amount, title, description, category, earnIncomeId]);
     return { message: 'Success', rows };
   } catch(error) {
     return { message: error, rows: [] };

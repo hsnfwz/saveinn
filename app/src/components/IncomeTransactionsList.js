@@ -5,6 +5,9 @@ import moment from 'moment';
 // context
 import { AuthContext } from '../context/AuthContext';
 
+// images
+import creditCardIconGreen from '../assets/images/creditCardIconGreen.svg';
+
 // helpers
 import { currencyFormat } from '../helpers';
 
@@ -30,7 +33,7 @@ function IncomeTransactionsList() {
 
   async function handleRefresh() {
     try {
-      const endpoint = `http://localhost:5000/earn_income?budgetMemberId=${auth.user.budgetMemberId}`;
+      const endpoint = `http://localhost:5000/earn_income?saveinnUserId=${auth.user.saveinnUserId}`;
 
       const options = {
         method: 'GET',
@@ -51,7 +54,7 @@ function IncomeTransactionsList() {
       const endpoint = 'http://localhost:5000/earn_income';
 
       const body = {
-        budgetMemberId: auth.user.budgetMemberId,
+        saveinnUserId: auth.user.saveinnUserId,
         title,
         description,
         category,
@@ -82,7 +85,7 @@ function IncomeTransactionsList() {
       const endpoint = `http://localhost:5000/earn_income/${incomeId}`;
 
       const body = {
-        budgetMemberId: auth.user.budgetMemberId,
+        saveinnUserId: auth.user.saveinnUserId,
         title,
         description,
         category,
@@ -138,11 +141,20 @@ function IncomeTransactionsList() {
 
   return (
     <Container fluid>
+      <Row className='px-5 mt-3 d-flex justify-content-center'>
+        <img 
+          src={creditCardIconGreen}
+          width="200"
+          height="200"
+          alt="Credit Card Icon"/>
+        <h2 className='d-flex justify-content-center mt-3 mb-5'>Income Transactions</h2>
+      </Row>      
       <Row>
-        <Col className='d-flex justify-content-end'>
+        <Col className='d-flex justify-content-center'>
           <Button type="button" className="btn btn-secondary saveBtns my-2" onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
         </Col>
       </Row>
+      <br />
       <Row>
         <Col>
           <Table striped bordered hover>

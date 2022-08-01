@@ -39,20 +39,6 @@ function BudgetAssistantsList({ auth }) {
 
   return (
     <Container fluid>
-      <Row>
-        <Navbar className="d-flex justify-content-between py-4" style={{ backgroundColor: "#ffffff" }}>
-          <Container fluid>
-              <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
-                  <img 
-                  src= {saveInnLogo}
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top mx-2"
-                  alt="Save Inn logo"/>
-              Save Inn</Navbar.Brand>
-          </Container>
-        </Navbar>
-      </Row>
       <Row className='px-5 mt-3 d-flex justify-content-center'>
         <img 
           src= {membersIcon}
