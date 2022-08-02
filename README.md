@@ -1,5 +1,5 @@
 # Save Inn
-CMPT 354 Group Project.
+CMPT 354 Group 23.
 
 Developed by Hussein Fawaz, Juan Antonio Gonzalez, and Mohammad Ziaei.
 
