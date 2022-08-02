@@ -97,77 +97,66 @@ function SignUpInfo({ auth }) {
     }
 
     return(
-        <Container fluid className="px-5 py-3">
-            <Container fluid className="d-flex flex-column justify-content-center align-items-center">
-                <Form style={{ width: '30vw' }}>
-                    <Form.Label className="d-flex justify-content-center h4">Sign Up</Form.Label>
-                    <br />
-                    <div className="d-flex justify-content-center">
-                        <div className="d-flex align-items-center">
-                            <Form.Label>Already have an account?</Form.Label>
-                        </div>
-                        <div>
-                            <Button type="button" className="saveinn-green-btn" onClick={() => navigate("/log-in", { replace: false })}>Log In</Button>
-                        </div>
-                    </div>
-                    <br />
-                        <div className="d-flex justify-content-center">{errorMessage}</div>
-                    <br />
-                    <Form.Group className="my-2">
-                        <Form.Label>Username*</Form.Label>
-                        <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)} className="formInput"/>
+        <Container fluid className="d-flex flex-column justify-content-center align-items-center">
+            <h4>Sign Up</h4>                
+            <br />
+            <div className="d-flex justify-content-center">{ errorMessage }</div>
+            <br />
+            <Form>
+                <Form.Group className="my-2">
+                    <Form.Label>Username*</Form.Label>
+                    <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)} />
+                </Form.Group>
+                <Form.Group className="my-2">
+                    <Form.Label>Email*</Form.Label>
+                    <Form.Control type="email" value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
+                </Form.Group>
+                <Form.Group className="my-2">
+                    <Form.Label>Password*</Form.Label>
+                    <Form.Control type="password" value={password} placeholder="Password" onChange={(e)=>setPassword(e.target.value)} />
+                </Form.Group>
+                <div className="row">
+                    <Form.Group className="my-2 col">
+                        <Form.Label>First Name*</Form.Label>
+                        <Form.Control type="text" value={firstName} placeholder="First Name" onChange={(e)=>setFirstName(e.target.value)}/>
                     </Form.Group>
                     <Form.Group className="my-2 col">
-                        <Form.Label>Email*</Form.Label>
-                        <Form.Control type="email" value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
+                        <Form.Label>Last Name*</Form.Label>
+                        <Form.Control type="text" value={lastName} placeholder="Last Name" onChange={(e)=>setLastName(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group className="my-2">
-                        <Form.Label>Password*</Form.Label>
-                        <Form.Control type="password" value={password} placeholder="Password" onChange={(e)=>setPassword(e.target.value)} className="formInput"/>
-                    </Form.Group>
-                    <div className="row">
+                </div>
+                <Form.Group className="my-2">
+                    <Form.Label>Postal Code*</Form.Label>
+                    <Form.Control type="text" value={postalCode} placeholder="Postal Code" onChange={(e)=>setPostalCode(e.target.value)}/>
+                </Form.Group>
+                <Form.Group className="my-2">
+                    <Form.Label>Are you a financial advisor?</Form.Label>
+                    <div>
+                        <Form.Check inline label="Yes" value="yes" name="assistant" type="radio" id="inline-radio-1" checked={isAssistant} onChange={radioChange}/>
+                        <Form.Check inline label="No" value="no" name="assistant" type="radio" id="inline-radio-2" checked={!isAssistant} onChange={radioChange}/>
+                    </div>
+                </Form.Group>
+                {isAssistant && (
+                    <div>
                         <Form.Group className="my-2 col">
-                            <Form.Label>First Name*</Form.Label>
-                            <Form.Control type="text" value={firstName} placeholder="First Name" onChange={(e)=>setFirstName(e.target.value)}/>
+                            <Form.Label>Area of Expertise</Form.Label>
+                            <Form.Control type="text" value={areaOfExpertise} placeholder="Area of Expertise" onChange={(e)=>setAreaOfExpertise(e.target.value)}/>
                         </Form.Group>
                         <Form.Group className="my-2 col">
-                            <Form.Label>Last Name*</Form.Label>
-                            <Form.Control type="text" value={lastName} placeholder="Last Name" onChange={(e)=>setLastName(e.target.value)}/>
+                            <Form.Label>Years of Experience</Form.Label>
+                            <Form.Control type="number" value={yearsOfExperience} placeholder="Enter a number" min="0" onChange={(e)=>setYearsOfExperience(e.target.value)}/>
                         </Form.Group>
                     </div>
-                    <Form.Group className="my-2 col">
-                        <Form.Label>Postal Code*</Form.Label>
-                        <Form.Control type="text" value={postalCode} placeholder="Postal Code" onChange={(e)=>setPostalCode(e.target.value)}/>
-                    </Form.Group>
+                )}
+                {!isAssistant && (
                     <Form.Group className="my-2">
-                        <Form.Label>Are you a financial advisor?</Form.Label>
-                        <div>
-                            <Form.Check inline label="Yes" value="yes" name="assistant" type="radio" id="inline-radio-1" checked={isAssistant} onChange={radioChange}/>
-                            <Form.Check inline label="No" value="no" name="assistant" type="radio" id="inline-radio-2" checked={!isAssistant} onChange={radioChange}/>
-                        </div>
+                        <Form.Label>Employment Position</Form.Label>
+                        <Form.Control type="text" value={employmentPosition} placeholder="Employment" onChange={(e)=>setEmploymentPosition(e.target.value)}/>
                     </Form.Group>
-                    {isAssistant && (
-                        <div>
-                            <Form.Group className="my-2 col">
-                                <Form.Label>Area of Expertise</Form.Label>
-                                <Form.Control type="text" value={areaOfExpertise} placeholder="Area of Expertise" onChange={(e)=>setAreaOfExpertise(e.target.value)}/>
-                            </Form.Group>
-                            <Form.Group className="my-2 col">
-                                <Form.Label>Years of Experience</Form.Label>
-                                <Form.Control type="number" value={yearsOfExperience} placeholder="Enter a number" min="0" onChange={(e)=>setYearsOfExperience(e.target.value)}/>
-                            </Form.Group>
-                        </div>
-                    )}
-                    {!isAssistant && (
-                        <Form.Group className="my-2">
-                            <Form.Label>Employment Position</Form.Label>
-                            <Form.Control type="text" value={employmentPosition} placeholder="Employment" onChange={(e)=>setEmploymentPosition(e.target.value)} className="formInput"/>
-                        </Form.Group>
-                    )}
-                    <br />
-                    <Button type="button" className="saveinn-green-btn" disabled={!firstName || !lastName || !username || !email || !password || !postalCode} onClick={async () => await handleSignUp()}>Sign Up</Button>
-                </Form>
-            </Container>
+                )}
+                <br />
+                <Button type="button" className="saveinn-green-btn" disabled={!firstName || !lastName || !username || !email || !password || !postalCode} onClick={async () => await handleSignUp()}>Sign Up</Button>
+            </Form>
         </Container>
     )
 }

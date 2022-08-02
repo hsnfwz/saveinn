@@ -17,7 +17,7 @@ function DashboardInfo({ auth }) {
         <Container fluid>
             <Navbar className="p-4 mb-2">
                 <Container className="d-flex justify-content-start">
-                <Navbar.Brand className="brandLogo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
+                <Navbar.Brand className="brand-logo d-flex align-items-center" style={{ color: '#63D3A9' }} href="/dashboard">
                     <img 
                     src= {saveInnLogo}
                     width="50"

@@ -20,11 +20,11 @@ function RegistrationLayout() {
 
             {!auth.isAuthenticating && !auth.user && (
                 <Container fluid>
-                    <Col>
-                        <Row>
+                    <Row>
+                        <Col>
                             <SignUpInfo auth={auth} />
-                        </Row>
-                    </Col>
+                        </Col>
+                    </Row>
                 </Container>
             )}
 

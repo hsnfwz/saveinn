@@ -238,7 +238,7 @@ function BudgetMemberAccountInfo({ auth }) {
             {showEditUsername && (
               <Form.Group className="my-2">
                 <Form.Label>Username*</Form.Label>
-                <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)} className="formInput"/>
+                <Form.Control type="text" value={username} placeholder="Username" onChange={(e)=>setUsername(e.target.value)}/>
                 <div>
                   <Button type="button" className="saveinn-green-btn" onClick={async () => await handleEditUsername()} disabled={!username}>Submit</Button>
                   <Button type="button" className="saveinn-red-btn" onClick={() => {
@@ -284,7 +284,7 @@ function BudgetMemberAccountInfo({ auth }) {
             {showEditPassword && (
               <Form.Group className="my-2">
                 <Form.Label>Password*</Form.Label>
-                <Form.Control type="password" value={password} placeholder="Password" onChange={(e)=>setPassword(e.target.value)} className="formInput"/>
+                <Form.Control type="password" value={password} placeholder="Password" onChange={(e)=>setPassword(e.target.value)}/>
                 <div>
                   <Button type="button" className="saveinn-green-btn" onClick={async () => await handleEditPassword()} disabled={!password}>Submit</Button>
                   <Button type="button" className="saveinn-red-btn" onClick={() => {
@@ -322,7 +322,7 @@ function BudgetMemberAccountInfo({ auth }) {
                 </Form.Group>
                 <Form.Group className="my-2">
                     <Form.Label>Employment Position</Form.Label>
-                    <Form.Control type="text" value={employmentPosition} placeholder="Employment" onChange={(e)=>setEmploymentPosition(e.target.value)} className="formInput"/>
+                    <Form.Control type="text" value={employmentPosition} placeholder="Employment" onChange={(e)=>setEmploymentPosition(e.target.value)}/>
                 </Form.Group>
                 <div>
                   <Button type="button" className="saveinn-green-btn" onClick={async () => await handleEditInfo()} disabled={!firstName || !lastName || !postalCode}>Submit</Button>

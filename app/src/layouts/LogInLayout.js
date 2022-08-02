@@ -20,11 +20,11 @@ function LogInLayout() {
 
             {!auth.isAuthenticating && !auth.user && (
                 <Container fluid>
-                    <Col>
-                        <Row>
+                    <Row>
+                        <Col>
                             <LogInInfo auth={auth} />
-                        </Row>
-                    </Col>
+                        </Col>
+                    </Row>
                 </Container>
             )}
 

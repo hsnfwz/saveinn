@@ -61,13 +61,9 @@ body, html {
     border: solid 2px #cd7575;
 }
 
-.brandLogo {
+.brand-logo {
     color: #63D3A9;
     font-weight: bolder;
-}
-
-.formInput {
-    width: 50vh;
 }
 
 .question {
