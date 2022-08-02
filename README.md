@@ -1,5 +1,7 @@
-# saveinn
-CMPT 354 Group Project - SaveInn
+# Save Inn
+CMPT 354 Group Project.
+Developed by Hussein Fawaz, Juan Antonio Gonzalez, and Mohammad Ziaei.
+Published on Auguest 1, 2022.
 
 # Tech Stack
 React + Node + PostgreSQL
