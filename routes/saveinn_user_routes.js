@@ -4,6 +4,7 @@ const SaveinnUserController = require('../controllers/saveinn_user_controller');
 const router = express.Router();
 
 router.get('/', SaveinnUserController.handleGetAllRows);
+router.get('/user/users_in_all_groups', SaveinnUserController.handleUsersInAllGroups);
 router.get('/user/auth', SaveinnUserController.handleAuth);
 router.get('/:id', SaveinnUserController.handleGetRowById);
 router.post('/', SaveinnUserController.handleInsertRow);

@@ -210,13 +210,8 @@ function BudgetAssistantAccountInfo({ auth }) {
   }
 
   return (
-    <Container fluid style={{ height: '100vh' }}> 
+    <Container fluid> 
       <Row>
-        <Row>
-          <Col className='d-flex align-items-center justify-content-center pt-2'>
-            <h2>Account</h2>
-          </Col>
-        </Row>
         <Row>
           <Col className='d-flex align-items-center justify-content-center pt-2'>
             <img
@@ -228,6 +223,11 @@ function BudgetAssistantAccountInfo({ auth }) {
             />
           </Col>
         </Row>
+        <Row>
+          <Col className='d-flex align-items-center justify-content-center pt-2'>
+            <h2>Account</h2>
+          </Col>
+        </Row>
       </Row>
       <br />
       <Row>
@@ -237,7 +237,7 @@ function BudgetAssistantAccountInfo({ auth }) {
       </Row>
       <br />
       <Container fluid className="d-flex flex-column justify-content-center align-items-center">
-          <Form style={{ width: '50vh' }}>
+          <Form>
             {showEditUsername && (
               <Form.Group className="my-2">
                 <Form.Label>Username*</Form.Label>
@@ -254,7 +254,7 @@ function BudgetAssistantAccountInfo({ auth }) {
             {!showEditUsername && (
               <Row>
                 <Col>
-                  <p>Username: {username}</p>
+                  <p><strong>Username:</strong> {username}</p>
                 </Col>
                 <Col>
                   <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditUsername(true)}>Edit</Button>
@@ -277,7 +277,7 @@ function BudgetAssistantAccountInfo({ auth }) {
             {!showEditEmail && (
               <Row>
                 <Col>
-                  <p>Email: {email}</p>
+                  <p><strong>Email:</strong> {email}</p>
                 </Col>
                 <Col>
                   <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditEmail(true)}>Edit</Button>
@@ -300,7 +300,7 @@ function BudgetAssistantAccountInfo({ auth }) {
             {!showEditPassword && (
               <Row>
                 <Col>
-                  <p>Password is hidden</p>
+                  <p><strong>Password is hidden</strong></p>
                 </Col>
                 <Col>
                   <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditPassword(true)}>Edit</Button>
@@ -340,11 +340,11 @@ function BudgetAssistantAccountInfo({ auth }) {
             {!showEditInfo && (
               <Row>
                 <Col>
-                  <p>First Name: {firstName}</p>
-                  <p>Last Name: {lastName}</p>
-                  <p>Postal Code: {postalCode}</p>
-                  <p>Area of Expertise: {areaOfExpertise}</p>
-                  <p>Years of Experience: {yearsOfExperience}</p>
+                  <p><strong>First Name:</strong> {firstName}</p>
+                  <p><strong>Last Name:</strong> {lastName}</p>
+                  <p><strong>Postal Code:</strong> {postalCode}</p>
+                  <p><strong>Area of Expertise:</strong> {areaOfExpertise || 'N/A'}</p>
+                  <p><strong>Years of Experience:</strong> {yearsOfExperience || 'N/A'}</p>
                   <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditInfo(true)}>Edit</Button>
                 </Col>
               </Row>

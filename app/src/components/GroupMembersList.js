@@ -36,14 +36,18 @@ function GroupMembersList({ auth }) {
       const res = await fetch(endpoint, options);
       const data = await res.json();
 
-      const endpoint2 = data.rows[0].budgetMemberId
+      if (data.rows[0]) {
+        const endpoint2 = data.rows[0].budgetMemberId
         ? `http://localhost:5000/budget_member/${data.rows[0].budgetMemberId}`
-        : `http://localhost:5000/budget_member/${data.rows[0].budgetAssistantId}`
+        : `http://localhost:5000/budget_assistant/${data.rows[0].budgetAssistantId}`
 
-      const res2 = await fetch(endpoint2, options);
-      const data2 = await res2.json();
+        const res2 = await fetch(endpoint2, options);
+        const data2 = await res2.json();
 
-      setGroupMemberRecords([data2.row]);
+        setGroupMemberRecords([data2.row]);
+      } else {
+        setGroupMemberRecords([]);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -53,9 +57,11 @@ function GroupMembersList({ auth }) {
     
   }
 
-  async function handleDelete(userGroupId, saveinnUserId) {
+  async function handleDelete() {
+    const userGroupId = location.pathname.split('/')[2];
+
     try {
-      const endpoint = `http://localhost:5000/user_belongs_to_group/${userGroupId}/${saveinnUserId}`;
+      const endpoint = `http://localhost:5000/user_belongs_to_group/${userGroupId}/${auth.user.saveinnUserId}`;
 
       const options = {
         method: 'DELETE',
@@ -86,32 +92,48 @@ function GroupMembersList({ auth }) {
           alt="CommunityIcon"/>
         <h2 className='d-flex justify-content-center mt-4 mb-5'>Group Members</h2>
       </Row>
-      <Row className='d-flex justify-content-center'>
-        <Col className='d-flex justify-content-center'>
+      <Container fluid className="d-flex justify-content-center">
           <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>Add Group Member</Button>
-        </Col>
-      </Row>
-      <Row className='mx-5 mt-3 px-5'>
+      </Container>
+      <br />
+      <Row>
         <Col>
-          <ListGroup>
+          <ListGroup className='mx-5'>
             {groupMemberRecords.map((groupMemberRecord, index) => (
-              <ListGroup.Item key={index}>
+              <ListGroup.Item className='mx-5' key={index}>
                 <Row className='d-flex align-items-center'>
                   <Col md="auto">
                     <img
                     src={groupMemberRecord.budgetMemberId ? userIcon : userAssistantIcon}
-                    width="50"
-                    height="50"
+                    width="100"
+                    height="100"
                     className="mx-2"
                     alt="Save Inn logo"
                     />
                   </Col>
-                  <Col className='d-flex flex-row align-items-center pt-2'>
-                    <h6 className='me-1'>{ groupMemberRecord.firstName }</h6>
-                    <h6>{ groupMemberRecord.lastName }</h6>
-                  </Col>
+                  {groupMemberRecord.budgetMemberId && (
+                    <Col>
+                      <Row>
+                        <Col>
+                          <p><strong>Name:</strong> { groupMemberRecord.firstName } { groupMemberRecord.lastName }</p>
+                          <p><strong>Employment Position:</strong> { groupMemberRecord.employmentPosition || 'N/A' }</p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  )}
+                  {groupMemberRecord.budgetAssistantId && (
+                    <Col>
+                      <Row>
+                        <Col>
+                          <p><strong>Name:</strong> { groupMemberRecord.firstName } { groupMemberRecord.lastName }</p>
+                          <p><strong>Area of Expertise:</strong> { groupMemberRecord.areaOfExpertise || 'N/A' }</p>
+                          <p><strong>Years of Experience:</strong> { groupMemberRecord.yearsOfExperience || 'N/A' }</p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  )}
                   <Col className='d-flex justify-content-end'>
-                    <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(groupMemberRecord.userGroupId, groupMemberRecord.saveinnUserId)}>Delete</Button>
+                    <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete()}>Leave</Button>
                   </Col>
                 </Row>
               </ListGroup.Item>

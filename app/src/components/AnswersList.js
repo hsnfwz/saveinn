@@ -175,6 +175,7 @@ function AnswersList({ auth }) {
           </ListGroup>
         </Col>
       </Row>
+      <br />
       <Row>
         <Col>
             <ListGroup className='mx-5'>

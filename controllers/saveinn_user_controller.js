@@ -8,6 +8,11 @@ SaveinnUserController.handleGetAllRows = async (req, res, next) => {
   res.json(result);
 }
 
+SaveinnUserController.handleUsersInAllGroups = async (req, res, next) => {
+  const result = await SaveinnUserModel.usersInAllGroups();
+  res.json(result);
+}
+
 SaveinnUserController.handleGetRowById = async (req, res, next) => {
   const saveinnUserId = req.params.id;
   const result = await SaveinnUserModel.getRowById(saveinnUserId);

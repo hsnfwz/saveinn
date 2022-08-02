@@ -13,6 +13,16 @@ SaveinnUserModel.getAllRows = async () => {
   }
 }
 
+SaveinnUserModel.usersInAllGroups = async () => {
+  try {
+    const poolQuery = 'SELECT saveinn_user_id AS "saveinnUserId", budget_member_id AS "budgetMemberId", budget_assistant_id AS "budgetAssistantId" FROM saveinn_user AS s WHERE NOT EXISTS ((SELECT saveinn_user_id FROM user_belongs_to_group) EXCEPT (SELECT saveinn_user_id FROM saveinn_user WHERE saveinn_user_id=s.saveinn_user_id))';
+    const { rows } = await pool.query(poolQuery);
+    return { message: 'Success', rows };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
+
 SaveinnUserModel.getRowById = async (saveinnUserId) => {
   try {
     const poolQuery = 'SELECT saveinn_user_id AS "saveinnUserId", budget_member_id AS "budgetMemberId", budget_assistant_id AS "budgetAssistantId", email, username FROM saveinn_user WHERE saveinn_user_id=$1';

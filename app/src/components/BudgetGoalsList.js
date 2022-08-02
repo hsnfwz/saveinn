@@ -193,8 +193,8 @@ function BudgetGoalsList({ auth }) {
                     <p>End: { moment(budgetGoalRecord.endDate).format('YYYY-MM-DD') }</p>
                   </Col>
                 </Row>
-                <p>Amount saved: { currencyFormat.format(budgetGoalRecord.amountSaved) }</p>
                 <p>{ budgetGoalRecord.description }</p>
+                <p>Saved: { currencyFormat.format(budgetGoalRecord.amountSaved) }</p>
                 <Button type="button" className="saveinn-blue-btn" style={{ fontWeight: "normal" }} onClick={() => {
                   setBudgetGoalId(budgetGoalRecord.setBudgetGoalId);
                   setName(budgetGoalRecord.name);

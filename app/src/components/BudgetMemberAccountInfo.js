@@ -207,13 +207,8 @@ function BudgetMemberAccountInfo({ auth }) {
   }
 
   return (
-    <Container fluid style={{ height: '100vh' }}> 
+    <Container fluid> 
       <Row>
-        <Row>
-          <Col className='d-flex align-items-center justify-content-center pt-2'>
-            <h2>Account</h2>
-          </Col>
-        </Row>
         <Row>
           <Col className='d-flex align-items-center justify-content-center pt-2'>
             <img
@@ -225,6 +220,11 @@ function BudgetMemberAccountInfo({ auth }) {
             />
           </Col>
         </Row>
+        <Row>
+          <Col className='d-flex align-items-center justify-content-center pt-2'>
+            <h2>Account</h2>
+          </Col>
+        </Row>
       </Row>
       <br />
       <Row>
@@ -234,7 +234,7 @@ function BudgetMemberAccountInfo({ auth }) {
       </Row>
       <br />
       <Container fluid className="d-flex flex-column justify-content-center align-items-center">
-          <Form style={{ width: '50vh' }}>
+          <Form>
             {showEditUsername && (
               <Form.Group className="my-2">
                 <Form.Label>Username*</Form.Label>
@@ -251,7 +251,7 @@ function BudgetMemberAccountInfo({ auth }) {
             {!showEditUsername && (
               <Row>
                 <Col>
-                  <p>Username: {username}</p>
+                  <p><strong>Username:</strong> {username}</p>
                 </Col>
                 <Col>
                   <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditUsername(true)}>Edit</Button>
@@ -274,7 +274,7 @@ function BudgetMemberAccountInfo({ auth }) {
             {!showEditEmail && (
               <Row>
                 <Col>
-                  <p>Email: {email}</p>
+                  <p><strong>Email:</strong> {email}</p>
                 </Col>
                 <Col>
                   <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditEmail(true)}>Edit</Button>
@@ -297,7 +297,7 @@ function BudgetMemberAccountInfo({ auth }) {
             {!showEditPassword && (
               <Row>
                 <Col>
-                  <p>Password is hidden</p>
+                  <p><strong>Password is hidden</strong></p>
                 </Col>
                 <Col>
                   <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditPassword(true)}>Edit</Button>
@@ -333,10 +333,10 @@ function BudgetMemberAccountInfo({ auth }) {
             {!showEditInfo && (
               <Row>
                 <Col>
-                  <p>First Name: {firstName}</p>
-                  <p>Last Name: {lastName}</p>
-                  <p>Postal Code: {postalCode}</p>
-                  <p>Employment Position: {employmentPosition}</p>
+                  <p><strong>First Name:</strong> {firstName}</p>
+                  <p><strong>Last Name:</strong> {lastName}</p>
+                  <p><strong>Postal Code:</strong> {postalCode}</p>
+                  <p><strong>Employment Position:</strong> {employmentPosition || 'N/A'}</p>
                   <Button type="button" className="saveinn-blue-btn" onClick={() => setShowEditInfo(true)}>Edit</Button>
                 </Col>
               </Row>

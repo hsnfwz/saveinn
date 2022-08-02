@@ -4,6 +4,9 @@ import { Container, Row, Col, ListGroup, Button, Modal, Form, ToggleButton, Butt
 
 // images
 import saveInnLogo from '../assets/images/saveInnLogo.svg';
+import userIcon from '../assets/images/userIcon.svg';
+import userAssistantIcon from '../assets/images/userAssistantIcon.svg';
+import membersIcon from '../assets/images/membersIcon.svg';
 import communityIcon from '../assets/images/communityIcon.svg';
 
 function GroupsList({ auth }) {
@@ -14,6 +17,8 @@ function GroupsList({ auth }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(false);
+
+  const [usersInAllGroups, setUsersInAllGroups] = useState([]);
 
   const [groupRecords, setGroupRecords] = useState([]);
 
@@ -36,6 +41,8 @@ function GroupsList({ auth }) {
       const data = await res.json();
 
       setGroupRecords(data.rows);
+
+      await handleUsersInAllGroups();
     } catch (error) {
       console.log(error);
     }
@@ -138,6 +145,33 @@ function GroupsList({ auth }) {
     }
   }
 
+  async function handleUsersInAllGroups() {
+    try {
+      const endpoint = 'http://localhost:5000/saveinn_user/user/users_in_all_groups';
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      if (data.rows[0]) {
+        const endpoint2 = data.rows[0].budgetMemberId ? `http://localhost:5000/budget_member/${data.rows[0].budgetMemberId}` : `http://localhost:5000/budget_assistant/${data.rows[0].budgetAssistantId}`;
+
+        const res2 = await fetch(endpoint2, options);
+        const data2 = await res2.json();
+  
+        setUsersInAllGroups([data2.row]);
+      } else {
+        setUsersInAllGroups([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleClose() {
     setGroupId(0);
     setName('');
@@ -192,6 +226,54 @@ function GroupsList({ auth }) {
                   </Col>
                   <Col className='d-flex justify-content-end'>
                     <Link to={`/groups/${groupRecord.userGroupId}`}>View</Link>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
+      </Row>
+      <Row className='px-5 mt-3 d-flex justify-content-center'>
+        <img 
+          src={membersIcon}
+          width="200"
+          height="200"
+          alt="Members Icon"/>
+      </Row>
+      <h2 className='d-flex justify-content-center mt-3 mb-5'>Users in All Groups</h2>
+      <Row>
+        <Col>
+          <ListGroup className='mx-5'>
+            {usersInAllGroups.map((user, index) => (
+              <ListGroup.Item className='mx-5' key={index}>
+                <Row className='py-2'>
+                  <Col md="auto">
+                    <img
+                    src={user.budgetMemberId ? userIcon : userAssistantIcon}
+                    width="100"
+                    height="100"
+                    className="mx-2"
+                    alt="Save Inn logo"
+                    />
+                  </Col>
+                  <Col>
+                    {user.budgetMemberId && (
+                      <Row>
+                        <Col>
+                          <p><strong>Name:</strong> { user.firstName } { user.lastName }</p>
+                          <p><strong>Employment Position:</strong> { user.employmentPosition || 'N/A' }</p>
+                        </Col>
+                      </Row>
+                    )}
+                    {user.budgetAssistantId && (
+                      <Row>
+                        <Col>
+                          <p><strong>Name:</strong> { user.firstName } { user.lastName }</p>
+                          <p><strong>Area of Expertise:</strong> { user.areaOfExpertise || 'N/A' }</p>
+                          <p><strong>Years of Experience:</strong> { user.yearsOfExperience || 'N/A' }</p>
+                        </Col>
+                      </Row>
+                    )}
                   </Col>
                 </Row>
               </ListGroup.Item>

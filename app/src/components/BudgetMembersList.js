@@ -44,7 +44,7 @@ function BudgetMembersList({ auth }) {
           alt="Members Icon"/>
         <h2 className='d-flex justify-content-center mt-3 mb-5'>Members</h2>
       </Row>
-      <Row className='mx-5'>
+      <Row>
         <Col>
           <ListGroup className='mx-5'>
             {budgetMemberRecords.map((budgetMemberRecord, index) => (
@@ -61,13 +61,10 @@ function BudgetMembersList({ auth }) {
                   </Col>
                   <Col>
                     <Row>
-                      <Col className='d-flex flex-row'>
-                        <p className='me-1'>Name: { budgetMemberRecord.firstName }</p>
-                        <p>{ budgetMemberRecord.lastName }</p>
+                      <Col>
+                        <p><strong>Name:</strong> { budgetMemberRecord.firstName } { budgetMemberRecord.lastName }</p>
+                        <p><strong>Employment Position:</strong> { budgetMemberRecord.employmentPosition || 'N/A' }</p>
                       </Col>
-                    </Row>
-                    <Row>
-                      <p>Employment Position: { budgetMemberRecord.employmentPosition }</p>
                     </Row>
                   </Col>
                 </Row>
