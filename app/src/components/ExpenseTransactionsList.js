@@ -249,7 +249,7 @@ function ExpenseTransactionsList() {
             <thead>
               <tr>
                 <td>Category</td>
-                <td>Average</td>
+                <td>Average Expenses</td>
               </tr>
             </thead>
             <tbody>

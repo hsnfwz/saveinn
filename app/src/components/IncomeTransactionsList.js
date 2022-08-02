@@ -249,7 +249,7 @@ function IncomeTransactionsList() {
             <thead>
               <tr>
                 <td>Category</td>
-                <td>Average</td>
+                <td>Average Income</td>
               </tr>
             </thead>
             <tbody>
