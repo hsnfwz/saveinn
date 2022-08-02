@@ -1,6 +1,9 @@
 # saveinn
 CMPT 354 Group Project - SaveInn
 
+# Tech Stack
+React + Node + PostgreSQL
+
 # Frontend
 To start the react app, make sure you are in the correct directory. Run ```npm install``` to install all dependencies, then run ```npm run start``` to run on localhost ```3000```.
 
