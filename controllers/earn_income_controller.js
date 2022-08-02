@@ -8,6 +8,18 @@ EarnIncomeController.handleGetAllRows = async (req, res, next) => {
   res.json(result);
 }
 
+EarnIncomeController.handleSum = async (req, res, next) => {
+  const saveinnUserId = req.query.saveinnUserId;
+  const result = await EarnIncomeModel.sum(saveinnUserId);
+  res.json(result);
+}
+
+EarnIncomeController.handleAverageByCategory = async (req, res, next) => {
+  const saveinnUserId = req.query.saveinnUserId;
+  const result = await EarnIncomeModel.averageByCategory(saveinnUserId);
+  res.json(result);
+}
+
 EarnIncomeController.handleGetRowById = async (req, res, next) => {
   const earnIncomeId = req.params.id;
   const result = await EarnIncomeModel.getRowById(earnIncomeId);

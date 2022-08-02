@@ -22,6 +22,38 @@ SpendExpenseModel.getAllRows = async (saveinnUserId) => {
   }
 }
 
+SpendExpenseModel.sum = async (saveinnUserId) => {
+  try {
+    let rows = [];
+
+    if (saveinnUserId) {
+      const poolQuery = 'SELECT SUM(amount) FROM spend_expense WHERE saveinn_user_id=$1';
+      const { rows: _rows } = await pool.query(poolQuery, [saveinnUserId]);
+      rows = _rows;
+    }
+  
+    return { message: 'Success', row: rows[0] };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
+
+SpendExpenseModel.averageByCategory = async (saveinnUserId) => {
+  try {
+    let rows = [];
+
+    if (saveinnUserId) {
+      const poolQuery = 'SELECT AVG(amount), category FROM spend_expense WHERE saveinn_user_id=$1 GROUP BY category';
+      const { rows: _rows } = await pool.query(poolQuery, [saveinnUserId]);
+      rows = _rows;
+    }
+  
+    return { message: 'Success', rows };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
+
 SpendExpenseModel.getRowById = async (spendExpenseId) => {
   try {
     const poolQuery = 'SELECT title, description, category, amount, spend_expense_id AS "spendExpenseId" FROM spend_expense WHERE spend_expense_id=$1';

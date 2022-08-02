@@ -23,6 +23,9 @@ function IncomeTransactionsList() {
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState(0);
 
+  const [sum, setSum] = useState(0);
+  const [averageByCategory, setAverageByCategory] = useState([]);
+
   const [incomeRecords, setIncomeRecords] = useState([]);
 
   useEffect(() => {
@@ -44,6 +47,8 @@ function IncomeTransactionsList() {
       const data = await res.json();
 
       setIncomeRecords(data.rows);
+
+      await Promise.all([handleSum(), handleAverageByCategory()]);
     } catch (error) {
       console.log(error);
     }
@@ -129,6 +134,42 @@ function IncomeTransactionsList() {
     }
   }
 
+  async function handleSum() {
+    try {
+      const endpoint = `http://localhost:5000/earn_income/sum?saveinnUserId=${auth.user.saveinnUserId}`;
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setSum(data.row.sum);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleAverageByCategory() {
+    try {
+      const endpoint = `http://localhost:5000/earn_income/average_by_category?saveinnUserId=${auth.user.saveinnUserId}`;
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setAverageByCategory(data.rows);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleClose() {
     setIncomeId(0);
     setTitle('');
@@ -148,10 +189,16 @@ function IncomeTransactionsList() {
           height="200"
           alt="Credit Card Icon"/>
         <h2 className='d-flex justify-content-center mt-3 mb-5'>Income Transactions</h2>
-      </Row>      
+      </Row>
       <Row>
         <Col className='d-flex justify-content-center'>
           <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>Add Income Transaction</Button>
+        </Col>
+      </Row>
+      <br />
+      <Row>
+        <Col>
+          <h4 className="d-flex justify-content-center">Total: { currencyFormat.format(sum) }</h4>
         </Col>
       </Row>
       <br />
@@ -189,6 +236,27 @@ function IncomeTransactionsList() {
                     </Button>
                     <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(incomeRecord.earnIncomeId)}>Delete</Button>
                   </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Col>
+      </Row>
+      <br />
+      <Row>
+        <Col>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <td>Category</td>
+                <td>Average</td>
+              </tr>
+            </thead>
+            <tbody>
+              {averageByCategory.map((avgByCategory, index) => (
+                <tr key={index}>
+                  <td>{ avgByCategory.category }</td>
+                  <td>{ currencyFormat.format(avgByCategory.avg) }</td>
                 </tr>
               ))}
             </tbody>

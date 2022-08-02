@@ -8,6 +8,18 @@ SpendExpenseController.handleGetAllRows = async (req, res, next) => {
   res.json(result);
 }
 
+SpendExpenseController.handleSum = async (req, res, next) => {
+  const saveinnUserId = req.query.saveinnUserId;
+  const result = await SpendExpenseModel.sum(saveinnUserId);
+  res.json(result);
+}
+
+SpendExpenseController.handleAverageByCategory = async (req, res, next) => {
+  const saveinnUserId = req.query.saveinnUserId;
+  const result = await SpendExpenseModel.averageByCategory(saveinnUserId);
+  res.json(result);
+}
+
 SpendExpenseController.handleGetRowById = async (req, res, next) => {
   const spendExpenseId = req.params.id;
   const result = await SpendExpenseModel.getRowById(spendExpenseId);

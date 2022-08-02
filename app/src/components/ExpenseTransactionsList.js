@@ -22,8 +22,11 @@ function ExpenseTransactionsList() {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState(0);
+  
+  const [sum, setSum] = useState(0);
 
   const [expenseRecords, setExpenseRecords] = useState([]);
+  const [averageByCategory, setAverageByCategory] = useState([]);
 
   useEffect(() => {
     (async function() {
@@ -44,6 +47,8 @@ function ExpenseTransactionsList() {
       const data = await res.json();
 
       setExpenseRecords(data.rows);
+
+      await Promise.all([handleSum(), handleAverageByCategory()]);
     } catch (error) {
       console.log(error);
     }
@@ -129,6 +134,42 @@ function ExpenseTransactionsList() {
     }
   }
 
+  async function handleSum() {
+    try {
+      const endpoint = `http://localhost:5000/spend_expense/sum?saveinnUserId=${auth.user.saveinnUserId}`;
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setSum(data.row.sum);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleAverageByCategory() {
+    try {
+      const endpoint = `http://localhost:5000/spend_expense/average_by_category?saveinnUserId=${auth.user.saveinnUserId}`;
+
+      const options = {
+        method: 'GET',
+        credentials: 'include',
+      };
+
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+
+      setAverageByCategory(data.rows);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleClose() {
     setExpenseId(0);
     setTitle('');
@@ -152,6 +193,12 @@ function ExpenseTransactionsList() {
       <Row>
         <Col className='d-flex justify-content-center'>
           <Button type="button" className="saveinn-green-btn" onClick={() => setShowAddModal(true)}>Add Expense Transaction</Button>
+        </Col>
+      </Row>
+      <br />
+      <Row>
+        <Col>
+          <h4 className="d-flex justify-content-center">Total: { currencyFormat.format(sum) }</h4>
         </Col>
       </Row>
       <br />
@@ -189,6 +236,27 @@ function ExpenseTransactionsList() {
                     </Button>
                     <Button type="button" className="saveinn-red-btn" onClick={async () => await handleDelete(expenseRecord.spendExpenseId)}>Delete</Button>
                   </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Col>
+      </Row>
+      <br />
+      <Row>
+        <Col>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <td>Category</td>
+                <td>Average</td>
+              </tr>
+            </thead>
+            <tbody>
+              {averageByCategory.map((avgByCategory, index) => (
+                <tr key={index}>
+                  <td>{ avgByCategory.category }</td>
+                  <td>{ currencyFormat.format(avgByCategory.avg) }</td>
                 </tr>
               ))}
             </tbody>

@@ -22,6 +22,38 @@ EarnIncomeModel.getAllRows = async (saveinnUserId) => {
   }
 }
 
+EarnIncomeModel.sum = async (saveinnUserId) => {
+  try {
+    let rows = [];
+
+    if (saveinnUserId) {
+      const poolQuery = 'SELECT SUM(amount) FROM earn_income WHERE saveinn_user_id=$1';
+      const { rows: _rows } = await pool.query(poolQuery, [saveinnUserId]);
+      rows = _rows;
+    }
+  
+    return { message: 'Success', row: rows[0] };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
+
+EarnIncomeModel.averageByCategory = async (saveinnUserId) => {
+  try {
+    let rows = [];
+
+    if (saveinnUserId) {
+      const poolQuery = 'SELECT AVG(amount), category FROM earn_income WHERE saveinn_user_id=$1 GROUP BY category';
+      const { rows: _rows } = await pool.query(poolQuery, [saveinnUserId]);
+      rows = _rows;
+    }
+  
+    return { message: 'Success', rows };
+  } catch(error) {
+    return { message: error, rows: [] };
+  }
+}
+
 EarnIncomeModel.getRowById = async (earnIncomeId) => {
   try {
     const poolQuery = 'SELECT title, description, category, amount, earn_income_id AS "earnIncomeId" FROM earn_income WHERE earn_income_id=$1';
